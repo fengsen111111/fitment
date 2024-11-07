@@ -1,0 +1,51 @@
+{
+	"pages": [{
+			"path": "pages/login/index"
+		},
+		{
+			"path": "pages/home/index"
+		},
+		{
+			"path": "pages/index/index"
+		},
+		{
+			"path": "pages/community/index"
+		},
+		{
+			"path": "pages/message/index"
+		},
+		{
+			"path": "pages/my/index"
+		},
+		{
+			"path": "pages/publish/index"
+		},
+		{
+			"path": "pages/home/components/sign/index"
+		},
+		{
+			"path": "pages/home/components/search/index"
+		},
+		{
+			"path": "pages/home/components/renovationServices/index"
+		},
+		{
+			"path": "pages/home/components/btnBooking/index"
+		},
+		{
+			"path": "pages/home/components/homeInspection/index"
+		},
+		{
+			"path": "pages/home/components/btnBookingTwo/index"
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8",
+		"navigationStyle": "custom",
+		"app-plus": {
+			"titleView": false
+		}
+	}
+}

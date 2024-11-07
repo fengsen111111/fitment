@@ -1,0 +1,144 @@
+<template>
+	<view>
+		<view class="userBg">
+			<view class="flex justify-between items-center p30">
+				<view class="text-center">
+					<uni-icons type="location" size="26" color="#FFFFFF"></uni-icons>
+					<view class="text20 mt-16">成都</view>
+				</view>
+				<view class="flex">
+					<uni-icons type="compose" size="30" color="#FFFFFF"></uni-icons>
+					<uni-icons type="gear" class="ml40" size="30" color="#FFFFFF"></uni-icons>
+				</view>
+			</view>
+			<view class="px30">
+				<view class="bg-white p30 radius10">
+					<view class="flex items-center">
+						<view class="w90 h90">
+							<image src="../../static/my/userImg.png" class="w90 h90 radius_bfb50" mode=""></image>
+						</view>
+						<view class="ml20 w-full">
+							<view class="flex justify-between w-full">
+								<view class="flex items-center">
+									<image src="../../static/my/sex1.png" class=" w32 h32 radius_bfb50" mode=""></image>
+									<view class="text28 font-bold ml10 col333333">用户昵称</view>
+									<view class="text20 col-white px30 bg91C42F ml10 radius4">博主</view>
+								</view>
+								<view class="col-black">135****2266</view>
+							</view>
+							<view class="col-black text20">今天天气不错，出来看看装修公司都有哪些漂亮的设... <text class="col4DB23F ml10">展开</text></view>
+						</view>
+					</view>
+					<view class="bgF5F5F5 h2 mt30"></view>
+					<view class="mt30 col-black text20 text-center grid grid-cols-3">
+						<view class="">
+							<image src="../../static/my/user1.png" class="w40 h40" mode=""></image>
+							<view class="">我的收藏</view>
+						</view>
+						<view class="border_left_right">
+							<image src="../../static/my/user2.png" class="w40 h40" mode=""></image>
+							<view class="">购物车</view>
+						</view>
+						<view class="">
+							<image src="../../static/my/user3.png" class="w40 h40" mode=""></image>
+							<view class="">创作者中心</view>
+						</view>
+					</view>
+				</view>
+				<!--  -->
+				<view class="mt20 text20 text-center col-black bg-white p40 flex justify-between radius10">
+					<view class="" v-for="item in orderList" :key="item.id">
+						<image :src="require('@/static/my/order'+item.id+'.png')" class="w48 h48" mode=""></image>
+						<view class="">{{item.text}}</view>
+					</view>
+				</view>
+				<!--  -->
+				<view class="mt30 text24 text-center col-black bg-white p40 grid grid-cols-3 radius10">
+					<view :class="item.id<4?'mb60':''" v-for="item in iconList" :key="item.id">
+						<image :src="require('@/static/my/icon'+item.id+'.png')" class="w56 h56" mode=""></image>
+						<view class="">{{item.text}}</view>
+					</view>
+				</view>
+			</view>
+		</view>
+		<Tarbar :checkIndex="5" />
+	</view>
+</template>
+
+<script>
+	import Tarbar from '@/components/tarbar/index.vue'
+	export default {
+		components: {
+			Tarbar
+		},
+		data() {
+			return {
+				orderList:[
+					{
+						id:1,
+						text:'待支付',
+					},
+					{
+						id:2,
+						text:'待拼成',
+					},
+					{
+						id:3,
+						text:'待发货',
+					},
+					{
+						id:4,
+						text:'已完成',
+					},
+					{
+						id:5,
+						text:'售后',
+					}
+				],
+				iconList:[
+					{
+						id:1,
+						text:'我的钱包',
+					},
+					{
+						id:2,
+						text:'收货地址',
+					},
+					{
+						id:3,
+						text:'任务中心',
+					},
+					{
+						id:4,
+						text:'发票管理',
+					},
+					{
+						id:5,
+						text:'历史浏览',
+					},
+					{
+						id:6,
+						text:'店铺入驻',
+					}
+				]
+			}
+		},
+		methods: {
+
+		}
+	}
+</script>
+
+<style>
+	.userBg {
+		background-image: url('../../static/my/my_bg.png');
+		height: 576rpx;
+		width: 100%;
+		background-size: 100% 100%;
+		color: white
+	}
+	.border_left_right{
+		border-left: 1px solid #f5f5f5;
+		border-right: 1px solid #f5f5f5;
+	}
+</style>
