@@ -37,6 +37,9 @@
 		},
 		{
 			"path": "pages/home/components/btnBookingTwo/index"
+		},
+		{
+			"path": "pages/home/components/video/index"
 		}
 	],
 	"globalStyle": {

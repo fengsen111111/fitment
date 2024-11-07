@@ -115,7 +115,7 @@
 				<!-- 视频 -->
 				<view class="">
 					<view class="bg-white w340 mb20" v-for="(item,index) in [1,2,3]" :key="item">
-						<image src="../../static/home/首页推荐视频封面1.png" class="w340 h604" mode=""></image>
+						<image @click="handUrl('/pages/home/components/video/index')" src="../../static/home/首页推荐视频封面1.png" class="w340 h604" mode=""></image>
 						<view class="px20 col333333 pb14">
 							<view class="font-bold">现代北欧风格多功能伸 缩茶几</view>
 							<view class="flex justify-between text20 mt10">
