@@ -1,15 +1,14 @@
 <template>
 	<view>
-		<uni-nav-bar dark :fixed="true" shadow background-color="#4DB23F" status-bar left-icon="left"
-			title="发布" @clickLeft="back"></uni-nav-bar>
+		<NavBar :navType="'标题'" :title="'发布'" />
 		<view class="p30">
 			<view class="grid text-center grid-cols-2 text30" style="grid-column-gap:20rpx">
 				<view class="bg-white p20 radius10">
-					<image src="../../static/publish/img.png" class="w280 h256" mode=""></image>
+					<image @click="handUrl('/pages/publish/components/publishImg/index')" src="../../static/publish/img.png" class="w280 h256" mode=""></image>
 					<view class="mt30 font-bold">发布图文</view>
 				</view>
 				<view class="bg-white p20 radius10">
-					<image src="../../static/publish/video.png" class="w280 h256" mode=""></image>
+					<image @click="handUrl('/pages/publish/components/publishVideo/index')" src="../../static/publish/video.png" class="w280 h256" mode=""></image>
 					<view class="mt30 font-bold">发布视频</view>
 				</view>
 			</view>
@@ -27,7 +26,9 @@
 </template>
 
 <script>
+	import NavBar from '@/components/navbar/index.vue'
 	export default {
+		components:{NavBar},
 		data() {
 			return {}
 		},
@@ -36,6 +37,11 @@
 				console.log('返回')
 				uni.navigateBack()
 			},
+			handUrl(url){
+				uni.navigateTo({
+					url:url
+				})
+			}
 		}
 	}
 </script>

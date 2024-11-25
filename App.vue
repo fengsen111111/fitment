@@ -24,8 +24,8 @@
 	page {
 		background-color: #f5f5f5;
 		font-family: PingFang SC, PingFang SC;
-		// max-width: 430px;
-		// margin: 0 auto;
+		// width: 380px;
+		margin: 0 auto;
 	}
 
 	/* #endif */

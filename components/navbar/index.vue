@@ -2,19 +2,42 @@
 	<view class="">
 		<view class="bg4DB23F" v-if="navType=='搜索'">
 			<view class="flex pt25 px30  items-center pb14 justify-between">
-				<uni-icons type="left" size="30"  @click="back()" color="#ffffff"></uni-icons>
+				<uni-icons type="left" size="30" style="margin-left: -10rpx;" @click="back()" color="#ffffff"></uni-icons>
 				<view class="bg-white flex items-center py10 px20 radius40">
-					<uni-icons type="search" size="20" color="#999999"></uni-icons>
+					<uni-icons type="search" size="20" color="#999999" class="mt5"></uni-icons>
 					<input type="text" placeholder="输入搜索内容" class=" w55vw text28" />
 				</view>
 				<view class="bg91C42F col-white font-bold text28 px30 py10 radius40">搜索</view>
 			</view>
 		</view>
-		<view class="bg4DB23F" v-else="navType=='标题'">
+		<view class="bg4DB23F" v-else-if="navType=='标题'">
 			<view class="pt25 px30 grid grid-cols-3 pb20 justify-between">
-				<uni-icons type="left" size="30" style="text-align: left;" @click="back()" color="#ffffff"></uni-icons>
+				<uni-icons type="left" size="30" style="text-align: left;margin-left: -10rpx;" @click="back()" color="#ffffff"></uni-icons>
 				<view class="text-center text36 font-bold col-white">{{title}}</view>
 				<view class="w15"></view>
+			</view>
+		</view>
+		<view class="bg4DB23F" v-else-if="navType=='搜索2'">
+			<view class="flex pt25 px30  items-center pb14 justify-between">
+				<uni-icons type="left" size="30" style="margin-left: -10rpx;" @click="back()" color="#ffffff"></uni-icons>
+				<view class="bg-white flex items-center py10 px20 radius40">
+					<uni-icons type="search" size="20" color="#999999" class="mt5"></uni-icons>
+					<input type="text" placeholder="输入搜索内容" class=" w55vw text28" />
+				</view>
+				<view class="w140"></view>
+				<!-- <view class="bg91C42F col-white font-bold text28 px30 py10 radius40">搜索</view> -->
+			</view>
+		</view>
+		<view class="" v-else-if="navType=='solt'">
+			<view class="bg4DB23F">
+				<view class="pt25 px30 grid grid-cols-3 pb20 items-center">
+					<uni-icons type="left" size="30" style="text-align: left;margin-left: -10rpx;" @click="back()" color="#ffffff"></uni-icons>
+					<view class="text-center text36 font-bold col-white">{{title}}</view>
+					<view style="text-align: center;line-height: 30rpx;" class="flex justify-between">
+						<view class="w15"></view>
+						<slot></slot>
+					</view>
+				</view>
 			</view>
 		</view>
 	</view>

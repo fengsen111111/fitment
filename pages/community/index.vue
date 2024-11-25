@@ -18,7 +18,7 @@
 					</view>
 				</view>
 				<view class="text-center">
-					<uni-icons type="search" size="28" color="#4DB23F"></uni-icons>
+					<uni-icons @click="handUrl('/pages/home/components/search/index')" type="search" size="28" color="#4DB23F"></uni-icons>
 				</view>
 			</view>
 		</view>
@@ -31,7 +31,7 @@
 			<view class="flex justify-between mt30" style="flex-wrap: wrap;">
 				<!-- 视频 -->
 				<view class="bg-white w340 mb20" v-for="(item,index) in [1,2,1,2,1,2]" :key="index">
-					<image :src="require('@/static/community/社区'+item+'.png')" class="w340 h540" mode=""></image>
+					<image @click="handUrl('/pages/home/components/video/index')" :src="require('@/static/community/社区'+item+'.png')" class="w340 h540" mode=""></image>
 					<view class="px20 col333333 pb14">
 						<view class="font-bold">节省时间和精力‌：通过选择全屋整装或整装装修</view>
 						<view class="flex justify-between text20 mt10">
@@ -75,6 +75,11 @@
 			handleTitle(index) {
 				this.title_index = index
 			},
+			handUrl(url){
+				uni.navigateTo({
+					url:url
+				})
+			}
 		}
 	}
 </script>

@@ -47,11 +47,11 @@
 				</view>
 			</view>
 			<!-- 专区 -->
-			<view class="flex justify-between mt30">
+			<view class="flex justify-between mt30" @click="handUrl('/pages/home/components/shopType/index')">
 				<view class="">
 					<image src="../../static/home/home_left.png" class="w50 h120" mode=""></image>
 				</view>
-				<view class="">
+				<view class="" >
 					<image src="../../static/home/首页区间分类1.png" class="w180 h120" mode=""></image>
 				</view>
 				<view class="">
@@ -88,7 +88,7 @@
 			</view>
 			<!-- 活动图 -->
 			<view class="mt40 grid grid-cols-2" style="grid-column-gap:20rpx">
-				<image src="../../static/home/热门推荐活动图片1.png" class="w-full h200 radius10" mode=""></image>
+				<image 	  src="../../static/home/热门推荐活动图片1.png" class="w-full h200 radius10" mode=""></image>
 				<image src="../../static/home/热门推荐活动图片2.png" class="w-full h200 radius10" mode=""></image>
 			</view>
 			<!-- 推荐 -->
@@ -97,7 +97,7 @@
 				<!-- 商品 -->
 				<view>
 					<view class="bg-white w340 mb20" v-for="(item,index) in [1,2,3,4]" :key="item">
-						<image src="../../static/home/首页推荐商品图示例1.png" class="w340 h340" mode=""></image>
+						<image @click="('/pages/home/components/graphic/index')" src="../../static/home/首页推荐商品图示例1.png" class="w340 h340" mode=""></image>
 						<view class="px20 pb14">
 							<view class="col333333 font-bold">新中式沙发冬夏两用</view>
 							<view class="colFF0000 font-bold mt10">￥6666</view>
@@ -115,7 +115,7 @@
 				<!-- 视频 -->
 				<view class="">
 					<view class="bg-white w340 mb20" v-for="(item,index) in [1,2,3]" :key="item">
-						<image @click="handUrl('/pages/home/components/video/index')" src="../../static/home/首页推荐视频封面1.png" class="w340 h604" mode=""></image>
+						<image @click="('/pages/home/components/video/index')" src="../../static/home/首页推荐视频封面1.png" class="w340 h604" mode=""></image>
 						<view class="px20 col333333 pb14">
 							<view class="font-bold">现代北欧风格多功能伸 缩茶几</view>
 							<view class="flex justify-between text20 mt10">
@@ -185,7 +185,7 @@
 					{
 						img: 'icon_5',
 						text: '加入平台',
-						url: ''
+						url: '/pages/home/components/joinPC/index'
 					}
 				],
 				// 专区内容列表

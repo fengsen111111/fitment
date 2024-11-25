@@ -40,6 +40,159 @@
 		},
 		{
 			"path": "pages/home/components/video/index"
+		},
+		{
+			"path": "pages/home/components/graphic/index"
+		},
+		{
+			"path": "pages/home/components/interiorSend/index"
+		},
+		{
+			"path": "pages/publish/components/publishImg/index"
+		},
+		{
+			"path": "pages/publish/components/publishVideo/index"
+		},
+		{
+			"path": "pages/publish/components/topicSearch/index"
+		},
+		{
+			"path": "pages/publish/components/commodityMounting/index"
+		},
+		{
+			"path": "pages/publish/components/partiallyVisible/index"
+		},
+		{
+			"path": "pages/publish/components/noLook/index"
+		},
+		{
+			"path": "pages/home/components/joinPC/index"
+		},
+		{
+			"path": "pages/home/components/pointsMall/index"
+		},
+		{
+			"path": "pages/home/components/pointsMallDetail/index"
+		},
+		{
+			"path": "pages/home/components/orderOk/index"
+		},
+		{
+			"path": "pages/home/components/myRedemptions/index"
+		},
+		{
+			"path": "pages/home/components/shopType/index"
+		},
+		{
+			"path": "pages/home/components/shopTypeTwo/index"
+		},
+		{
+			"path": "pages/home/components/shopDetail/index"
+		},
+		{
+			"path": "pages/home/components/goShop/index"
+		},
+		{
+			"path": "pages/my/components/myCollect/index"
+		},
+		{
+			"path": "pages/my/components/history/index"
+		},
+		{
+			"path": "pages/my/components/invoice/index"
+		},
+		{
+			"path": "pages/my/components/shopsMove/index"
+		},
+		{
+			"path": "pages/my/components/bdsjrz/index"
+		},
+		{
+			"path": "pages/my/components/wdsjrz/index"
+		},
+		{
+			"path": "pages/my/components/address/index"
+		},
+		{
+			"path": "pages/my/components/addressEdit/index"
+		},
+		{
+			"path": "pages/my/components/system/index"
+		},
+		{
+			"path": "pages/my/components/accountSafe/index"
+		},
+		{
+			"path": "pages/my/components/realName/index"
+		},
+		{
+			"path": "pages/my/components/logout/index"
+		},
+		{
+			"path": "pages/my/components/accountQH/index"
+		},
+		{
+			"path": "pages/my/components/privacy/index"
+		},
+		{
+			"path": "pages/my/components/feedback/index"
+		},
+		{
+			"path": "pages/my/components/feedbackContent/index"
+		},
+		{
+			"path": "pages/my/components/qualifications/index"
+		},
+		{
+			"path": "pages/my/components/myMoney/index"
+		},
+		{
+			"path": "pages/my/components/pointsRecords/index"
+		},
+		{
+			"path": "pages/my/components/myTeam/index"
+		},
+		{
+			"path": "pages/my/components/shopping/index"
+		},
+		{
+			"path": "pages/my/components/taskCenter/index"
+		},
+		{
+			"path": "pages/my/components/creatorCenter/index"
+		},
+		{
+			"path": "pages/my/components/creatorHistory/index"
+		},
+		{
+			"path": "pages/my/components/creatorCenterEdit/index"
+		},
+		{
+			"path": "pages/my/components/creatorNotice/index"
+		},
+		{
+			"path": "pages/my/components/systemPayouts/index"
+		},
+		{
+			"path": "pages/my/components/orderList/index"
+		},
+		{
+			"path": "pages/my/components/orderListDetails/index"
+		},
+		{
+			"path": "pages/my/components/orderListSH/index"
+		},
+		{
+			"path": "pages/my/components/myShop/index"
+		},
+		{
+			"path": "pages/my/components/myShopServe/index"
+		},
+		{
+			"path": "pages/my/components/myShopOrderList/index"
+		},
+		{
+			"path": "pages/my/components/myShopOrderListDetails/index"
 		}
 	],
 	"globalStyle": {

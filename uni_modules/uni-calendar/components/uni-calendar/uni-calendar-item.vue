@@ -53,7 +53,7 @@
 <script>
 	import { initVueI18n } from '@dcloudio/uni-i18n'
 	import i18nMessages from './i18n/index.js'
-	const {	t	} = initVueI18n(i18nMessages)
+	const {	t } = initVueI18n(i18nMessages)
 
 	export default {
 		emits:['change'],
@@ -141,7 +141,8 @@
 		width: 8px;
 		height: 8px;
 		border-radius: 8px;
-		background-color: $uni-color-error;
+		// background-color: $uni-color-error;
+		background-color: #FBB333;
 
 	}
 
@@ -161,7 +162,8 @@
 	}
 
 	.uni-calendar-item--extra {
-		color: $uni-color-error;
+		// color: $uni-color-error;
+		color: #FBB333;
 		opacity: 0.8;
 	}
 
@@ -169,6 +171,7 @@
 		background-color: $uni-primary;
 		color: #fff;
 		opacity: 0.8;
+		border-radius: 10rpx;
 	}
 
 	.uni-calendar-item--multiple {

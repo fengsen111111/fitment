@@ -22,29 +22,50 @@
 				<i :class="['iconfont iconbofang btn-play',currentStatus == 'pause' && currentIndex == index ? 'show' : '']"
 					@click="pauseVideo"></i>
 				<view class="video-info">
-					<view class="atavar-box">
-						<image class="atavar-img" :src="item.userHead" mode="widthFix"></image>
-						<view class="add-follow-btn" @click="followFunc(index,item)">
-							<i
-								:class="['iconfont inline-block icon-follow', item.isFollow == 1 ? 'iconduihao' : 'iconjia1']"></i>
-						</view>
-					</view>
+					<!-- 点赞 -->
 					<view class="icon-box" @click="toggleFabulous(item, index)">
-						<i :class="['iconfont iconxihuan icon-btn', item.isFabulous ? 'color-red' : '']"></i>
+						<uni-icons type="hand-up-filled" :color="item.isFabulous?'#4DB23F':'#FFFFFF'"
+							size="30"></uni-icons>
 						<view class="count-text">{{item.fabulousCount}}</view>
 					</view>
+					<!-- 收藏 -->
+					<view class="icon-box">
+						<uni-icons type="star-filled" :color="item.isFabulous?'#4DB23F':'#FFFFFF'"
+							size="30"></uni-icons>
+						<view class="count-text">收藏</view>
+					</view>
+					<!-- 评论 -->
 					<view class="icon-box" @click="commontAdd">
-						<i class="iconfont iconIMliaotian-shixin icon-btn"></i>
+						<uni-icons type="chat-filled" color="#ffffff" size="30"></uni-icons>
 						<view class="count-text">{{item.commentCount}}</view>
 					</view>
+					<!-- 转发 -->
 					<view class="icon-box">
-						<i class="iconfont iconfenxiang icon-btn" @click="shareFunc(item)"></i>
+						<uni-icons @click="shareFunc(item)" type="redo-filled" color="#ffffff" size="30"></uni-icons>
 						<view class="count-text">{{item.shareCount}}</view>
 					</view>
 				</view>
 				<view class="video-title">
-					<view class="user-name">@{{item.userNick}}</view>
-					<view class="video-content">{{item.videoContent}}</view>
+					<!-- 标题 商品 -->
+					<view class="text36 font-bold">装修的优点</view>
+					<view class="text20 flex items-center mt20 bg666666 py10 px20 col-white radius10"
+						style="width: 50%;">
+						<image src="@/static/home/graphic/shopping.png" class="w40 h40" mode=""></image>
+						<view class="ml20">视频同款</view>
+						<view class="ml30">已售</view>
+						<view class="ml10">88.8w</view>
+					</view>
+					<!-- 头像 关注 -->
+					<view class="mt20 flex items-center">
+						<image class="w48 h48 radius_bfb50" :src="item.userHead" mode="widthFix"></image>
+						<view class="user-name ml10">@{{item.userNick}}</view>
+						<view @click="followFunc(index,item)" v-if="item.isFollow == 1"
+							class="ml20 bg4DB23F col-white px40 radius10">关注</view>
+						<view @click="followFunc(index,item)" v-else class="ml20 border4DB23F col4DB23F radius10 px40">
+							已关注</view>
+					</view>
+					<view class="video-content mt15" style="line-height: 30rpx;">{{item.videoContent}}</view>
+					<view class="h60"></view>
 				</view>
 			</view>
 			<view v-if="videoList.length == 0" class="empty-txt">当前没有可播放视频哦～</view>
@@ -56,7 +77,10 @@
 		</view>
 		<!-- 评论弹窗 -->
 		<view :class="['commont-box',commontShow ? 'active' : '']">
-			<view class="commont-title">{{currentComment.count}}条评论</view>
+			<view class="flex justify-between px36 mt30">
+				<view class=" text28">全部评论</view>
+				<uni-icons type="closeempty" size="26" @click="()=>{commontShow = false}"></uni-icons>
+			</view>
 			<view class="commont-list">
 				<view v-for="(item, index) in currentComment.list" :key="index">
 					<view class="comment-panel">
@@ -64,19 +88,24 @@
 						<view class="first-comment">
 							<view class="comment-name">{{item.userNick}}</view>
 							<view class="comment-content">{{item.content}}</view>
-							<view class="time-box">
-								<text class="inline-block">{{item.time}}</text>
-								<view class="inline-block reply-btn" @click="reply('first',item,index)">回复</view>
+							<view class="flex justify-between">
+								<view class="time-box">
+									<text class="inline-block">{{item.time}}</text>
+									<view class="inline-block reply-btn" @click="reply('first',item,index)">回复</view>
+								</view>
+								<view class="fabulous-box items-center">
+									<image @click="commentFabulous('first',item,index)" v-if="item.isFabulous == '1'"
+										src="@/static/home/graphic/icon1_check.png" class="w30 h30" mode=""></image>
+									<image @click="commentFabulous('first',item,index)" v-else
+										src="@/static/home/graphic/icon1.png" class="w30 h30" mode=""></image>
+									<view class="fabulous-text">{{item.fabulousCount}}</view>
+								</view>
 							</view>
 						</view>
-						<view class="fabulous-box">
-							<i :class="['iconfont iconxihuan fabulous-btn', item.isFabulous == '1' ? 'color-red' : '']"
-								@click="commentFabulous('first',item,index)"></i>
-							<view class="fabulous-text">{{item.fabulousCount}}</view>
-						</view>
+
 					</view>
 					<view style="padding-left: 70rpx;">
-						<view class="comment-panel" v-for="(child, childIndex) in item.children">
+						<view class="comment-panel" v-for="(child, childIndex) in item.children" :key="childIndex">
 							<image class="first-user" :src="child.userHead" mode="widthFix"></image>
 							<view class="first-comment">
 								<view class="comment-name" v-if="child.replyTo == item.userNick">{{child.userNick}}
@@ -89,26 +118,61 @@
 									<span class="inline-block">{{child.replyTo}}</span>
 								</view>
 								<view class="comment-content">{{child.content}}</view>
-								<view class="time-box">
-									<text class="inline-block">{{child.time}}</text>
-									<view class="inline-block reply-btn"
-										@click="reply('second',child,index,childIndex)">回复</view>
+								<view class="flex justify-between items-center mt10">
+									<view class="time-box items-center">
+										<text class="inline-block">{{item.time}}</text>
+										<view class="inline-block reply-btn" @click="reply('first',item,index)">回复
+										</view>
+									</view>
+									<view class="fabulous-box items-center">
+										<image @click="commentFabulous('second',child,index,childIndex)"
+											v-if="child.isFabulous == '1'" src="@/static/home/graphic/icon1_check.png"
+											class="w30 h30" mode=""></image>
+										<image @click="commentFabulous('second',child,index,childIndex)" v-else
+											src="@/static/home/graphic/icon1.png" class="w30 h30" mode=""></image>
+										<view class="fabulous-text">{{child.fabulousCount}}</view>
+									</view>
 								</view>
 							</view>
-							<view class="fabulous-box">
-								<i :class="['iconfont iconxihuan fabulous-btn', child.isFabulous == '1' ? 'color-red' : '']"
-									@click="commentFabulous('second',child,index,childIndex)"></i>
-								<view class="fabulous-text">{{child.fabulousCount}}</view>
-							</view>
+
 						</view>
 					</view>
 				</view>
 			</view>
 			<!-- 评论输入框 -->
-			<input class="comment-input" @confirm="commentCommit" @blur="commentBlur" v-model="replyContent"
-				:focus="showInput" :placeholder="commentPlaceholder" type="text" />
+			<view class="flex p30">
+				<view class="border333333 p20 radius10" style="width: 70%;">
+					<input type="text" :focus="showInput" @confirm="commentCommit" @blur="commentBlur"
+						v-model="replyContent" :placeholder="commentPlaceholder" />
+				</view>
+				<view @click="commentCommit" class="bg4DB23F col-white text28 px30 ml30 radius10 items-center"
+					style="line-height: 78rpx;">发表</view>
+			</view>
 		</view>
 
+		<!-- 分享弹框 -->
+		<view :class="['fx_box',isShowZf ? 'active' : '']">
+			<view class="flex justify-between px36 mt30">
+				<view class=" text28">分享</view>
+				<uni-icons type="closeempty" size="26" @click="()=>{isShowZf = false}"></uni-icons>
+			</view>
+			<view class="p30">
+				<view class=" grid grid-cols-4">
+					<view class="text-center">
+						<image src="@/static/home/graphic/fx1.png" class="w60 h60" mode=""></image>
+						<view class="text28">微信</view>
+					</view>
+					<view class="text-center">
+						<image src="@/static/home/graphic/fx2.png" class="w60 h60" mode=""></image>
+						<view class="text28">朋友圈</view>
+					</view>
+					<view class="text-center">
+						<image src="@/static/home/graphic/fx3.png" class="w60 h60" mode=""></image>
+						<view class="text28">内部分享</view>
+					</view>
+				</view>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -131,9 +195,9 @@
 				}
 			},
 			// 当前视频下标
-			videoIndex:{
-				type:[Number,String],
-				default:'0'
+			videoIndex: {
+				type: [Number, String],
+				default: '0'
 			}
 		},
 		data() {
@@ -174,6 +238,8 @@
 				currentStatus: 'play',
 				// 是否显示评论
 				commontShow: false,
+				// 是否显示转发
+				isShowZf: false,
 				// 爱心动画双击
 				fabulousTime: 0,
 				fabulousTimer: null,
@@ -228,10 +294,10 @@
 		methods: {
 			// 视频出错
 			videoError(item, index) {
-				uni.showToast({
-					title: '视频出错了!',
-					icon: 'none'
-				})
+				// uni.showToast({
+				// 	title: '视频出错了!',
+				// 	icon: 'none'
+				// })
 			},
 			// 触摸开始
 			touchStart(e) {
@@ -297,7 +363,7 @@
 						} else {
 							this.marginTop = this.fixMarginTop + this.videoRealHeight;
 							this.currentIndex = this.currentIndex - 1;
-							this.$emit('update:videoIndex',this.currentIndex);
+							this.$emit('update:videoIndex', this.currentIndex);
 							this.currentComment = this.videoList[this.currentIndex].commentObj;
 							this.videoPlayChange();
 						}
@@ -308,7 +374,7 @@
 						} else {
 							this.marginTop = this.fixMarginTop - this.videoRealHeight;
 							this.currentIndex = this.currentIndex + 1;
-							this.$emit('update:videoIndex',this.currentIndex);
+							this.$emit('update:videoIndex', this.currentIndex);
 							this.currentComment = this.videoList[this.currentIndex].commentObj;
 							this.videoPlayChange();
 						}
@@ -437,6 +503,7 @@
 			},
 			// 分享
 			shareFunc(item) {
+				this.isShowZf = true
 				this.$emit('share', item);
 			},
 			// 关注
@@ -572,6 +639,27 @@
 		opacity: 0.8;
 	}
 
+	.fx_box {
+		position: fixed;
+		z-index: -1;
+		left: 0;
+		bottom: 0;
+		width: 100%;
+		height: 15%;
+		overflow-y: auto;
+		background-color: white;
+		border-top-left-radius: 20rpx;
+		border-top-right-radius: 20rpx;
+		transition: all .3s;
+		transform: translateY(100%);
+		display: flex;
+		flex-direction: column;
+		&.active {
+			z-index: 9;
+			transform: translateY(0);
+		}
+	}
+
 	// 评论框
 	.commont-box {
 		position: fixed;
@@ -581,7 +669,7 @@
 		width: 100%;
 		height: 60%;
 		overflow-y: auto;
-		background-color: #222;
+		background-color: white;
 		border-top-left-radius: 20rpx;
 		border-top-right-radius: 20rpx;
 		transition: all .3s;
@@ -596,7 +684,7 @@
 
 		.commont-title {
 			text-align: center;
-			color: white;
+			color: #000000;
 			font-size: 24rpx;
 			margin: 20rpx 0;
 			font-weight: bold;
@@ -627,13 +715,12 @@
 					}
 
 					.comment-content {
-						color: white;
+						color: #000000;
 						font-size: 26rpx;
 						margin-top: 10rpx;
 					}
 
 					.time-box {
-						margin-top: 10rpx;
 						font-size: 24rpx;
 						color: #999;
 
@@ -645,6 +732,7 @@
 
 				.fabulous-box {
 					text-align: center;
+					display: flex;
 					color: #666;
 
 					.fabulous-btn {
@@ -654,7 +742,8 @@
 
 					.fabulous-text {
 						font-size: 24rpx;
-						color: #999;
+						margin-left: 10rpx;
+						color: #4DB23F;
 					}
 				}
 			}
@@ -667,9 +756,10 @@
 			width: 90%;
 			height: 70rpx;
 			padding: 0 20px;
-			border-radius: 60rpx;
-			background-color: #4a4a4a;
-			color: white;
+			border-radius: 10rpx;
+			background-color: white;
+			border: 1px solid #333333;
+			// color: white;
 		}
 	}
 
@@ -747,7 +837,8 @@
 				width: 100rpx;
 				position: absolute;
 				right: 20rpx;
-				bottom: 100rpx;
+				// bottom: 100rpx;
+				bottom: 12vh;
 				display: flex;
 				flex-direction: column;
 				justify-content: center;
@@ -824,6 +915,7 @@
 
 				.video-content {
 					font-size: 24rpx;
+					width: 92vw;
 				}
 			}
 		}

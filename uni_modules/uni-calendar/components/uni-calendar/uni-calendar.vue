@@ -423,6 +423,7 @@
 
 	.uni-calendar__content {
 		background-color: #fff;
+		border-radius: 10rpx;
 	}
 
 	.uni-calendar__header {

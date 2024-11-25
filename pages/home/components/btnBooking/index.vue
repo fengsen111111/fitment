@@ -64,7 +64,7 @@
 					:time-label="['年', '月', '日', '时', '分', '秒']" />
 				<!-- 装修模式框 -->
 				<uni-popup ref="popupMode" type="bottom" border-radius="10px 10px 0 0">
-					<view class="bgF9F9F9 p30">
+					<view class="bgF9F9F9 p30" style="border-radius: 10px 10px 0 0;">
 						<view class="flex justify-between items-center">
 							<view class="text28 font-bold">装修模式</view>
 							<uni-icons type="closeempty" size="20" @click="closeMode"></uni-icons>
@@ -77,7 +77,7 @@
 				</uni-popup>
 				<!-- 装修模式框 -->
 				<uni-popup ref="popupStyle" type="bottom" border-radius="10px 10px 0 0">
-					<view class="bgF9F9F9 p30">
+					<view class="bgF9F9F9 p30" style="border-radius: 10px 10px 0 0;">
 						<view class="flex justify-between items-center">
 							<view class="text28 font-bold">装修风格</view>
 							<uni-icons type="closeempty" size="20" @click="closeStyle"></uni-icons>
@@ -92,7 +92,7 @@
 				</uni-popup>
 				<!-- 提交预约 -->
 				<uni-popup ref="popupBtn" type="bottom" border-radius="10px 10px 0 0">
-					<view class="bgF9F9F9 p30 radius20" style="width: 80vw;">
+					<view class="bgF9F9F9 p30 radius20" style="width: 80vw;border-radius: 10px 10px 0 0;">
 						<view class="grid grid-cols-3 items-center">
 							<view class="w15"></view>
 							<view class="text30 text-center font-bold">提交成功</view>
