@@ -43,7 +43,7 @@
 				<uni-icons type="right" @click="handUrl('')" color="#666666" size="20"></uni-icons>
 			</view>
 			<view class="h170"></view>
-			<view class="mb20 colFF0000 text-center bg-white p30 radius10 ">
+			<view @click="handUrl('/pages/login/index')"  class="mb20 colFF0000 text-center bg-white p30 radius10 ">
 				退出登陆
 			</view>
 		</view>

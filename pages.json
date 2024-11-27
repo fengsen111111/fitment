@@ -193,6 +193,9 @@
 		},
 		{
 			"path": "pages/my/components/myShopOrderListDetails/index"
+		},
+		{
+			"path": "pages/login/components/fwbText"
 		}
 	],
 	"globalStyle": {

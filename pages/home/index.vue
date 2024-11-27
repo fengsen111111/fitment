@@ -51,7 +51,7 @@
 				<view class="">
 					<image src="../../static/home/home_left.png" class="w50 h120" mode=""></image>
 				</view>
-				<view class="" >
+				<view class="">
 					<image src="../../static/home/首页区间分类1.png" class="w180 h120" mode=""></image>
 				</view>
 				<view class="">
@@ -88,7 +88,7 @@
 			</view>
 			<!-- 活动图 -->
 			<view class="mt40 grid grid-cols-2" style="grid-column-gap:20rpx">
-				<image 	  src="../../static/home/热门推荐活动图片1.png" class="w-full h200 radius10" mode=""></image>
+				<image src="../../static/home/热门推荐活动图片1.png" class="w-full h200 radius10" mode=""></image>
 				<image src="../../static/home/热门推荐活动图片2.png" class="w-full h200 radius10" mode=""></image>
 			</view>
 			<!-- 推荐 -->
@@ -97,7 +97,8 @@
 				<!-- 商品 -->
 				<view>
 					<view class="bg-white w340 mb20" v-for="(item,index) in [1,2,3,4]" :key="item">
-						<image @click="('/pages/home/components/graphic/index')" src="../../static/home/首页推荐商品图示例1.png" class="w340 h340" mode=""></image>
+						<image @click="handUrl('/pages/home/components/graphic/index')"
+							src="../../static/home/首页推荐商品图示例1.png" class="w340 h340" mode=""></image>
 						<view class="px20 pb14">
 							<view class="col333333 font-bold">新中式沙发冬夏两用</view>
 							<view class="colFF0000 font-bold mt10">￥6666</view>
@@ -115,7 +116,8 @@
 				<!-- 视频 -->
 				<view class="">
 					<view class="bg-white w340 mb20" v-for="(item,index) in [1,2,3]" :key="item">
-						<image @click="('/pages/home/components/video/index')" src="../../static/home/首页推荐视频封面1.png" class="w340 h604" mode=""></image>
+						<image @click="handUrl('/pages/home/components/video/index')"
+							src="../../static/home/首页推荐视频封面1.png" class="w340 h604" mode=""></image>
 						<view class="px20 col333333 pb14">
 							<view class="font-bold">现代北欧风格多功能伸 缩茶几</view>
 							<view class="flex justify-between text20 mt10">
@@ -136,15 +138,40 @@
 			<!--  -->
 			<view class="h160"></view>
 		</view>
+		<uni-popup ref="popup" type="center" border-radius="10px 10px 0 0">
+			<view class="bg-white col-black p30 radius20" style="width: 80vw;">
+				<view class="grid grid-cols-3">
+					<view class=""></view>
+					<view class="text28 text-center">公告</view>
+					<view class="flex items-center justify-between">
+						<view class=""></view>
+						<uni-icons type="closeempty" @click="()=>{$refs.popup.close()}" size="20"></uni-icons>
+					</view>
+				</view>
+				<view class="mt20">
+					<view class="text36 mb20">{{GGObj.title}}</view>
+					<view v-html="GGObj.content">富文本内容</view>
+				</view>
+			</view>
+		</uni-popup>
 		<Tarbar :checkIndex="1" />
 	</view>
 </template>
 
 <script>
+	import api from '@/request/allApi.js'
 	import Tarbar from '@/components/tarbar/index.vue'
 	export default {
 		components: {
 			Tarbar
+		},
+		created() {
+			this.$nextTick(() => {
+				this.$refs.popup.open('center')
+			})
+			this._getUserInfo() //用户信息
+			this._getNewNotice() //未读公告
+			this._getBannerList() //轮播图列表
 		},
 		data() {
 			return {
@@ -250,19 +277,72 @@
 					}
 				],
 				// 当前分类id
-				type_index: 1
+				type_index: 1,
+				// 公告
+				GGObj: {
+					id: 'id',
+					title: '‌装修的优点',
+					create_time: '发布时间 ',
+					content: '<view>富文本详情</view><br /><view>富文本详情</view><br /><view>富文本详情</view><br /><view>富文本详情</view><br /><view>富文本详情</view><br /><view>富文本详情</view><br />'
+				}
 			}
 		},
 		methods: {
+			// 轮播图列表
+			_getBannerList() {
+				api.getBannerList().then((res) => {
+					const {
+						list
+					} = res.data.data
+					this.info = list.map((item) => {
+						return {
+							id: item.id,
+							url: item.image,
+							jump_type: item.jump_type,
+							jump_data: item.jump_data
+						}
+					})
+				})
+			},
+			// 未读公告
+			_getNewNotice() {
+				api.getNewNotice().then((res) => {
+					const {
+						id,
+						create_time,
+						title,
+						content
+					} = res.data.data
+					this.GGObj = {
+						id: id,
+						title: title,
+						create_time: create_time,
+						content: content
+					}
+				})
+			},
+			// 获取用户信息
+			_getUserInfo() {
+				api.getUserInfo().then((res) => {
+					console.log('用户信息', res.data);
+					const {
+						data
+					} = res.data
+					// 存入本地储存
+					uni.setStorageSync('userInfo', JSON.stringify(data))
+					// 存入vuex
+					this.$store.commit('setUserInfo', data)
+				})
+			},
 			handleItem(index) {
 				this.type_index = index
 			},
 			handLBT(index) {
 				this.lbt_index = index
 			},
-			handUrl(url){
+			handUrl(url) {
 				uni.navigateTo({
-					url:url
+					url: url
 				})
 			}
 		}
