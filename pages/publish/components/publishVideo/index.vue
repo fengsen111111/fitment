@@ -109,6 +109,7 @@
 </template>
 
 <script>
+	import api from '@/request/allApi.js'
 	import NavBar from '@/components/navbar/index.vue'
 	export default {
 		data() {

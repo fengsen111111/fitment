@@ -196,6 +196,24 @@
 		},
 		{
 			"path": "pages/login/components/fwbText"
+		},
+		{
+			"path": "pages/home/components/fwbContent/index"
+		},
+		{
+			"path": "pages/home/components/jrms/index"
+		},
+		{
+			"path": "pages/home/components/jrxp/index"
+		},
+		{
+			"path": "pages/home/components/jrxjbhh/index"
+		},
+		{
+			"path":"pages/my/components/creatorTLlist/index"
+		},
+		{
+			"path":"pages/home/components/shopOrderOk/index"
 		}
 	],
 	"globalStyle": {

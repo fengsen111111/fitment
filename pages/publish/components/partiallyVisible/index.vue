@@ -2,15 +2,16 @@
 	<view>
 		<NavBar :navType="'标题'" :title="'部分可见'" />
 		<view class="p30 text24">
-			<view class="p30 bg-white radius10 flex items-center justify-between mb30" v-for="item in [1,2,3,4,5]"
-				:key="item">
+			<view class="p30 bg-white radius10 flex items-center justify-between mb30" @click="handCli(item)" v-for="item in dxList"
+				:key="item.id">
 				<view class="flex items-center">
 					<view class="w60 h60">
-						<image src="@/static/home/首页推荐商品图示例1.png" class="w60 h60 radius_bfb50" mode=""></image>
+						<!-- <image src="@/static/home/首页推荐商品图示例1.png" class="w60 h60 radius_bfb50" mode=""></image> -->
+						<image :src="item.head_image" class="w60 h60 radius_bfb50" mode=""></image>
 					</view>
-					<view class="font-bold ml20 col333333 text28">一只小海螺</view>
+					<view class="font-bold ml20 col333333 text28">{{item.nickname}}</view>
 				</view>
-				<uni-icons type="checkbox-filled" color="#4DB23F" size="20"></uni-icons>
+				<uni-icons v-if="cliList.indexOf(item.id) !== '-1'" type="checkbox-filled" color="#4DB23F" size="20"></uni-icons>
 			</view>
 		</view>
 		<view class="fixed bottom0 w-full">
@@ -24,16 +25,34 @@
 </template>
 
 <script>
+	import api from '@/request/allApi.js'
 	import NavBar from '@/components/navbar/index.vue'
 	export default {
 		data() {
-			return {}
+			return {
+				dxList:[],//对象列表
+				cliList:[]//id合计
+			}
+		},
+		onLoad(){
+			this._getFriendList()//互关列表
 		},
 		components: {
 			NavBar
 		},
 		methods: {
-
+			// 点击项
+			handCli(item){
+				this.handCli.push(item.id)
+			},
+			// 
+			_getFriendList(){
+				api.getFriendList().then((res)=>{
+					const {list} =res.data.data
+					this.dxList = list
+					console.log('互关列表',list);
+				})
+			}
 		}
 	}
 </script>

@@ -46,8 +46,10 @@
 						<uni-icons @click="chenckHand" v-else type="checkbox-filled" size="24"
 							color="#4DB23F"></uni-icons>
 						<view class="ml20">已查看并同意</view>
-						<view class="col4DB23F" @click="handUrl('/pages/login/components/fwbText?type=user_rich')">《用户协议》</view>
-						<view class="col4DB23F" @click="handUrl('/pages/login/components/fwbText?type=privacy_rich')">《隐私政策》</view>
+						<view class="col4DB23F" @click="handUrl('/pages/login/components/fwbText?type=user_rich')">
+							《用户协议》</view>
+						<view class="col4DB23F" @click="handUrl('/pages/login/components/fwbText?type=privacy_rich')">
+							《隐私政策》</view>
 					</view>
 				</view>
 			</view>
@@ -69,8 +71,8 @@
 				timer: '', //计时器
 				chenck: false,
 
-				phone: 18488448484,
-				yzmCode: 303390,
+				phone: 18481020570,
+				yzmCode: null,
 
 			}
 		},
@@ -83,17 +85,10 @@
 			}
 		},
 		methods: {
-			handUrl(url){
+			handUrl(url) {
 				uni.navigateTo({
-					url:url
+					url: url
 				})
-			},
-			validatePhone() {
-				this.phone = this.phone.replace(/[^\d]/g, '');
-				const regex = /^1[3-9]\d{9}$/;
-				if (this.phone && !regex.test(this.phone)) {
-					console.log('手机号格式不正确');
-				}
 			},
 			// 勾选协议节流
 			chenckHand: throttle(function() {
@@ -105,21 +100,31 @@
 			},
 			sendCode() {
 				this.code = false;
+				this.timer = 60
 				this.timer = setInterval(() => {
 					this.time = this.time - 1
 				}, 1000);
+				uni.showLoading({
+					title: "加载中"
+				})
 				api.getMobileCode({
 					post_params: {
 						mobile: this.phone
 					}
 				}).then((res) => {
-					console.log('验证码发送', res);
+					uni.hideLoading()
+					console.log('验证码发送', res.data.data);
+					const {
+						code
+					} = res.data.data
+					this.yzmCode = code
 				})
 			},
 			// 登陆节流
 			handTo: throttle(function() {
 				this.handToOld()
 			}, 3000),
+
 			handToOld() {
 				if (!this.phone) {
 					uni.showToast({
@@ -158,30 +163,56 @@
 				}
 				uni.showLoading({
 					title: "加载中"
-				}) 
-				api.loginAndRegister({
-						post_params: {
-							mobile: this.phone,
-							mobile_code: this.yzmCode,
-							// 下面两个是切换账号使用
-							// user_id: '',
-							// old_token: '',
-						}
-					}).then((res) => {
-						uni.hideLoading()
-						console.log('注册登陆成功', res);
-						const {
-							token
-						} = res.data.data
-						uni.setStorageSync('token', token) //token 存入本地
-					})
-					.catch((res) => {
-						uni.hideLoading()
-						// 请求错误
-						uni.navigateTo({ //跳转登陆
-							url: '/pages/home/index'
+				})
+				// 校验验证码
+				api.checkMobileCode({
+					post_params: {
+						mobile: this.phone,
+						mobile_code: this.yzmCode
+					}
+				}).then((res) => {
+					uni.hideLoading()
+					const {
+						result,
+						message
+					} = res.data.data
+					console.log('result', result,message);
+					if (result == 'Y') {
+						uni.showLoading({
+							title: "加载中"
 						})
-					})
+						api.loginAndRegister({
+								post_params: {
+									mobile: this.phone,
+									mobile_code: this.yzmCode,
+									// 下面两个是切换账号使用
+									// user_id: '',
+									// old_token: '',
+								}
+							}).then((res) => {
+								uni.hideLoading()
+								console.log('注册登陆成功', res.data.data);
+								const {
+									token
+								} = res.data.data
+								uni.setStorageSync('token', token) //token 存入本地
+								console.log('this.phone',this.phone);
+								uni.setStorageSync('phone', this.phone) //手机号 存入本地
+								uni.navigateTo({ //跳转登陆
+									url: '/pages/home/index'
+								})
+							})
+							.catch((res) => {
+								uni.hideLoading()
+							})
+					}else{
+						uni.showToast({
+							title: message,
+							icon: 'none',
+							duration: 2000
+						})
+					}
+				})
 
 			}
 		}
@@ -189,10 +220,6 @@
 </script>
 
 <style>
-	.yzm {
-		border: 1px solid #999999;
-	}
-
 	.logoImg {
 		width: 400rpx;
 		height: 400rpx;

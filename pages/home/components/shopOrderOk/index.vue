@@ -3,8 +3,7 @@
 		<NavBar :navType="'标题'" :title="'订单确认'" />
 		<view class="p30 text28 ">
 			<view class="">收货地址</view>
-			<image v-if="!mrdz.id" src="@/static/home/pointsMall/nulladdress.png" class="w-full h140 mt20" mode="">
-			</image>
+			<image v-if="!mrdz.id" src="@/static/home/pointsMall/nulladdress.png" class="w-full h140 mt20" mode=""></image>
 			<view v-else class="mt20 bg-white radius10 text24 p20 flex justify-between items-center">
 				<view class="">
 					<view class="font-bold">{{mrdz.name}} {{mrdz.mobile}}</view>
@@ -13,24 +12,23 @@
 				</view>
 				<view class="col4DB23F " @click="handUrl('/pages/my/components/address/index')">更换</view>
 			</view>
-
 			<view class="mt40">订单商品</view>
 			<view class="mt20 bg-white radius10 text24 p20 flex items-center">
-				<view class="w128 h128">
-					<image src="@/static/home/pointsMall/shop.png" class="w128 h128 radius10" mode=""></image>
+				<view class="w180 h180">
+					<image src="@/static/home/pointsMall/shop.png" class="w180 h180 radius10" mode=""></image>
 				</view>
 				<view class=" ml30">
-					<view class="text30 font-bold">精品多钻豪华富贵18K铂金520海...</view>
-					<view class="flex justify-between mt10">
-						<view class="flex">
-							<view class="">库存:9999</view>
-							<view class="ml20">销量:9999</view>
-						</view>
-						<view class="text30 col333333 font-bold">数量：1</view>
+					<view class="text30 font-bold">左维空间沙发新款胡桃木实木沙发组合客厅大小户型现代简约...</view>
+				
+					<view class="flex text20 col333333 mt20 ">
+						<view class="mr50">库存:9999</view>
+						<view class="">销量:9999</view>
 					</view>
-					<view class="flex text28 colFF0000 ">
-						<view class="">积分 6666</view>
-						<view class="ml20">￥ 6666</view>
+					<view class="flex justify-between text20 col333333">
+						<view class="flex">
+							<view class="">规格:四人沙发</view>
+						</view>
+						<view class="text36 colFF0000 font-bold">￥6666</view>
 					</view>
 				</view>
 			</view>
@@ -40,7 +38,6 @@
 				<view class="flex items-center font-bold text30">
 					<view class="col666666 ">总计</view>
 					<view class="colFF0000  ml30">
-						<view class="">积分 {{integral}}</view>
 						<view class="">￥{{price}}</view>
 					</view>
 				</view>
@@ -49,9 +46,7 @@
 						<view class="col666666 ">邮费</view>
 						<view class="colFF0000 ml10 ">￥{{transport}}</view>
 					</view>
-					<!-- handUrl('/pages/home/components/myRedemptions/index') -->
-					<view @click="payShop"
-						class="font-bold text32 col-white px30 py20 bg4DB23F radius10 ml20">
+					<view @click="payOrder" class="font-bold text32 col-white px30 py20 bg4DB23F radius10 ml20">
 						提交支付
 					</view>
 				</view>
@@ -68,36 +63,51 @@
 		data() {
 			return {
 				birthday: "", //时间选择
-
-				mrdz: {}, //默认地址
+				mrdz:{},//默认地址
 				
-				price:'',//价格 
-				integral:'',//积分 
-				transport:'',//运费  
+				option:{
+					shopList:[]//传递的数据
+				},
+				
+				goods_list:[],// 参数
+				
+				price:'',//订单金额  
+				transport:'',//运费   
 			}
 		},
 		components: {
 			NavBar
 		},
-		onLoad(option) {
-			this._getUserAddressList() //默认地址
-			this._computeIntegralGoodsOrder() //计算积分商品价格
+		onLoad(option){
+			this.option = option
+			// 
+			if(option.shopList){
+				this.goods_list = option.shopList.map((item)=>{
+					return {
+						id:'',
+						number:''
+					}
+				})
+			}
+			this._getUserAddressList()//默认地址
+			this._computeOrder()//计算价格
 		},
 		methods: {
-			// 计算积分商品价格
-			_computeIntegralGoodsOrder() {
-				api.computeIntegralGoodsOrder({
+			// 计算价格
+			_computeOrder() {
+				api.computeOrder({
 					post_params: {
-						id: '' //积分商品id
+						user_address_id: this.mrdz.id,
+						goods_list: this.goods_list
 					}
 				}).then((res) => {
 					const {
 						price,
-						integral,
+						preferential_price,
 						transport
 					} = res.data
+					console.log('计算价格');
 					this.price = price
-					this.integral = integral
 					this.transport = transport
 				})
 			},
@@ -119,47 +129,33 @@
 					})
 				})
 			},
-			handUrl(url) {
+			handUrl(url){
 				uni.navigateTo({
-					url: url
+					url:url
 				})
 			},
-			// 下单积分商品
-			payShop(){
-				api.createIntegralGoodsOrder({
+			// 支付订单
+			payOrder(){
+				console.log('支付订单');
+				return false
+				api.createOrder({
 					post_params:{
 						user_address_id:this.mrdz.id,
-						id:''
+						goods_list:this.goods_list
 					}
 				}).then((res)=>{
-					const {result,order_id} = res.data
-					if(result=='a'){
-						// a交易成功  b积分不足  c需要微信支付  
-						uni.showToast({
-							title: '交易成功',
-							icon: 'none',
-							duration: 2000
-						})
-					}else if(result=='b'){
-						uni.showToast({
-							title: '积分不足',
-							icon: 'none',
-							duration: 2000
-						})
-					}else{
-						// 支付积分商品订单
-						api.payIntegralGoodsOrder({
-							post_params:{
-								order_id:order_id
-							}
-						}).then((res)=>{
-							const {pay_data} =res.data
-							console.log('支付数据',pay_data);
-						})
-					}
+					console.log('支付订单创建');
+					const {order_id} = res.data
+					// 支付订单
+					api.payOrder({
+						post_params:{
+							order_id:order_id
+						}
+					}).then((res)=>{
+						console.log('支付订单');
+					})
 				})
 			}
-			
 		}
 	}
 </script>

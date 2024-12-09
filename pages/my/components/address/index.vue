@@ -2,21 +2,22 @@
 	<view class="bgF9F9F9 h100vh">
 		<NavBar :navType="'标题'" :title="'收货地址'" />
 		<view class="p30 text24">
-			<view class="bg-white radius10 mb20" v-for="item in [1,2,3]" :key="item">
+			<view class="bg-white radius10 mb20" v-for="item in dataList" :key="item.id">
 				<view class="p20">
-					<view class="col-black font-bold">张三 12312341234</view>
-					<view class="col666666">四川省-成都市-武侯区 世纪城天府大道中段588号</view>
+					<view class="col-black font-bold">{{item.name}} {{item.mobile}}</view>
+					<view class="col666666">{{item.complete_address}}</view>
 				</view>
 				<view class="bg999999 h1"></view>
 				<view class="p20 flex justify-between">
 					<view class="flex">
-						<uni-icons type="circle" size="16"></uni-icons>
-						<uni-icons type="checkbox-filled" size="16" color="#4DB23F"></uni-icons>
+						<uni-icons v-if="item.is_default=='Y'" type="checkbox-filled" size="16" color="#4DB23F"></uni-icons>
+						<uni-icons v-else @click="_setDefaultUserAddress(item)" type="circle" size="16"></uni-icons>
 						<view class="ml10">默认收货地址</view>
 					</view>
 					<view class="flex">
-						<view class="colFF0000 borderFF0000 radius10 px28">删除</view>
-						<view @click="handUrl('/pages/my/components/addressEdit/index')" class="col-white bg4DB23F radius10 ml40 px28">修改</view>
+						<view class="colFF0000 borderFF0000 radius10 px28" @click="_deleteUserAddress(item)">删除</view>
+						<view @click="handUrl('/pages/my/components/addressEdit/index?item='+JSON.stringify(item))"
+							class="col-white bg4DB23F radius10 ml40 px28">修改</view>
 					</view>
 				</view>
 			</view>
@@ -26,18 +27,67 @@
 
 <script>
 	import NavBar from '@/components/navbar/index.vue'
+	import api from '@/request/allApi.js'
 	export default {
 		data() {
 			return {
+				dataList: [] //收货信息
 			}
 		},
 		components: {
 			NavBar
 		},
+		onShow() {
+			this._getUserAddressList()
+		},
 		methods: {
-			handUrl(url){
+			_getUserAddressList() {
+				api.getUserAddressList({
+					post_params: {
+						currentPage: 1,
+						perPage: 10
+					}
+				}).then((res) => {
+					const {
+						list
+					} = res.data.data
+					this.dataList = list
+					console.log('收货信息', list);
+				})
+			},
+			// 删除
+			_deleteUserAddress(item) {
+				uni.showLoading({
+					title: "加载中"
+				})
+				api.deleteUserAddress({
+					post_params: {
+						id: item.id
+					}
+				}).then((res) => {
+					uni.hideLoading()
+					console.log('删除成功');
+					this._getUserAddressList()
+				})
+			},
+			// 默认
+			_setDefaultUserAddress(item) {
+				uni.showLoading({
+					title: "加载中"
+				})
+				api.setDefaultUserAddress({
+					post_params: {
+						id: item.id
+					}
+				}).then((res)=>{
+					uni.hideLoading()
+					console.log('设置成功');
+					this._getUserAddressList()
+				})
+			},
+			handUrl(url) {
 				uni.navigateTo({
-					url:url
+					url: url
 				})
 			}
 		}

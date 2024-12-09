@@ -3,7 +3,7 @@ import {
 	get,
 	post
 } from './index.js'
-const base_url = 'https://beverage.api.sczhiyun.net'
+const base_url = 'https://api.qfcss.cn'
 
 const api = {
 	FILE_TICKET: base_url + '/factory_storage/Ticket/getTicket', // 获取文件存储权限
@@ -16,19 +16,41 @@ const api = {
 	GET_MATERISLS: base_url + '/decoration/Setting/getMaterials', // 获取平台资质
 	GET_BASE_TYPE: base_url + '/decoration/BaseTypes/getBaseTypes', // 获取简单配置项
 	GET_BANNERLIST: base_url + '/decoration/Banner/getBannerList', // 轮播图
-	GET_NEW_NOTICE: base_url + '/decoration/Notice/getNewNotice', // 最新未读公告 未登录时前端需要缓存公告ID，如果最新未读公告ID已经在缓存中，那么就不展示该公告
+	GET_NEW_NOTICE: base_url +
+	'/decoration/Notice/getNewNotice', // 最新未读公告 未登录时前端需要缓存公告ID，如果最新未读公告ID已经在缓存中，那么就不展示该公告
 	GET_BANNER_CONTENT: base_url + '/decoration/Banner/getBannerContent', // 轮播图富文本详情
 	GET_PROMOTION_AREALIST: base_url + '/decoration/Setting/getPromotionAreaList', // 运营地区
 	GET_PROMOTION_TIMELIST: base_url + '/decoration/Setting/getPromotionTimeList', // 投流时长
 	SET_UPER_MATERIAL: base_url + '/decoration/User/setUperMaterial', // 设置创作者资料
 	GET_UPER_MATERRIAL: base_url + '/decoration/User/getUperMaterial', // 获取创作者资料
+	// -----------------------------------------------------------------------
+	GET_TOPIC_LIST: base_url + '/decoration/Setting/getTopicList', // 话题
+	GET_FRIEND_LIST: base_url + '/decoration/User/getFriendList', //好友(互关)
+	EDIT_ARTICLE: base_url + '/decoration/Article/editArticle', //发布
+	GET_ARTICLE_LIST: base_url + '/decoration/Article/getArticleList', //获取创作列表
+	GET_ARTICLE_DETAIL: base_url + '/decoration/Article/getArticleDetail', //获取创作详情
+	STAR_ARTICLE: base_url + '/decoration/Article/starArticle', //点赞/取消点赞
+	ALLOW_ARTICLE: base_url + '/decoration/Article/allowArticle', //关注/取消关注
+	COLLECT_ARTICLE: base_url + '/decoration/Article/collectArticle', //收藏/取消收藏
+	EVALUAE_ARTICLE: base_url + '/decoration/Article/evaluateArticle', //评论
+	GET_EVALUATE_LIST: base_url + '/decoration/Article/getEvaluateList', //获取评论列表
+	STAR_EVALUATE: base_url + '/decoration/Article/starEvaluate', //点赞/取消点赞评论
+	SHARE_FRIEND: base_url + '/decoration/Article/shareFriend', //分享给好友
+	SHARE_COMPLETE: base_url + '/decoration/Article/shareComplete', //分享完成
+	RECOMMEND_ARTICLE: base_url + '/decoration/Article/recommendArticle', //投流
+	RECOMMEND_ARTICLE_ORDERE_LIST: base_url + '/decoration/Article/recommendArticleOrderList', //投流列表
+	// =========================================================================
 	SUBMIT_ENTRY_APPLY: base_url + '/decoration/Store/submitEntryApply', // 提交入驻申请
 	GET_STORE_SERVICELIST: base_url + '/decoration/Setting/getStoreServiceList', // 商家服务
 	GET_STORE_INFO: base_url + '/decoration/Store/getStoreInfo', // 获取商家信息
 	CREATE_CHARGE_ORDER: base_url + '/decoration/Store/createChargeOrder', // 创建押金订单
+	// -----------------------------------------------------------------------
+	CHANGE_STORE_SERVICES: base_url + '/decoration/Store/changeStoreServices', // 修改商家服务
+	// =======================================================================
 	GET_DECORATION_STYLES_LIST: base_url + '/decoration/Setting/getDecorationStylesList', // 装修风格
 	SUBMIT_SERVICE: base_url + '/decoration/Service/submitService', // 提交预约服务
 	GET_MOBILECODE: base_url + '/decoration/User/getMobileCode', // 获取验证码
+	CHECK_MOBILE_CODE: base_url + '/decoration/User/checkMobileCode', // 校验验证码
 	LOGIN_AND_REGISTER: base_url + '/decoration/User/loginAndRegister', // 登陆与注册&切换账号(前端长期缓存登陆记录：用户id,最新token,手机号)
 	DELETE_USER: base_url + '/decoration/User/deleteUser', // 注销账号
 	GET_USER_INFO: base_url + '/decoration/User/getUserInfo', // 获取用户信息
@@ -51,6 +73,7 @@ const api = {
 	GETINEGRAL_RECORDS: base_url + '/decoration/User/getIntegralRecords', // 获取积分记录列表
 	SUBMIT_SGARER_WITHDRAWAL: base_url + '/decoration/Withdrawal/submitSharerWithdrawal', // 推荐官提现
 	GET_MONEY_RECORDS: base_url + '/decoration/User/getMoneyRecords', // 获取收益记录列表
+	
 	GET_GOODS_TYPELIST: base_url + '/decoration/GoodsType/getGoodsTypeList', // 获取商品分类列表
 	GET_INDEX_GOODS_TYPE_LIST: base_url + '/decoration/GoodsType/getIndexGoodsTypeList', // 获取首页推荐商品分类列表
 	GET_GOODS_BRAND_LIST: base_url + '/decoration/GoodsBrand/getGoodsBrandList', // 获取商品品牌列表
@@ -62,13 +85,29 @@ const api = {
 	GET_CARLIST: base_url + '/decoration/Car/getCarList', // 获取用户购物车列表
 	EDITCAR_GOODS: base_url + '/decoration/Car/editCarGoods', // 修改购物车商品数量
 	DELETECAR_GOODS: base_url + '/decoration/Car/deleteCarGoods', // 删除购物车商品
+	// --------------------------------------------------------------------------------
+	COMPUT_ORDER: base_url + '/decoration/Order/computeOrder', // 计算订单价格
+	CREATE_ORDER: base_url + '/decoration/Order/createOrder', // 下单
+	PAY_ORDER: base_url + '/decoration/Order/payOrder', // 支付订单
+	GET_ORDER_LIST: base_url + '/decoration/Order/getOrderList', // 获取订单列表
+	GET_ORDER_DETAIL: base_url + '/decoration/Order/getOrderDetail', // 获取订单详情
+	URGE_ORDER: base_url + '/decoration/Order/urgeOrder', // 催发货
+	OVER_ORDER: base_url + '/decoration/Order/overOrder', // 收货
+	EVALUATE_ORDER: base_url + '/decoration/Order/evaluateOrder', // 评价订单
+	AFERSALE_REASON_LIST: base_url + '/decoration/Setting/aftersaleReasonList', // 售后原因
+	AFERSALE_ORDER: base_url + '/decoration/Order/aftersaleOrder', // 发起售后
+	END_AFERSALE_ORDER: base_url + '/decoration/Order/endAftersaleOrder', // 取消售后
+	TRANSPORT_LIST: base_url + '/decoration/Setting/transportList', // 物流公司
+	SEND_ORDER: base_url + '/decoration/Order/sendOrder', // 发货
+	AGREE_AFTERSALE_ORDER: base_url + '/decoration/Order/agreeAftersaleOrder', // 同意售后
+	// ================================================================================
 	GET_INEGRAL_GOODS_TYPELIST: base_url + '/decoration/IntegralGoodsType/getIntegralGoodsTypeList', // 获取积分商品分类列表
 	GET_INTEGRAL_GOODS_BRANDLIST: base_url + '/decoration/GoodsBrand/getIntegralGoodsBrandList', // 获取积分商品品牌列表
 	GET_INTEGRALGOODS_LIST: base_url + '/decoration/IntegralGoods/getIntegralGoodsList', // 获取积分商品列表
 	GET_INTERGRAL_GOODS_DETAIL: base_url + '/decoration/IntegralGoods/getIntegralGoodsDetail', // 获取积分商品详情
-	COMPUTER_INTEDRAL_GOODS_ORDER: base_url + '/decoration/IntegralGoodsOrder/computerIntegralGoodsOrder', // 计算积分商品价格
+	COMPUTER_INTEDRAL_GOODS_ORDER: base_url +'/decoration/IntegralGoodsOrder/computerIntegralGoodsOrder', // 计算积分商品价格
 	CREATE_INTEGRAL_GOODS_ORDER: base_url + '/decoration/IntegralGoodsOrder/createIntegralGoodsOrder', // 下单积分商品
-	GET_INTEGRAL_GOODS_ORDER_LIST: base_url + '/decoration/IntegralGoodsOrder/getIntegralGoodsOrderList', // 获取积分商品订单列表
+	GET_INTEGRAL_GOODS_ORDER_LIST: base_url +'/decoration/IntegralGoodsOrder/getIntegralGoodsOrderList', // 获取积分商品订单列表
 	OVER_INTEGRAL_GOODS_ORDER: base_url + '/decoration/IntegralGoodsOrder/overIntegralGoodsOrder', // 积分商品订单收货
 }
 
@@ -76,11 +115,11 @@ const api = {
 export const getTicket = (params) => {
 	return post(api.FILE_TICKET, params)
 }
- // 获取文件存储配置
+// 获取文件存储配置
 export const getUploadType = (params) => {
 	return post(api.FILE_CONFIG, params)
 }
- // 上传文件到本地长期保存
+// 上传文件到本地长期保存
 export const uploadFile = (params) => {
 	return post(api.FILE_UPLOAD, params)
 }
@@ -133,6 +172,67 @@ export const setUperMaterial = (params) => {
 export const getUperMaterial = (params) => {
 	return post(api.GET_UPER_MATERRIAL, params)
 }
+// 话题
+export const getTopicList = (params) => {
+	return post(api.GET_TOPIC_LIST, params)
+}
+// 好友(互关)
+export const getFriendList = (params) => {
+	return post(api.GET_FRIEND_LIST, params)
+}
+// 发布
+export const editArticle = (params) => {
+	return post(api.EDIT_ARTICLE, params)
+}
+// 获取创作列表
+export const getArticleList = (params) => {
+	return post(api.GET_ARTICLE_LIST, params)
+}
+// 获取创作详情
+export const getArticleDetail = (params) => {
+	return post(api.GET_ARTICLE_DETAIL, params)
+}
+// 点赞/取消点赞
+export const starArticle = (params) => {
+	return post(api.STAR_ARTICLE, params)
+}
+// 关注/取消关注
+export const allowArticle = (params) => {
+	return post(api.ALLOW_ARTICLE, params)
+}
+// 收藏/取消收藏
+export const collectArticle = (params) => {
+	return post(api.COLLECT_ARTICLE, params)
+}
+// 评论
+export const evaluateArticle = (params) => {
+	return post(api.EVALUAE_ARTICLE, params)
+}
+// 获取评论列表
+export const getEvaluateList = (params) => {
+	return post(api.GET_EVALUATE_LIST, params)
+}
+// 点赞/取消点赞评论
+export const starEvaluate = (params) => {
+	return post(api.STAR_EVALUATE, params)
+}
+// 分享给好友
+export const shareFriend = (params) => {
+	return post(api.SHARE_FRIEND, params)
+}
+//分享完成
+export const shareComplete = (params) => {
+	return post(api.SHARE_COMPLETE, params)
+}
+// 投流
+export const recommendArticle = (params) => {
+	return post(api.RECOMMEND_ARTICLE, params)
+}
+// 投流列表
+export const recommendArticleOrderList = (params) => {
+	return post(api.RECOMMEND_ARTICLE_ORDERE_LIST, params)
+}
+// -------------------------------------
 // 提交入驻申请
 export const submitEntryApply = (params) => {
 	return post(api.SUBMIT_ENTRY_APPLY, params)
@@ -149,6 +249,10 @@ export const getStoreInfo = (params) => {
 export const createChargeOrder = (params) => {
 	return post(api.CREATE_CHARGE_ORDER, params)
 }
+// 修改商家服务
+export const changeStoreServices = (params) => {
+	return post(api.CHANGE_STORE_SERVICES, params)
+}
 // 装修风格
 export const getDecorationStylesList = (params) => {
 	return post(api.GET_DECORATION_STYLES_LIST, params)
@@ -161,6 +265,11 @@ export const submitService = (params) => {
 export const getMobileCode = (params) => {
 	return post(api.GET_MOBILECODE, params)
 }
+// 校验验证码
+export const checkMobileCode = (params) => {
+	return post(api.CHECK_MOBILE_CODE, params)
+}
+
 // 登陆与注册&切换账号(前端长期缓存登陆记录：用户id,最新token,手机号)
 export const loginAndRegister = (params) => {
 	return post(api.LOGIN_AND_REGISTER, params)
@@ -293,6 +402,63 @@ export const editCarGoods = (params) => {
 export const deleteCarGoods = (params) => {
 	return post(api.DELETECAR_GOODS, params)
 }
+// 计算订单价格
+export const computeOrder = (params) => {
+	return post(api.COMPUT_ORDER, params)
+}
+// 下单
+export const createOrder = (params) => {
+	return post(api.CREATE_ORDER, params)
+}
+// 支付订单
+export const payOrder = (params) => {
+	return post(api.PAY_ORDER, params)
+}
+// 获取订单列表
+export const getOrderList = (params) => {
+	return post(api.GET_ORDER_LIST, params)
+}
+// 获取订单详情
+export const getOrderDetail = (params) => {
+	return post(api.GET_ORDER_DETAIL, params)
+}
+// 催发货
+export const urgeOrder = (params) => {
+	return post(api.URGE_ORDER, params)
+}
+// 收货
+export const overOrder = (params) => {
+	return post(api.OVER_ORDER, params)
+}
+// 评价订单
+export const evaluateOrder = (params) => {
+	return post(api.EVALUATE_ORDER, params)
+}
+// 售后原因
+export const aftersaleReasonList = (params) => {
+	return post(api.AFERSALE_REASON_LIST, params)
+}
+// 发起售后
+export const aftersaleOrder = (params) => {
+	return post(api.AFERSALE_ORDER, params)
+}
+// 取消售后
+export const endAftersaleOrder = (params) => {
+	return post(api.END_AFERSALE_ORDER, params)
+}
+// 物流公司
+export const transportList = (params) => {
+	return post(api.TRANSPORT_LIST, params)
+}
+// 发货
+export const sendOrder = (params) => {
+	return post(api.SEND_ORDER, params)
+}
+// 同意售后
+export const agreeAftersaleOrder = (params) => {
+	return post(api.AGREE_AFTERSALE_ORDER, params)
+}
+// =========================================
 // 获取积分商品分类列表
 export const getIntegralGoodsTypeList = (params) => {
 	return post(api.GET_INEGRAL_GOODS_TYPELIST, params)

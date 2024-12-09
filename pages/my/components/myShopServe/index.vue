@@ -2,10 +2,10 @@
 	<view class="bgF9F9F9 h100vh">
 		<NavBar :navType="'标题'" :title="'服务管理'" />
 		<view class="p30">
-			<view v-for="item in [1,2,3,4]" :key="item" class="mb20 flex bg-white flex items-center radius10 p25">
-				<uni-icons type="circle" color="#999999" size="24"></uni-icons>
-				<uni-icons type="checkbox-filled" color="#4DB23F" size="24"></uni-icons>
-				<view class="font-bold text28 ml20">服务名称</view>
+			<view v-for="item in fuxx" :key="item.id" class="mb20 flex bg-white flex items-center radius10 p25">
+				<uni-icons v-if="item.status=='Y'" type="checkbox-filled" color="#4DB23F" size="24"></uni-icons>
+				<uni-icons v-else type="circle" color="#999999" size="24"></uni-icons>
+				<view class="font-bold text28 ml20">{{item.name}}</view>
 			</view>
 		</view>
 		
@@ -22,16 +22,29 @@
 
 <script>
 	import NavBar from '@/components/navbar/index.vue'
+	import api from '@/request/allApi.js'
 	export default {
 		data() {
 			return {
+				fuxx:[]//商家服务
 			}
 		},
 		components: {
 			NavBar
 		},
+		onLoad(){
+			this._getStoreServiceList()
+		},
 		methods: {
-			
+			// 商家服务
+			_getStoreServiceList(){
+				api.getStoreServiceList().then((res)=>{
+					const {list} = res.data.data
+					this.fuxx = list
+					console.log('服务信息',list);
+					
+				})
+			},
 		}
 	}
 </script>

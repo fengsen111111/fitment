@@ -36,63 +36,42 @@ export const throttle = (fn, delay) => {
 	}
 }
 
-import {
-	FormData
-} from './formData.js'
-
-function uniTempFileToBase64(tempFilePath) {
-	return new Promise((resolve, reject) => {
-		const fs = uni.getFileSystemManager();
-		fs.readFile({
-			filePath: tempFilePath,
-			encoding: 'base64', // 直接读取为 Base64
-			success(res) {
-				resolve(`data:image/jpeg;base64,${res.data}`); // 根据文件类型调整前缀
-			},
-			fail(err) {
-				reject(err);
-			},
-		});
-	});
-}
-
-export const onChooseAvatar = (url, query, callback) => {
-	let formData = new FormData();
+export const onChooseAvatar = (file, query, callback) => {
+	const formData = new FormData();
+	formData.append("rsa", "false");
+	formData.append('file', file);
 	for (let key in query) {
 		formData.append("post_params[" + key + "]", query[key]);
 	}
-	formData.append("rsa", "false");
-	formData.appendFile("file", url);
-	let data = formData.getData();
-
 	try {
-		wx.request({
-			url: 'https://beverage.api.sczhiyun.net/factory_storage/File/uploadFile',
-			method: 'POST',
-			header: {
-				'Content-Type': data.contentType,
-				'Authorization': uni.getStorageSync('token') || '',
-				'accept': 'application/json, text/plain, */*',
-				'origin': 'https://beverage.sczhiyun.net',
-			},
-			data: data.buffer,
-			success: (res) => {
-				// console.log('res', res);
+		// 使用 fetch 进行上传
+		fetch('https://api.qfcss.cn/factory_storage/File/uploadFile', {
+				method: 'POST',
+				headers: {
+					// 'Content-Type': 'multipart/form-data; boundary=----',
+					'Authorization': uni.getStorageSync('token') || '',
+					'accept': 'application/json, text/plain, */*',
+					'origin': 'https://beverage.sczhiyun.net',
+				},
+				body: formData, // FormData 包含了文件和其他数据
+			})
+			.then(response => response.json())
+			.then(data => {
+				console.log('上传成功:', data.data);
 				if (callback) {
-					callback(null, res); // 通过回调函数返回结果
+					callback(false, data); // 通过回调函数返回结果
 				}
-			},
-			fail: (err) => {
-				console.error('Request failed:', err);
+			})
+			.catch(error => {
 				if (callback) {
-					callback(err, null); // 通过回调函数返回错误
+					callback(true, error);  // 通过回调函数返回错误
 				}
-			}
-		});
+			});
 	} catch (error) {
 		console.error('Error:', error);
 		if (callback) {
 			callback(error, null);
 		}
 	}
+
 };

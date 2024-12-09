@@ -5,9 +5,9 @@
 				<uni-icons type="left" size="30" style="margin-left: -10rpx;" @click="back()" color="#ffffff"></uni-icons>
 				<view class="bg-white flex items-center py10 px20 radius40">
 					<uni-icons type="search" size="20" color="#999999" class="mt5"></uni-icons>
-					<input type="text" placeholder="输入搜索内容" class=" w55vw text28" />
+					<input type="text" placeholder="输入搜索内容" v-model="value" class=" w55vw text28" />
 				</view>
-				<view class="bg91C42F col-white font-bold text28 px30 py10 radius40">搜索</view>
+				<view class="bg91C42F col-white font-bold text28 px30 py10 radius40" @click="tjValue()">搜索</view>
 			</view>
 		</view>
 		<view class="bg4DB23F" v-else-if="navType=='标题'">
@@ -53,16 +53,21 @@
 			title:{
 				type:String,
 				default:''
-			}
+			},
 		},
 		data() {
 			return {
+				value:'',//搜索内容
 			}
 		},
 		methods: {
 			back() {
 				uni.navigateBack()
 			},
+			// emit
+			tjValue(){
+				this.$emit('searchVal',this.value)
+			}
 		},
 	}
 </script>

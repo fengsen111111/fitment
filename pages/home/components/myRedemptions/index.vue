@@ -3,38 +3,41 @@
 		<NavBar :navType="'标题'" :title="'我的兑换'" />
 		<view class="p30">
 			<view class="flex text28 col666666 justify-between px50">
-				<view :class="status==1?'border_bottom_two':''">待发货</view>
-				<view class="">待收货</view>
-				<view class="">已签收</view>
+				<view @click="()=>{status='a'}" :class="status=='a'?'border_bottom_two':''">待发货</view>
+				<view @click="()=>{status='b'}" :class="status=='b'?'border_bottom_two':''">待收货</view>
+				<view @click="()=>{status='c'}" :class="status=='c'?'border_bottom_two':''">已签收</view>
 			</view>
-			<view class="bg-white p20 radius10 mt30" v-for="item in [1,2,3]" :key="item">
-				<view class="">订单编号：XXXXXXXXXXX</view>
+			<view class="bg-white p20 radius10 mt30" v-for="item in dataList" :key="item.id">
+				<view class="">订单编号：{{item.id}}</view>
 				<view class="mt20 bgF5F5F5 radius10 text24 p20 flex items-center">
 					<view class="w128 h128">
 						<image src="@/static/home/pointsMall/shop.png" class="w128 h128 radius10" mode=""></image>
 					</view>
-					<view class="col333333 ml30">
-						<view class="text30 font-bold ">精品多钻豪华富贵18K铂金520海...</view>
-						<view class="flex mt20" style="line-height: 28rpx;">
-							<view class="">商家名称</view>
-							<text class="ml20 text20 col4DB23F border4DB23F radius4 px10">自营</text>
+					<view class="col333333 ml30 w-full">
+						<view v-if="item.name">
+							<view class="text30 font-bold" v-if="item.name.length<17">{{item.name}}</view>
+							<view class="text30 font-bold " v-else>{{item.name.slice(0,16)+'...'}}</view>
 						</view>
-						<view class="flex justify-between ">
+						<view class="flex mt20" style="line-height: 28rpx;">
+							<view class="">{{item.store_name}}</view>
+							<text v-if="item.platform_goods=='Y'" class="ml20 text20 col4DB23F border4DB23F radius4 px10">自营</text>
+						</view>
+						<view class="flex justify-between">
 							<view class="flex text28 colFF0000 ">
-								<view class="">积分 6666</view>
-								<view class="ml20">￥ 6666</view>
+								<view class="">积分 {{item.integral}}</view>
+								<view class="ml20">￥ {{item.price}}</view>
 							</view>
 							<view class="text28 col333333 font-bold">数量：1</view>
 						</view>
 					</view>
 				</view>
 				<!-- 状态·待收货 -->
-				<view class="flex justify-between mt30">
-					<view class="">待收货独有</view>
+				<view class="flex justify-between mt30" v-if="status=='b'">
+					<view class=""></view>
 					<view class="flex">
-						<view @click="()=>{$refs.popupLook.open('bottom')}"
+						<view @click="lookWl(item)"
 							class=" col4DB23F border4DB23F radius10 px20 py6">查看物流</view>
-						<view class=" col-white bg4DB23F radius10 px20 py6 ml40">确认收货</view>
+						<view @click="_overIntegralGoodsOrder(item)" class=" col-white bg4DB23F radius10 px20 py6 ml40">确认收货</view>
 					</view>
 				</view>
 			</view>
@@ -48,8 +51,8 @@
 				</view>
 				<view class="bg-white radius10 py30 mt20">
 					<view class="flex px30 items-center">
-						<view class="">圆通快递 YT7489357315838</view>
-						<view @click="copy('123456')" class="text20 col4DB23F ml10">复制</view>
+						<view class="">{{lookData.transport_name}} {{lookData.transport_number}}</view>
+						<view @click="copy(lookData.transport_number)" class="text20 col4DB23F ml10">复制</view>
 					</view>
 					<view class="bgF5F5F5 h1 my20"></view>
 					<view class="px30">
@@ -64,10 +67,11 @@
 
 <script>
 	import NavBar from '@/components/navbar/index.vue'
+	import api from '@/request/allApi.js'
 	export default {
 		data() {
 			return {
-				status: 1,
+				status: 'b',
 				// 
 				active: 0,
 				list2: [{
@@ -82,13 +86,58 @@
 				}, {
 					title: '交易完成',
 					desc: '2018-11-14'
-				}]
+				}],
+				
+				dataList:[],//数据列表
+				
+				lookData:{}//查看物流
 			}
 		},
 		components: {
 			NavBar
 		},
+		onLoad(){
+			this._getIntegralGoodsOrderList()
+		},
 		methods: {
+			// 确认收货
+			_overIntegralGoodsOrder(item){
+				api.overIntegralGoodsOrder({
+					post_params:{
+						id: item.id
+					}
+				}).then((res)=>{
+					console.log('收货成功');
+					this.status='c'
+					this._getIntegralGoodsOrderList()
+				})
+			},
+			// 查看物流
+			lookWl(item){
+				this.lookData = item
+				this.$refs.popupLook.open('bottom')
+				if(item.transport_detail){
+					this.list2 = item.transport_detail.map((item)=>{
+						return {
+							title: item.des,
+							desc: item.time
+						}
+					})
+				}
+			},
+			// 订单列表
+			_getIntegralGoodsOrderList(){
+				api.getIntegralGoodsOrderList({
+					post_params:{
+						status: this.status,
+						currentPage:1,
+						perPage:10
+					}
+				}).then((res)=>{
+					const {list} = res.data.data
+					this.dataList = list
+				})
+			},
 			copy(value) {
 				uni.setClipboardData({
 					data: value, //要被复制的内容

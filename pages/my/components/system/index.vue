@@ -32,15 +32,15 @@
 			</view>
 			<view class="mb20 bg-white p30 radius10 flex justify-between">
 				<view class="">用户协议</view>
-				<uni-icons type="right" @click="handUrl('')" color="#666666" size="20"></uni-icons>
+				<uni-icons type="right" @click="handUrl('/pages/login/components/fwbText?type=user_rich')" color="#666666" size="20"></uni-icons>
 			</view>
 			<view class="mb20 bg-white p30 radius10 flex justify-between">
 				<view class="">隐私政策</view>
-				<uni-icons type="right" @click="handUrl('')" color="#666666" size="20"></uni-icons>
+				<uni-icons type="right" @click="handUrl('/pages/login/components/fwbText?type=privacy_rich')" color="#666666" size="20"></uni-icons>
 			</view>
 			<view class="mb20 bg-white p30 radius10 flex justify-between">
 				<view class="">关于平台</view>
-				<uni-icons type="right" @click="handUrl('')" color="#666666" size="20"></uni-icons>
+				<uni-icons type="right" @click="handUrl('/pages/login/components/fwbText?type=about_us')" color="#666666" size="20"></uni-icons>
 			</view>
 			<view class="h170"></view>
 			<view @click="handUrl('/pages/login/index')"  class="mb20 colFF0000 text-center bg-white p30 radius10 ">

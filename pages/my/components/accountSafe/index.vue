@@ -20,20 +20,21 @@
 						<view class="col4DB23F">已通过</view>
 						<view class="col-black">认证中</view>
 						<view class="col999999">未认证</view>
-						<uni-icons type="right" @click="handUrl('/pages/my/components/realName/index')" color="#666666" class="ml10" size="20"></uni-icons>
+						<uni-icons type="right" @click="handUrl('/pages/my/components/realName/index')" color="#666666"
+							class="ml10" size="20"></uni-icons>
 					</view>
 				</view>
 			</view>
-			
+
 			<view class=" bg-white p30 radius10 mt20 items-center">
 				<view class="flex justify-between">
 					<view class="mt10">个性化广告管理</view>
-					<switch color="#91C42F" style="transform:scale(0.7)"/>
+					<switch @change="handleSwitchChange" :checked="switchStatus"  color="#91C42F" style="transform:scale(0.7)" />
 				</view>
 			</view>
-			
+
 			<view class="h256"></view>
-			
+
 			<view class="px44">
 				<view class="bg000000 col-white font-bold text32 py22 radius10 text-center" style="opacity: 0.6;">
 					需通过实名认证
@@ -42,10 +43,12 @@
 			<view class="h256"></view>
 			<view class="h256"></view>
 			<view class="h40"></view>
-			<view  @click="handUrl('/pages/my/components/accountQH/index')" class="mb20 col4DB23F text-center bg-white p30 radius10 ">
+			<view @click="handUrl('/pages/my/components/accountQH/index')"
+				class="mb20 col4DB23F text-center bg-white p30 radius10 ">
 				切换账号
 			</view>
-			<view  @click="handUrl('/pages/my/components/logout/index')" class="mb20 colFF0000 text-center bg-white p30 radius10 ">
+			<view @click="handleZX()"
+				class="mb20 colFF0000 text-center bg-white p30 radius10 ">
 				注销账号
 			</view>
 		</view>
@@ -61,30 +64,62 @@
 				<view class="flex justify-between items-center mt25">
 					<view class="bg-white p20 flex items-center radius10" style="width: 60%;">
 						<uni-icons type="phone" size="16"></uni-icons>
-						<input type="text" class="ml20" placeholder="输入手机号" />
+						<input type="number" v-model="form.new_mobile" class="ml20" placeholder="输入手机号" />
 					</view>
-					<view class="bg4DB23F radius10 py20 px40 col-white font-bold ">
+					<view v-if="code" @click="sendCode()" class="bg4DB23F radius10 py20 px40 col-white font-bold ">
 						发送验证码
+					</view>
+					<view v-else class=" col999999 radius10 py17 text28 px10 text-center font-bold yzm">
+						{{time}}s 后重新发送
 					</view>
 				</view>
 				<view class="flex justify-between items-center mt25">
 					<view class="font-bold ">旧手机号验证码</view>
 					<view class="bg-white p20 flex items-center radius10" style="width: 60%;">
 						<uni-icons type="locked" size="16"></uni-icons>
-						<input type="text" class="ml20" placeholder="输入验证码" />
+						<input type="number" v-model="form.old_mobile_code" class="ml20" placeholder="输入验证码" />
 					</view>
 				</view>
 				<view class="flex justify-between items-center mt25">
 					<view class="font-bold ">新手机号验证码</view>
 					<view class="bg-white p20 flex items-center radius10" style="width: 60%;">
 						<uni-icons type="locked" size="16"></uni-icons>
-						<input type="text" class="ml20" placeholder="输入验证码" />
+						<input type="number" v-model="form.new_mobile_code" class="ml20" placeholder="输入验证码" />
 					</view>
 				</view>
-				
+
 				<view class="px30">
-					<view class="bg4DB23F mt77 py17 radius10 col-white font-bold text-center ">
-					     确认	
+					<view @click="_updateUserInfo()"
+						class="bg4DB23F mt77 py17 radius10 col-white font-bold text-center ">
+						确认
+					</view>
+				</view>
+			</view>
+		</uni-popup>
+		<!-- 注销验证 -->
+		<uni-popup ref="popupZX" type="bottom" border-radius="10px 10px 0 0">
+			<view class="bgF9F9F9 text28 p30" style="border-radius: 10px 10px 0 0;">
+				<view class="flex justify-between items-center">
+					<view class=" font-bold">验证</view>
+					<view class="text24 colFF0000">验证码错误</view>
+					<uni-icons type="closeempty" size="20" @click="()=>{$refs.popupZX.close()}"></uni-icons>
+				</view>
+				<view class="flex justify-between items-center mt25">
+					<view class="bg-white p20 flex items-center radius10" style="width: 60%;">
+						<uni-icons type="locked" size="16"></uni-icons>
+						<input type="number" v-model="form.old_mobile_code" class="ml20" placeholder="输入验证码" />
+					</view>
+					<view v-if="code" @click="sendPhone()" class="bg4DB23F radius10 py20 px40 col-white font-bold ">
+						发送验证码
+					</view>
+					<view v-else class=" col999999 radius10 py17 text28 px10 text-center font-bold yzm">
+						{{time}}s 后重新发送
+					</view>
+				</view>
+				<view class="px30">
+					<view @click="handUrl('/pages/my/components/logout/index?code='+form.old_mobile_code)"
+						class="bg4DB23F mt77 py17 radius10 col-white font-bold text-center ">
+						确认
 					</view>
 				</view>
 			</view>
@@ -94,18 +129,129 @@
 
 <script>
 	import NavBar from '@/components/navbar/index.vue'
+	import api from '@/request/allApi.js'
 	export default {
 		data() {
 			return {
+				time: 60,
+				timer: '', //计时器
+				code: true,
+
+				form: {
+					new_mobile: '', //修改手机号-新  
+					old_mobile_code: '', //手机号验证码-旧  
+					new_mobile_code: '', //手机号验证码-新  
+				},
+
+				phone: '', //旧手机号
+				
+				switchStatus:false,// 默认开关状态为关闭
+			}
+		},
+		watch: {
+			time(newVal, oldVal) {
+				if (newVal == 0) {
+					clearInterval(this.timer); //清除定时器
+					this.code = true //重置发送
+				}
 			}
 		},
 		components: {
 			NavBar,
 		},
 		methods: {
-			handUrl(url){
+			// 注销账号
+			handleZX(){
+				// 
+				this.$refs.popupZX.open('bottom')
+			},
+			// 切换状态
+			handleSwitchChange(event) {
+				// 获取开关状态（true为开启，false为关闭）
+				this.switchStatus=event.detail.value
+				console.log('当前开关状态:', event.detail.value);
+				uni.showLoading({
+					title: "加载中"
+				})
+				api.updateUserInfo({
+					post_params:{
+						open_ad:event.detail.value?'Y':'N'
+					}
+				}).then((res)=>{
+					uni.hideLoading()
+					console.log('提交个性广告管理');
+				})
+			},
+			// 提交
+			_updateUserInfo() {
+				uni.showLoading({
+					title: "加载中"
+				})
+				api.updateUserInfo({
+					post_params: {
+						new_mobile: this.form.new_mobile,
+						old_mobile_code: this.form.old_mobile_code,
+						new_mobile_code: this.form.new_mobile_code,
+					}
+				}).then((res) => {
+					uni.hideLoading()
+					console.log('提交手机号绑定信息');
+				})
+			},
+			// 发送验证码
+			sendCode() {
+				if (!this.form.new_mobile) {
+					uni.showToast({
+						title: '请输入手机号',
+						icon: 'none',
+						duration: 2000
+					})
+					return false
+				} else {
+					// 手机号格式验证（中国大陆手机号）
+					const regex = /^1[3-9]\d{9}$/;
+					if (this.form.new_mobile && !regex.test(this.form.new_mobile)) {
+						uni.showToast({
+							title: '手机号格式错误',
+							icon: 'none',
+							duration: 2000
+						})
+						return false
+					}
+				}
+				this.code = false;
+				this.timer = setInterval(() => {
+					this.time = this.time - 1
+				}, 1000);
+				// 旧手机验证码
+				this.sendPhone()
+				// 新手机验证码
+				api.getMobileCode({
+					post_params: {
+						mobile: this.form.new_mobile
+					}
+				}).then((res) => {
+					console.log('新号码验证码发送', res);
+				})
+			},
+			// 发送验证码（旧手机）
+			sendPhone(){
+				this.code = false;
+				this.timer = setInterval(() => {
+					this.time = this.time - 1
+				}, 1000);
+				// 旧手机验证码
+				api.getMobileCode({
+					post_params: {
+						mobile: this.phone
+					}
+				}).then((res) => {
+					console.log('旧号码验证码发送', res);
+				})
+			},
+			handUrl(url) {
 				uni.navigateTo({
-					url:url
+					url: url
 				})
 			}
 		}
@@ -116,6 +262,7 @@
 	.example::-webkit-scrollbar {
 		display: none;
 	}
+
 	.checkboxItem {
 		width: 96rpx;
 		height: 8rpx;

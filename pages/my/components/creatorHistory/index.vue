@@ -1,21 +1,24 @@
 <template>
 	<view>
-		<NavBar :navType="'标题'" :title="'历史记录/圈过/我的收藏'" />
+		<NavBar :navType="'标题'" :title="title" />
 		<view class="p30 text24">
-			<view class="flex bg-white radius10">
+			<view class="flex bg-white radius10 mb20" v-for="item in dataList" :key="item.id">
 				<view class="w200 h140">
-					<image src="@/static/home/graphic/tw.png" class="w200 h140 radius10" mode=""></image>
+					<!-- <image src="@/static/home/graphic/tw.png" class="w200 h140 radius10" mode=""></image> -->
+					<image :src="item.image" class="w200 h140 radius10" mode=""></image>
 				</view>
 				<view class="py10 px20">
-					<view class="text20 font-bold" style="line-height: 30rpx;">节省时间和精力‌：通过选择全屋整装或整装装修，消费者可以减少在装修过程中花费的时间
+					<view class="text20 font-bold" style="line-height: 30rpx;">
+						<!-- 节省时间和精力‌：通过选择全屋整装或整装装修，消费者可以减少在装修过程中花费的时间 -->
+						{{item.title}}
 					</view>
 					<view class="flex items-center">
-						<image src="@/static/home/区间分类案例2.png" class="w28 h28 radius20" mode="">
-						</image>
-						<view class="ml10 text20">一只小海螺</view>
+						<!-- <image src="@/static/home/区间分类案例2.png" class="w28 h28 radius20" mode=""></image> -->
+						<image :src="item.head_image" class="w28 h28 radius20" mode=""></image>
+						<view class="ml10 text20">{{item.nickname}}</view>
 					</view>
 					<view class="flex items-center justify-between">
-						<view class="text20 col666666">XXXX-XX-XX XX:XX</view>
+						<view class="text20 col666666">{{item.create_time}}</view>
 						<view @click="()=>{$refs.popupCZZ.open('bottom')}">
 							<view class="bgItem"></view>
 							<view class="bgItem"></view>
@@ -75,15 +78,32 @@
 
 <script>
 	import NavBar from '@/components/navbar/index.vue'
+	import api from '@/request/allApi.js'
 	export default {
 		data() {
-			return {}
+			return {
+				title:'',
+				
+				dataList:[]//数据列表
+			}
 		},
 		components: {
 			NavBar
 		},
+		onLoad(option){
+			this.title = option.title
+			this._getArticleList()
+		},
 		methods: {
-
+			_getArticleList(){
+				api.getArticleList({
+					collect:'Y'//我的收藏
+				}).then((res)=>{
+					const {list} = res.data.data
+					this.dataList = list
+					console.log('数据列表',this.dataList);
+				})
+			},
 			handUrl(url) {
 				uni.navigateTo({
 					url: url

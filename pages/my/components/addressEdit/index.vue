@@ -6,7 +6,7 @@
 				<view>
 					<view class="font-bold">定位</view>
 					<view class="mt20  items-center justify-between radius10 flex">
-						<view class="col999999">四川省-成都市-武侯区-桂溪街道</view>
+						<view class="col999999">{{item.address}}</view>
 						<view class="w32 h32">
 							<image src="@/static/my/address/dz.png" class="w32 h32" mode=""></image>
 						</view>
@@ -17,19 +17,19 @@
 				<view>
 					<view class="font-bold">地址</view>
 					<view class="mt20 bgF5F5F5 py20 px30 radius10 ">
-						<input type="text" placeholder="输入地址" />
+						<input type="text" v-model="item.address" placeholder="输入地址" />
 					</view>
 				</view>
 				<view class="mt40">
 					<view class="font-bold">姓名</view>
 					<view class="mt20 bgF5F5F5 py20 px30 radius10 ">
-						<input type="text" placeholder="输入姓名" />
+						<input type="text" v-model="item.name" placeholder="输入姓名" />
 					</view>
 				</view>
 				<view class="mt40">
 					<view class="font-bold">手机号</view>
 					<view class="mt20 bgF5F5F5 py20 px30 radius10">
-						<input type="text" placeholder="输入手机号" />
+						<input type="text" v-model="item.mobile" placeholder="输入手机号" />
 					</view>
 				</view>
 			</view>
@@ -37,7 +37,7 @@
 		
 		<view class="w-full fixed bottom0">
 			<view class="bg-white  py20 px75">
-				<view class="bg4DB23F text-center py17 font-bold col-white text32 radius10">
+				<view class="bg4DB23F text-center py17 font-bold col-white text32 radius10" @click="_editUserAddress()">
 					保存
 				</view>
 			</view>
@@ -48,16 +48,39 @@
 
 <script>
 	import NavBar from '@/components/navbar/index.vue'
+	import api from '@/request/allApi.js'
 	export default {
 		data() {
 			return {
+				item:{}//
 			}
+		},
+		onLoad(option){
+			this.item = JSON.parse(option.item)
 		},
 		components: {
 			NavBar
 		},
 		methods: {
-			
+			_editUserAddress(){
+				uni.showLoading({
+					title: "加载中"
+				})
+				api.editUserAddress({
+					post_params:{
+						id:this.item.id,
+						is_default:this.item.is_default=='Y'?'Y':'N',
+						name:this.item.name,
+						mobile:this.item.mobile,
+						location: uni.getStorageSync('location'),
+						address:this.item.address
+					}
+				}).then((res)=>{
+					uni.hideLoading()
+					console.log('操作成功');
+					uni.navigateBack()
+				})
+			}
 		}
 	}
 </script>

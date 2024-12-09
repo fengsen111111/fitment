@@ -22,7 +22,7 @@
 				<uni-swiper-dot class="uni-swiper-dot-box"
 					:dots-styles="{selectedBackgroundColor:'#91C42F',backgroundColor:'#999999'}">
 					<swiper class="swiper-box radius10 h300" :current="lbt_index">
-						<swiper-item v-for="(item, index) in info" :key="index">
+						<swiper-item @click="handleFwb(item)" v-for="(item, index) in info" :key="index">
 							<image src="../../static/home/首页轮播图.png" class="h300 w-full radius10" mode=""></image>
 						</swiper-item>
 					</swiper>
@@ -43,11 +43,11 @@
 					<view class="">
 						<image :src="require('@/static/home/'+item.img+'.png')" class="w50 h50" mode=""></image>
 					</view>
-					<view class="mt-10">{{item.text}}</view>
+					<view class="" style="line-height: 20rpx;">{{item.text}}</view>
 				</view>
 			</view>
 			<!-- 专区 -->
-			<view class="flex justify-between mt30" @click="handUrl('/pages/home/components/shopType/index')">
+			<view class="flex justify-between mt30">
 				<view class="">
 					<image src="../../static/home/home_left.png" class="w50 h120" mode=""></image>
 				</view>
@@ -75,7 +75,7 @@
 				</view>
 			</view>
 			<!-- 查看更多 -->
-			<view class="col4DB23F text20 mt20 text-center">查看更多</view>
+			<view  @click="handUrl('/pages/home/components/shopType/index')" class="col4DB23F text20 mt20 text-center">查看更多</view>
 			<!-- 分类 *4 超出滚动-->
 			<view class="flex overflow-auto example mt30">
 				<view v-for="item in typeList" class="mr50 text28 text-center " :key="item.id"
@@ -88,8 +88,8 @@
 			</view>
 			<!-- 活动图 -->
 			<view class="mt40 grid grid-cols-2" style="grid-column-gap:20rpx">
-				<image src="../../static/home/热门推荐活动图片1.png" class="w-full h200 radius10" mode=""></image>
-				<image src="../../static/home/热门推荐活动图片2.png" class="w-full h200 radius10" mode=""></image>
+				<image @click="handUrl('/pages/home/components/pointsMall/index')" src="../../static/home/热门推荐活动图片1.png" class="w-full h200 radius10" mode=""></image>
+				<image @click="handUrl('/pages/home/components/jrms/index')" src="../../static/home/热门推荐活动图片2.png" class="w-full h200 radius10" mode=""></image>
 			</view>
 			<!-- 推荐 -->
 			<view class="font-bold text28 col-black mt40">推荐</view>
@@ -117,7 +117,7 @@
 				<view class="">
 					<view class="bg-white w340 mb20" v-for="(item,index) in [1,2,3]" :key="item">
 						<image @click="handUrl('/pages/home/components/video/index')"
-							src="../../static/home/首页推荐视频封面1.png" class="w340 h604" mode=""></image>
+							src="../../static/home/首页推荐视频封面1.png" class="w340 h575" mode=""></image>
 						<view class="px20 col333333 pb14">
 							<view class="font-bold">现代北欧风格多功能伸 缩茶几</view>
 							<view class="flex justify-between text20 mt10">
@@ -172,6 +172,7 @@
 			this._getUserInfo() //用户信息
 			this._getNewNotice() //未读公告
 			this._getBannerList() //轮播图列表
+			this._getGoodsTypeList()//商品分类列表
 		},
 		data() {
 			return {
@@ -197,7 +198,7 @@
 					{
 						img: 'icon_2',
 						text: '设计服务',
-						url: ''
+						url: '/pages/login/components/fwbText?type=introduce_b_rich'
 					},
 					{
 						img: 'icon_3',
@@ -207,7 +208,7 @@
 					{
 						img: 'icon_4',
 						text: '监理服务',
-						url: ''
+						url: '/pages/login/components/fwbText?type=introduce_d_rich'
 					},
 					{
 						img: 'icon_5',
@@ -284,10 +285,27 @@
 					title: '‌装修的优点',
 					create_time: '发布时间 ',
 					content: '<view>富文本详情</view><br /><view>富文本详情</view><br /><view>富文本详情</view><br /><view>富文本详情</view><br /><view>富文本详情</view><br /><view>富文本详情</view><br />'
-				}
+				},
+				
+				spflList:[]//商品分类列表
 			}
 		},
 		methods: {
+			// 商品分类列表
+			_getGoodsTypeList(){
+				api.getGoodsTypeList().then((res)=>{
+					console.log('分类列表',res.data);
+					const {list} =res.data.data
+					this.spflList = list
+				})
+			},
+			// 轮播图跳转富文本
+			handleFwb(item){
+				console.log('item',item);
+				uni.navigateTo({
+					url: '/pages/home/components/fwbContent/index?id='+item.id
+				})
+			},
 			// 轮播图列表
 			_getBannerList() {
 				api.getBannerList().then((res) => {
@@ -362,7 +380,5 @@
 		background: #4DB23F;
 	}
 
-	.example::-webkit-scrollbar {
-		display: none;
-	}
+	
 </style>

@@ -2,7 +2,7 @@
 	<view class="bgF9F9F9 h100vh">
 	    <NavBar :navType="'标题'" :title="'验房服务'" />
 		<view class="p30">
-			<view class="">富文本</view>
+			<view v-html="content"></view>
 			<view class="px44 mt100">
 				<view class="bg636363 text-center py17 font-bold col-white text32 radius10">
 					等待开放
@@ -27,16 +27,30 @@
 
 <script>
 	import NavBar from '@/components/navbar/index.vue'
+	import api from '@/request/allApi.js'
 	export default {
 		data() {
 			return {
-				
+				content:'<view>验房服务富文本</view>'
 			}
 		},
 		components:{
 			NavBar
 		},
+		created(){
+			this._getRichTextContent()
+		},
 		methods: {
+			// 验房服务
+			_getRichTextContent(){
+				api.getRichTextContent({
+					post_params:'introduce_c_rich'
+				}).then((res)=>{
+					console.log('验房服务',res.data.data);
+					const {content} = res.data.data
+					this.content = content
+				})
+			},
 			handUrl(url){
 				uni.navigateTo({
 					url:url
