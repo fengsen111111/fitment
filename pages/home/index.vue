@@ -21,7 +21,7 @@
 			<view class="mt36">
 				<uni-swiper-dot class="uni-swiper-dot-box"
 					:dots-styles="{selectedBackgroundColor:'#91C42F',backgroundColor:'#999999'}">
-					<swiper class="swiper-box radius10 h300" :current="lbt_index">
+					<swiper class="swiper-box radius10 h300" :current="lbt_index" @change="swChange">
 						<swiper-item @click="handleFwb(item)" v-for="(item, index) in info" :key="index">
 							<image src="../../static/home/首页轮播图.png" class="h300 w-full radius10" mode=""></image>
 						</swiper-item>
@@ -173,6 +173,7 @@
 			this._getNewNotice() //未读公告
 			this._getBannerList() //轮播图列表
 			this._getGoodsTypeList()//商品分类列表
+			this._getActivityList()//每日活动
 		},
 		data() {
 			return {
@@ -291,6 +292,24 @@
 			}
 		},
 		methods: {
+			// 每日活动
+			_getActivityList(){
+				api.getActivityList({
+					post_params:{
+						currentPage:1,
+						perPage:10
+					}
+				}).then((res)=>{
+					const {list} = res.data.data
+					console.log('每日活动',list);
+				})
+			},
+			// 轮播图改变
+			swChange(e){
+				console.log('轮播图改变',e.detail.current);
+				const {current} = e.detail
+				this.lbt_index = current
+			},
 			// 商品分类列表
 			_getGoodsTypeList(){
 				api.getGoodsTypeList().then((res)=>{
@@ -308,7 +327,11 @@
 			},
 			// 轮播图列表
 			_getBannerList() {
-				api.getBannerList().then((res) => {
+				api.getBannerList({
+					post_params:{
+						type:'index'
+					}
+				}).then((res) => {
 					const {
 						list
 					} = res.data.data

@@ -214,6 +214,9 @@
 		},
 		{
 			"path":"pages/home/components/shopOrderOk/index"
+		},
+		{
+			"path":"pages/my/components/map/index"
 		}
 	],
 	"globalStyle": {

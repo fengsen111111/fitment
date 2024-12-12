@@ -56,5 +56,16 @@
         },
         "usingComponents" : true
     },
-    "vueVersion" : "2"
+    "vueVersion" : "2",
+    "h5" : {
+        "sdkConfigs" : {
+            "maps" : {
+                "amap" : {
+                    "key" : "00c7d873693faac97d2176c2f22261e5",
+                    "securityJsCode" : "1ae674077c8b1380ef2edd380b72274f",
+                    "serviceHost" : ""
+                }
+            }
+        }
+    }
 }

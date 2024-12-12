@@ -18,7 +18,8 @@
 				<view class="font-bold">小区名称</view>
 				<view class="mt20 bg-white py20 px30 radius10 flex items-center justify-between">
 					<input type="text" style="width:90%" v-model="post_params.community" placeholder="输入小区名称" />
-					<image src="../../../../static/home/btnBooking/dw.png" class="w22 h28" mode=""></image>
+					<image src="../../../../static/home/btnBooking/dw.png" class="w22 h28" @click="handDw" mode="">
+					</image>
 				</view>
 			</view>
 			<view class="mt40">
@@ -41,7 +42,7 @@
 			<view class="mt40">
 				<view class="font-bold">装修风格</view>
 				<view class="mt20 relative" @click="()=>{$refs.popupStyle.open('bottom')}">
-					<view v-if="post_params.zxfg">
+					<view v-if="post_params.zxfg.length>0">
 						<!-- {{post_params.zxfg.name}} -->
 						<image :src="require('@/static/home/btnBooking/'+post_params.zxfg.image+'.png')"
 							class="w200 h200" mode=""></image>
@@ -123,7 +124,8 @@
 						<view class="mt100 text-center">
 							{{time}}秒后转到首页
 						</view>
-						<view @click="handUrl('/pages/home/index')" class="bg4DB23F radius10 font-bold col-white text-center py17 mt20">
+						<view @click="handUrl('/pages/home/index')"
+							class="bg4DB23F radius10 font-bold col-white text-center py17 mt20">
 							立即跳转
 						</view>
 					</view>
@@ -133,8 +135,7 @@
 		</view>
 		<view class="w-full fixed bottom0">
 			<view class="bg-white  py20 px75">
-				<view @click="_submitService()"
-					class="bg4DB23F text-center py17 font-bold col-white text32 radius10">
+				<view @click="_submitService()" class="bg4DB23F text-center py17 font-bold col-white text32 radius10">
 					提交
 				</view>
 			</view>
@@ -194,9 +195,9 @@
 					"decoration_model": {},
 					"check_home_model": "",
 					zxfg: {
-						id: 1,
-						name: '装修风格1',
-						image: 'zxfg'
+						// id: 1,
+						// name: '装修风格1',
+						// image: 'zxfg'
 					}
 				},
 				zxmsList: [{
@@ -212,7 +213,7 @@
 						name: '模式3'
 					}
 				],
-				time: 5,//倒计时
+				time: 5, //倒计时
 				timer: '', //计时器
 
 			}
@@ -224,17 +225,40 @@
 			time(newVal, oldVal) {
 				if (newVal == 0) {
 					clearInterval(this.timer); //清除定时器
-				    uni.navigateTo({
-				    	url:'/pages/home/index'
-				    })
+					uni.navigateTo({
+						url: '/pages/home/index'
+					})
 				}
 			}
 		},
 		methods: {
-			// 跳转首页
-			handUrl(url){
+			// 定位小区
+			handDw() {
+				// uni.getLocation({
+				// 	type: 'gcj02',
+				// 	highAccuracyExpireTime: '4000',
+				// 	accuracy: 'best',
+				// 	isHighAccuracy: true,
+				// 	altitude: true,
+				// 	success: (res) => {
+				// 		console.log('当前位置经纬度:', res);
+				// 	},
+				// 	fail: (err) => {
+				// 		console.error('定位失败', err);
+				// 		uni.showToast({
+				// 			title: '无法获取位置信息',
+				// 			icon: 'none'
+				// 		});
+				// 	}
+				// });
 				uni.navigateTo({
-					url:url
+					url: '/pages/my/components/map/index'
+				})
+			},
+			// 跳转首页
+			handUrl(url) {
+				uni.navigateTo({
+					url: url
 				})
 			},
 			// 选择装修风格
@@ -262,7 +286,7 @@
 				this.post_params.time = `${e.year}-${e.month}-${e.day} ${e.hour}:${e.minute}`;
 			},
 			// 提交预约
-			_submitService(){
+			_submitService() {
 				if (!this.post_params.mobile) {
 					uni.showToast({
 						title: '请输入手机号',
@@ -291,31 +315,31 @@
 					return false
 				}
 				api.submitService({
-					post_params:{
-						type:'a', //a装修服务介绍 b设计服务介绍  c验房服务介绍  d监理服务介绍
+					post_params: {
+						type: 'a', //a装修服务介绍 b设计服务介绍  c验房服务介绍  d监理服务介绍
 						name: this.post_params.name, //姓名  
-						mobile:this.post_params.mobile,//手机号  
-						community:this.post_params.community,//小区名称  
-						community_location:this.post_params.community_location,//小区定位  
-						time:this.post_params.time,//预约时间  
-						decoration_plan_money:this.post_params.decoration_plan_money,//装修预算：a,b  
-						decoration_model:this.post_params.decoration_model,//装修模式：a,b  
-						check_home_model:this.post_params.check_home_model//验房模式：c  
+						mobile: this.post_params.mobile, //手机号  
+						community: this.post_params.community, //小区名称  
+						community_location: this.post_params.community_location, //小区定位  
+						time: this.post_params.time, //预约时间  
+						decoration_plan_money: this.post_params.decoration_plan_money, //装修预算：a,b  
+						decoration_model: this.post_params.decoration_model, //装修模式：a,b  
+						check_home_model: this.post_params.check_home_model //验房模式：c  
 					}
-				}).then((res)=>{
-					console.log('提交结束',res.data);
+				}).then((res) => {
+					console.log('提交结束', res.data);
 					this.$refs.popupBtn.open('center')
 					this.timer = setInterval(() => {
 						this.time = this.time - 1
 					}, 1000);
-				}).catch((res)=>{
-					console.log('提交失败',res);
+				}).catch((res) => {
+					console.log('提交失败', res);
 					this.$refs.popupBtn.open('center')
 					this.timer = setInterval(() => {
 						this.time = this.time - 1
 					}, 1000);
 				})
-				
+
 			}
 		}
 	}

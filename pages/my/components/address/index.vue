@@ -22,6 +22,13 @@
 				</view>
 			</view>
 		</view>
+		<view class="w-full fixed bottom0">
+			<view class="bg-white  py20 px75">
+				<view class="bg4DB23F text-center py17 font-bold col-white text32 radius10" @click="addAddress()">
+					新增
+				</view>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -41,6 +48,13 @@
 			this._getUserAddressList()
 		},
 		methods: {
+			// 跳转新增
+			addAddress(){
+				uni.navigateTo({
+					url: '/pages/my/components/addressEdit/index'
+				})
+			},
+			// 地址列表
 			_getUserAddressList() {
 				api.getUserAddressList({
 					post_params: {

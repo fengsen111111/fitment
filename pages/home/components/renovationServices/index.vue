@@ -27,6 +27,9 @@
 		components:{
 			NavBar
 		},
+		onLoad(){
+			this._getRichTextContent()
+		},
 		methods: {
 			// 装修服务富文本
 			_getRichTextContent(){

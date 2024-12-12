@@ -36,7 +36,7 @@
 					第三方登录
 				</view>
 				<image src="../../static/login/weixin.png" class="w60 h60 mt30" mode=""></image>
-				<view class="text28 font-bold col333333 mt20">
+				<view class="text28 font-bold col333333 mt20" @click="weixin">
 					微信授权登录
 				</view>
 				<view class="flex mt176">
@@ -85,6 +85,17 @@
 			}
 		},
 		methods: {
+			weixin(){
+				uni.getUserInfo({
+				  provider: 'weixin', // 使用微信授权
+				  success: function (res) {
+				    console.log('用户信息:', res.userInfo);
+				  },
+				  fail: function (error) {
+				    console.error('授权失败:', error);
+				  }
+				});
+			},
 			handUrl(url) {
 				uni.navigateTo({
 					url: url

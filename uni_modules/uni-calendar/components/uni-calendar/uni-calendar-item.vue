@@ -110,6 +110,7 @@
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
+		border-radius: 5px;
 	}
 
 	.uni-calendar-item__weeks-box-text {

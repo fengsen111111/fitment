@@ -9,6 +9,7 @@ const api = {
 	FILE_TICKET: base_url + '/factory_storage/Ticket/getTicket', // 获取文件存储权限
 	FILE_CONFIG: base_url + '/factory_storage/File/getUploadType', // 获取文件存储配置
 	FILE_UPLOAD: base_url + '/factory_storage/File/uploadFile', // 上传文件到本地长期保存
+	GET_AREAS_BY_LOCATION: base_url + '/factory_system/Base/getAreasByLocation', // 根据坐标获取行政区
 	// --------------------------------------------------------
 	GET_SETTING: base_url + '/decoration/Setting/getSetting', // 获取基本配置
 	GET_RICHTEXT_CONTENT: base_url + '/beverage/Setting/getRichTextContent', // 获取基本配置富文本内容
@@ -122,6 +123,10 @@ export const getUploadType = (params) => {
 // 上传文件到本地长期保存
 export const uploadFile = (params) => {
 	return post(api.FILE_UPLOAD, params)
+}
+// 根据坐标获取行政区
+export const getAreasByLocation = (params) => {
+	return post(api.GET_AREAS_BY_LOCATION, params)
 }
 // ------------------------------------------------------------------
 // 获取基本配置
