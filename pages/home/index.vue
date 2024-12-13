@@ -3,7 +3,7 @@
 		<!-- 头部 -->
 		<view class="bg_top">
 			<view class="flex justify-between col-white">
-				<view class="text-center">
+				<view class="text-center" @click="handUrl('/pages/home/components/citySel/index')">
 					<uni-icons type="location" size="30" color="#FFFFFF"></uni-icons>
 					<view class="text20 mt-16">成都</view>
 				</view>
@@ -86,10 +86,24 @@
 					<view class="checkboxItem mx-auto" v-if="type_index == item.id"></view>
 				</view>
 			</view>
-			<!-- 活动图 -->
-			<view class="mt40 grid grid-cols-2" style="grid-column-gap:20rpx">
-				<image @click="handUrl('/pages/home/components/pointsMall/index')" src="../../static/home/热门推荐活动图片1.png" class="w-full h200 radius10" mode=""></image>
-				<image @click="handUrl('/pages/home/components/jrms/index')" src="../../static/home/热门推荐活动图片2.png" class="w-full h200 radius10" mode=""></image>
+			<!-- 分类 -->
+			<view class="mt40 ">
+				<view v-if="type_index == 1" class="grid grid-cols-2" style="grid-column-gap:20rpx">
+					<image @click="handUrl('/pages/home/components/pointsMall/index')" src="../../static/home/jfhl.png" class="w-full h200 radius10" mode=""></image>
+					<image @click="handUrl('/pages/home/components/jrms/index')" src="../../static/home/xsms.png" class="w-full h200 radius10" mode=""></image>
+				</view>
+				<view v-else-if="type_index == 2">
+					<view  class="grid grid-cols-2" style="grid-column-gap:20rpx">
+						<image @click="handUrl('/pages/home/components/sign/index')" src="../../static/home/qdyl.png" class="w-full h200 radius10" mode=""></image>
+						<image @click="handUrl('/pages/home/components/noticeList/index')" src="../../static/home/xtgg.png" class="w-full h200 radius10" mode=""></image>
+					</view>
+					<view class="mt20">
+						<Notice />
+					</view>
+				</view>
+				<view v-else>
+					分类
+				</view>
 			</view>
 			<!-- 推荐 -->
 			<view class="font-bold text28 col-black mt40">推荐</view>
@@ -161,9 +175,10 @@
 <script>
 	import api from '@/request/allApi.js'
 	import Tarbar from '@/components/tarbar/index.vue'
+	import Notice from '@/components/notice/index.vue'
 	export default {
 		components: {
-			Tarbar
+			Tarbar,Notice
 		},
 		created() {
 			this.$nextTick(() => {
@@ -253,6 +268,7 @@
 						id: 2,
 						text: '每日活动'
 					},
+					// 分类
 					{
 						id: 3,
 						text: '美妆精选'

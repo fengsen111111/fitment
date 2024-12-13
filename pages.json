@@ -217,6 +217,15 @@
 		},
 		{
 			"path":"pages/my/components/map/index"
+		},
+		{
+			"path":"pages/home/components/noticeList/index"
+		},
+		{
+			"path":"pages/home/components/noticeListDetails/index"
+		},
+		{
+			"path":"pages/home/components/citySel/index"
 		}
 	],
 	"globalStyle": {

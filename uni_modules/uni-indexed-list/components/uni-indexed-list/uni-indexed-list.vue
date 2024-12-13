@@ -148,7 +148,7 @@
 					let items = value.data.map(item => {
 						let obj = {}
 						obj['key'] = value.letter
-						obj['name'] = item
+						obj['name'] = item.label
 						obj['itemIndex'] = index
 						index++
 						obj.checked = item.checked ? item.checked : false
@@ -161,6 +161,7 @@
 						itemIndex: indexBefore
 					})
 				})
+				console.log('this.lists',this.lists);
 				// #ifndef APP-NVUE
 				uni.createSelectorQuery()
 					.in(this)
