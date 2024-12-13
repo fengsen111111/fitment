@@ -35,9 +35,11 @@
 				<view class="col999999 mt40">
 					第三方登录
 				</view>
-				<image src="../../static/login/weixin.png" class="w60 h60 mt30" mode=""></image>
-				<view class="text28 font-bold col333333 mt20" @click="weixin">
-					微信授权登录
+				<view @click="getWeChatCode">
+					<image src="../../static/login/weixin.png" class="w60 h60 mt30" mode=""></image>
+					<view class="text28 font-bold col333333 mt20">
+						微信授权登录
+					</view>
 				</view>
 				<view class="flex mt176">
 					<view class="flex items-center mx-auto">
@@ -84,18 +86,38 @@
 				}
 			}
 		},
+		onLoad() {
+			const hasWechatLogin = uni.getStorageSync('wechat_login_tag') || null;
+			if (hasWechatLogin) {
+				this.checkWeChatCode();
+			}
+		},
 		methods: {
-			weixin(){
-				uni.getUserInfo({
-				  provider: 'weixin', // 使用微信授权
-				  success: function (res) {
-				    console.log('用户信息:', res.userInfo);
-				  },
-				  fail: function (error) {
-				    console.error('授权失败:', error);
-				  }
-				});
+			// 重定向回来本页面检查有没有code
+			checkWeChatCode() {
+				let code = this.getUrlCode('code');
+				if (code) {
+					console.log('code',code);
+				}
 			},
+			// 正则匹配请求地址中的参数函数
+			getUrlCode(name) {
+				return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.href) ||
+				[, ''
+				])[1].replace(/\+/g, '%20')) || null
+			},
+			// 看地址中有没有code参数,如果没有code参数的话则请求微信官方的接口并获取包含code的回调链接
+			getWeChatCode() {
+				//用于退出登录回来不会再调一次授权登录
+				uni.setStorageSync('wechat_login_tag', 'true');
+				const appID = 'gh_dc77611ed9fc'; //公众号appID
+				const callBack = ''; //回调地址 就是你的完整地址登录页
+				//通过微信官方接口获取code之后，会重新刷新设置的回调地址【redirect_uri】
+				window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' +
+					appID + '&redirect_uri=' + encodeURIComponent(callBack) +
+					'&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect'
+			},
+			//----------------------------------------------
 			handUrl(url) {
 				uni.navigateTo({
 					url: url
