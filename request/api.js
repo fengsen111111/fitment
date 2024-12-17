@@ -9,17 +9,23 @@ const api = {
 	FILE_TICKET: base_url + '/factory_storage/Ticket/getTicket', // 获取文件存储权限
 	FILE_CONFIG: base_url + '/factory_storage/File/getUploadType', // 获取文件存储配置
 	FILE_UPLOAD: base_url + '/factory_storage/File/uploadFile', // 上传文件到本地长期保存
+	REFRESH_STS: base_url + '/factory_storage/File/refreshSTS', // 刷新云存储的临时令牌
+	FRONT_UPLOAD: base_url + '/factory_storage/File/frontUpload', // 前端云存储记录到服务器
 	GET_AREAS_BY_LOCATION: base_url + '/factory_system/Base/getAreasByLocation', // 根据坐标获取行政区
 	// --------------------------------------------------------
 	GET_SETTING: base_url + '/decoration/Setting/getSetting', // 获取基本配置
-	GET_RICHTEXT_CONTENT: base_url + '/beverage/Setting/getRichTextContent', // 获取基本配置富文本内容
+	GET_RICHTEXT_CONTENT: base_url + '/decoration/Setting/getRichTextContent', // 获取基本配置富文本内容
 	GET_HOT_CITY_LIST: base_url + '/decoration/Setting/getHotCityList', // 热门城市（搜索页非热门城市列表使用官方组件）
 	GET_MATERISLS: base_url + '/decoration/Setting/getMaterials', // 获取平台资质
-	GET_BASE_TYPE: base_url + '/decoration/BaseTypes/getBaseTypes', // 获取简单配置项
+	GET_BASE_TYPE: base_url + '/decoration/Setting/getBaseTypes', // 获取简单配置项
 	GET_BANNERLIST: base_url + '/decoration/Banner/getBannerList', // 轮播图
 	GET_NEW_NOTICE: base_url +
 	'/decoration/Notice/getNewNotice', // 最新未读公告 未登录时前端需要缓存公告ID，如果最新未读公告ID已经在缓存中，那么就不展示该公告
 	GET_BANNER_CONTENT: base_url + '/decoration/Banner/getBannerContent', // 轮播图富文本详情
+	GET_NOTICE_LIST: base_url + '/decoration/Notice/getNoticeList', // 获取公告列表
+	GET_NOTICE_DETAILS: base_url + '/decoration/Notice/getNoticeDetail', // 获取公告详情
+	GET_ACTIVITY_LIST: base_url + '/decoration/Activity/getActivityList', // 获取每日活动列表
+	GET_ACTIVITY_DETAILS: base_url + '/decoration/Activity/getActivityDetail', // 获取每日活动富文本详情
 	GET_PROMOTION_AREALIST: base_url + '/decoration/Setting/getPromotionAreaList', // 运营地区
 	GET_PROMOTION_TIMELIST: base_url + '/decoration/Setting/getPromotionTimeList', // 投流时长
 	SET_UPER_MATERIAL: base_url + '/decoration/User/setUperMaterial', // 设置创作者资料
@@ -77,7 +83,8 @@ const api = {
 	
 	GET_GOODS_TYPELIST: base_url + '/decoration/GoodsType/getGoodsTypeList', // 获取商品分类列表
 	GET_INDEX_GOODS_TYPE_LIST: base_url + '/decoration/GoodsType/getIndexGoodsTypeList', // 获取首页推荐商品分类列表
-	GET_GOODS_BRAND_LIST: base_url + '/decoration/GoodsBrand/getGoodsBrandList', // 获取商品品牌列表
+	GET_GOODS_BRAND_LIST: base_url + '/decoration/Setting/getGoodsBrandList', // 获取商品品牌列表
+	GET_GOODS_ACTIVIY_LIST: base_url + '/decoration/GoodsActivity/getGoodsActivityList', // 获取包邮专区列表
 	GET_GOODS_LIST: base_url + '/decoration/Goods/getGoodsList', // 获取商品列表
 	USER_GET_STORE_INFO: base_url + '/decoration/Store/userGetStoreInfo', // 用户获取商家信息
 	USER_GETSTORE_EVALUETE: base_url + '/decoration/Store/userGetStoreEvaluate', // 用户获取商家评价
@@ -124,6 +131,14 @@ export const getUploadType = (params) => {
 export const uploadFile = (params) => {
 	return post(api.FILE_UPLOAD, params)
 }
+// 刷新云存储的临时令牌
+export const refreshSTS = (params) => {
+	return post(api.REFRESH_STS, params)
+}
+// 前端云存储记录到服务器
+export const frontUpload = (params) => {
+	return post(api.FRONT_UPLOAD, params)
+}
 // 根据坐标获取行政区
 export const getAreasByLocation = (params) => {
 	return post(api.GET_AREAS_BY_LOCATION, params)
@@ -156,6 +171,22 @@ export const getBannerList = (params) => {
 // 最新未读公告 未登录时前端需要缓存公告ID，如果最新未读公告ID已经在缓存中，那么就不展示该公告
 export const getNewNotice = (params) => {
 	return post(api.GET_NEW_NOTICE, params)
+}
+// 获取公告列表
+export const getNoticeList = (params) => {
+	return post(api.GET_NOTICE_LIST, params)
+}
+// 获取公告详情
+export const getNoticeDetail = (params) => {
+	return post(api.GET_NOTICE_DETAILS, params)
+}
+// 获取每日活动列表
+export const getActivityList = (params) => {
+	return post(api.GET_ACTIVITY_LIST, params)
+}
+// 获取每日活动富文本详情
+export const getActivityDetail = (params) => {
+	return post(api.GET_ACTIVITY_DETAILS, params)
 }
 // 轮播图富文本详情
 export const getBannerContent = (params) => {
@@ -374,6 +405,10 @@ export const getIndexGoodsTypeList = (params) => {
 // 获取商品品牌列表
 export const getGoodsBrandList = (params) => {
 	return post(api.GET_GOODS_BRAND_LIST, params)
+}
+// 获取包邮专区列表
+export const getGoodsActivityList = (params) => {
+	return post(api.GET_GOODS_ACTIVIY_LIST, params)
 }
 // 获取商品列表
 export const getGoodsList = (params) => {

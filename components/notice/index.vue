@@ -1,26 +1,15 @@
 <template>
 	<view class="">
-		<view class="mb30 bg-white radius10" @click="handUrl('/pages/home/components/noticeListDetails/index')">
-			<image src="@/static/home/gg1.png" class="w-full h360" mode=""></image>
+		<!-- 公告列表和每日活动 -->
+		<view v-for="item in dataList" :key="item.id" class="mb30 bg-white radius10" @click="handUrl(item)">
+			<image :src="item.cover_image" class="w-full h360" mode=""></image>
 			<view class="p20">
 				<view class="flex justify-between items-center">
-					<view class="text36 font-bold">‌装修的优点</view>
-					<view class="text20">‌2024-12-16</view>
+					<view class="text36 font-bold">‌{{item.title}}</view>
+					<view class="text20">{{item.create_time}}</view>
 				</view>
-				<view class="col666666 text20 mt10" style="line-height: 30rpx;">
-					‌节省时间和精力‌：通过选择全屋整装或整装装修，消费者可以减少在装修过程中花费的时间和精力。这种方式让消费者无需亲自寻找不同的装......
-				</view>
-			</view>
-		</view>
-		<view class="mb30 bg-white radius10" @click="handUrl('/pages/home/components/noticeListDetails/index')">
-			<image src="@/static/home/gg2.png" class="w-full h360" mode=""></image>
-			<view class="p20">
-				<view class="flex justify-between items-center">
-					<view class="text36 font-bold">‌装修的优点</view>
-					<view class="text20">‌2024-12-16</view>
-				</view>
-				<view class="col666666 text20 mt10" style="line-height: 30rpx;">
-					‌节省时间和精力‌：通过选择全屋整装或整装装修，消费者可以减少在装修过程中花费的时间和精力。这种方式让消费者无需亲自寻找不同的装......
+				<view class="col666666 text20 mt10 multi-line-ellipsis" style="line-height: 30rpx;">
+				   <view v-html="item.content"></view>
 				</view>
 			</view>
 		</view>
@@ -30,23 +19,44 @@
 <script>
 	export default {
 		props: {
-			
+			dataList: {
+				type: Array,
+				default: () => []
+			},
+			type: {
+				type: String,
+				default: ''
+			}
 		},
 		data() {
 			return {
-				
+
 			}
 		},
 		methods: {
-			handUrl(url) {
+			handUrl(item) {
+				console.log('type', this.$props.type);
 				uni.navigateTo({
-					url: url
+					url: '/pages/home/components/noticeListDetails/index?id=' + item.id + '&type=' + this.$props
+						.type
 				})
+
 			}
 		},
 	}
 </script>
 
 <style>
-	
+	.multi-line-ellipsis {
+		display: -webkit-box;
+		/* 设置为伸缩盒模型 */
+		-webkit-box-orient: vertical;
+		/* 垂直方向排列子元素 */
+		overflow: hidden;
+		/* 隐藏超出部分 */
+		-webkit-line-clamp: 2;
+		/* 限制显示的行数，这里是2行 */
+		text-overflow: ellipsis;
+		/* 超出部分显示省略号 */
+	}
 </style>

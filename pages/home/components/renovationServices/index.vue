@@ -21,7 +21,7 @@
 	export default {
 		data() {
 			return {
-				content:'<view>装修服务富文本</view>'
+				content:''
 			}
 		},
 		components:{
@@ -39,8 +39,7 @@
 					}
 				}).then((res)=>{
 					console.log('装修服务富文本',res.data);
-					const {content} = res.data.data
-					this.content = content
+					this.content = res.data.data
 				})
 			},
 			handUrl(url){

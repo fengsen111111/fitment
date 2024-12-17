@@ -18,6 +18,7 @@
 							<view class="text20 font-bold mt5">{{item.name}}</view>
 						</view>
 					</view>
+					<view v-if="typeItem.length==0">分类暂无数据！</view>
 				</view>
 			</view>
 		</view>
@@ -30,139 +31,9 @@
 	export default {
 		data() {
 			return {
-				typeList: [{
-						id: 1,
-						name: '沙发分类',
-						children: [{
-								id: 11,
-								name: '沙发分类1',
-								icon: ''
-							},
-							{
-								id: 12,
-								name: '沙发分类2',
-								icon: ''
-							},
-							{
-								id: 13,
-								name: '沙发分类3',
-								icon: ''
-							},
-							{
-								id: 14,
-								name: '沙发分类4',
-								icon: ''
-							},
-							{
-								id: 15,
-								name: '沙发分类5',
-								icon: ''
-							}
-						]
-					},
-					{
-						id: 2,
-						name: '茶几分类',
-						children: [{
-								id: 21,
-								name: '茶几分类1',
-								icon: ''
-							},
-							{
-								id: 22,
-								name: '茶几分类2',
-								icon: ''
-							},
-							{
-								id: 23,
-								name: '茶几分类3',
-								icon: ''
-							},
-						]
-					},
-					{
-						id: 3,
-						name: '床具分类',
-						children: [{
-								id: 31,
-								name: '床具分类1',
-								icon: ''
-							},
-							{
-								id: 32,
-								name: '床具分类2',
-								icon: ''
-							},
-							{
-								id: 33,
-								name: '床具分类3',
-								icon: ''
-							},
-							{
-								id: 34,
-								name: '床具分类4',
-								icon: ''
-							},
-						]
-					},
-					{
-						id: 4,
-						name: '橱柜分类',
-						children: [{
-								id: 41,
-								name: '橱柜分类1',
-								icon: ''
-							},
-							{
-								id: 42,
-								name: '橱柜分类2',
-								icon: ''
-							},
-							{
-								id: 43,
-								name: '橱柜分类3',
-								icon: ''
-							},
-							{
-								id: 44,
-								name: '橱柜分类4',
-								icon: ''
-							},
-							{
-								id: 45,
-								name: '橱柜分类5',
-								icon: ''
-							}
-						]
-					}
-				],
+				typeList: [],
 				type_index: 1,
-				typeItem: [{
-						id: 11,
-						name: '沙发分类1',
-						icon: ''
-					},
-					{
-						id: 12,
-						name: '沙发分类2',
-						icon: ''
-					},
-					{
-						id: 13,
-						name: '沙发分类3',
-						icon: ''
-					},
-					{
-						id: 14,
-						name: '沙发分类4',
-						icon: ''
-					},
-					{
-						id: 15,
-						name: '沙发分类5',
-						icon: ''
-					}
-				]
+				typeItem: []
 			}
 		},
 		components: {
@@ -180,6 +51,8 @@
 						list
 					} = res.data.data
 					this.typeList = list
+					this.typeItem = list[0].children
+					this.type_index = list[0].id
 				})
 			},
 			handleItem(item) {

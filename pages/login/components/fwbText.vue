@@ -15,7 +15,7 @@
 		data() {
 			return {
 				title:'富文本标题',
-				content: '<h1>富文本内容</h1>',
+				content: '',
 				optionType:''
 			}
 		},
@@ -70,8 +70,7 @@
 					   type: this.optionType
 				   }
 			   }).then((res)=>{
-				   const {content} = res.data.data
-				   this.content = content
+				   this.content = res.data.data
 			   })
 		   }
 		}

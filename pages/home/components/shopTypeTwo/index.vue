@@ -20,7 +20,7 @@
 					<image class="w15 h10 ml10" src="@/static/home/pointsMall/bottom.png" mode=""></image>
 				</view>
 				<view class="flex items-center" @click="()=>{$refs.popupPP.open('bottom')}">
-					<view class="">品牌</view>
+					<view class="">{{ppName}}</view>
 					<image class="w15 h10 ml10" src="@/static/home/pointsMall/bottom.png" mode=""></image>
 				</view>
 				<view :class="sfzy?'col4DB23F':''" @click="()=>{sfzy=!sfzy}">自营</view>
@@ -91,6 +91,7 @@
 			<view class="p40">
 				<view class="flex justify-between items-center">
 					<view class="w15"></view>
+					<view class="">选择品牌</view>
 					<uni-icons type="closeempty" size="20" @click="()=>{$refs.popupPP.close()}"></uni-icons>
 				</view>
 				<view class="px20">
@@ -110,6 +111,7 @@
 			return {
 				ppList: [], //品牌
 				ppIndex: '',
+				ppName:'品牌',//品牌name
 				sfzy: false, //是否自营
 				integral_goods_type_id: '', //商品分类id
 				price_start: '', //价格起
@@ -132,6 +134,8 @@
 			},
 			checkIndex(item) {
 				this.ppIndex = item.id
+				this.ppName = item.name
+				this.$refs.popupPP.close()
 			},
 			// 商品品牌列表
 			_getGoodsBrandList() {

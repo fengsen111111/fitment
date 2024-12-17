@@ -2,7 +2,7 @@
 	<view>
 		<view class="userBg">
 			<view class="flex justify-between items-center p30">
-				<view class="text-center">
+				<view class="text-center" @click="handUrl('/pages/home/components/citySel/index')">
 					<uni-icons type="location" size="26" color="#FFFFFF"></uni-icons>
 					<view class="text20 mt-16">成都</view>
 				</view>

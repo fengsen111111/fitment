@@ -31,7 +31,7 @@
 	export default {
 		data() {
 			return {
-				content:'<view>验房服务富文本</view>'
+				content:''
 			}
 		},
 		components:{
@@ -47,8 +47,7 @@
 					post_params:'introduce_c_rich'
 				}).then((res)=>{
 					console.log('验房服务',res.data.data);
-					const {content} = res.data.data
-					this.content = content
+					this.content = res.data.data
 				})
 			},
 			handUrl(url){

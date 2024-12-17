@@ -7,7 +7,7 @@
 					<view class="font-bold">定位</view>
 					<view class="mt20  items-center justify-between radius10 flex">
 						<view class="col999999">{{item.address}}</view>
-						<view class="w32 h32">
+						<view class="w32 h32" @click="handUrl('/pages/my/components/map/index')">
 							<image src="@/static/my/address/dz.png" class="w32 h32" mode=""></image>
 						</view>
 					</view>
@@ -62,6 +62,11 @@
 			NavBar
 		},
 		methods: {
+			handUrl(url) {
+				uni.navigateTo({
+					url: url
+				})
+			},
 			_editUserAddress(){
 				uni.showLoading({
 					title: "加载中"

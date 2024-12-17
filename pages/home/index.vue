@@ -48,40 +48,41 @@
 			</view>
 			<!-- 专区 -->
 			<view class="flex justify-between mt30">
-				<view class="">
+				<view class="" @click="byPageCli('-')">
 					<image src="../../static/home/home_left.png" class="w50 h120" mode=""></image>
 				</view>
-				<view class="">
-					<image src="../../static/home/首页区间分类1.png" class="w180 h120" mode=""></image>
+				<view class="" v-for="item in byzqList" :key="item.id">
+					<image :src="item.cover_image" class="w180 h120" mode=""></image>
 				</view>
-				<view class="">
-					<image src="../../static/home/首页区间分类2.png" class="w180 h120" mode=""></image>
-				</view>
-				<view class="">
-					<image src="../../static/home/首页区间分类3.png" class="w180 h120" mode=""></image>
-				</view>
-				<view class="">
+				<view class="" @click="byPageCli('+')">
 					<image src="../../static/home/home_right.png" class="w50 h120" mode=""></image>
 				</view>
 			</view>
 			<!-- 专区内容  *5-->
 			<view class="grid grid-cols-5 mt40">
-				<view class="text-center mx-auto w100 text20 col-black mb10" v-for="item in zqnrList" :key="item.img">
+				<view class="text-center mx-auto w100 text20 col-black mb10" v-for="item in twoTypeList" :key="item.id" @click="handUrl('/pages/home/components/shopTypeTwo/index?integral_goods_type_id='+item.id)">
 					<view class="">
-						<image :src="require('@/static/home/区间分类案例'+item.img+'.png')" class="w100 h100 radius10"
-							mode=""></image>
+						<image :src="item.icon" class="w100 h100 radius10" mode=""></image>
 					</view>
-					<view class="mt-10">{{item.text}}</view>
+					<view class="mt-10">{{item.name}}</view>
 				</view>
 			</view>
 			<!-- 查看更多 -->
-			<view  @click="handUrl('/pages/home/components/shopType/index')" class="col4DB23F text20 mt20 text-center">查看更多</view>
+			<view @click="handUrl('/pages/home/components/shopType/index')" class="col4DB23F text20 mt20 text-center">
+				查看更多</view>
 			<!-- 分类 *4 超出滚动-->
 			<view class="flex overflow-auto example mt30">
 				<view v-for="item in typeList" class="mr50 text28 text-center " :key="item.id"
-					@click="handleItem(item.id)">
+					@click="handleItem(item)">
 					<view style="white-space: nowrap;" :class="type_index == item.id?'font-bold':'col999999'">
 						{{item.text}}
+					</view>
+					<view class="checkboxItem mx-auto" v-if="type_index == item.id"></view>
+				</view>
+				<view v-for="item in spflList" class="mr50 text28 text-center " :key="item.id"
+					@click="handleItem(item)">
+					<view style="white-space: nowrap;" :class="type_index == item.id?'font-bold':'col999999'">
+						{{item.name}}
 					</view>
 					<view class="checkboxItem mx-auto" v-if="type_index == item.id"></view>
 				</view>
@@ -89,20 +90,33 @@
 			<!-- 分类 -->
 			<view class="mt40 ">
 				<view v-if="type_index == 1" class="grid grid-cols-2" style="grid-column-gap:20rpx">
-					<image @click="handUrl('/pages/home/components/pointsMall/index')" src="../../static/home/jfhl.png" class="w-full h200 radius10" mode=""></image>
-					<image @click="handUrl('/pages/home/components/jrms/index')" src="../../static/home/xsms.png" class="w-full h200 radius10" mode=""></image>
+					<image @click="handUrl('/pages/home/components/pointsMall/index')" src="../../static/home/jfhl.png"
+						class="w-full h200 radius10" mode=""></image>
+					<image @click="handUrl('/pages/home/components/jrms/index')" src="../../static/home/xsms.png"
+						class="w-full h200 radius10" mode=""></image>
 				</view>
 				<view v-else-if="type_index == 2">
-					<view  class="grid grid-cols-2" style="grid-column-gap:20rpx">
-						<image @click="handUrl('/pages/home/components/sign/index')" src="../../static/home/qdyl.png" class="w-full h200 radius10" mode=""></image>
-						<image @click="handUrl('/pages/home/components/noticeList/index')" src="../../static/home/xtgg.png" class="w-full h200 radius10" mode=""></image>
+					<view class="grid grid-cols-2" style="grid-column-gap:20rpx">
+						<image @click="handUrl('/pages/home/components/sign/index')" src="../../static/home/qdyl.png"
+							class="w-full h200 radius10" mode=""></image>
+						<image @click="handUrl('/pages/home/components/noticeList/index')"
+							src="../../static/home/xtgg.png" class="w-full h200 radius10" mode=""></image>
 					</view>
 					<view class="mt20">
-						<Notice />
+						<Notice :dataList="mrhdList" :type="'mrhd'" />
 					</view>
 				</view>
 				<view v-else>
-					分类
+					<view class="grid grid-cols-5 mt40">
+						<view class="text-center mx-auto w100 text20 col-black mb10"
+							v-for="item in itemTypeObj.children" :key="item.id"  @click="handUrl('/pages/home/components/shopTypeTwo/index?integral_goods_type_id='+item.id)">
+							<view class="">
+								<image :src="item.icon" class="w100 h100 radius10" mode=""></image>
+							</view>
+							<view class="mt-10">{{item.name}}</view>
+						</view>
+					</view>
+					<view v-if="itemTypeObj.children.length==0">分类暂无数据！</view>
 				</view>
 			</view>
 			<!-- 推荐 -->
@@ -156,7 +170,7 @@
 			<view class="bg-white col-black p30 radius20" style="width: 80vw;">
 				<view class="grid grid-cols-3">
 					<view class=""></view>
-					<view class="text28 text-center">公告</view>
+					<view class="text28 text-center">最新公告</view>
 					<view class="flex items-center justify-between">
 						<view class=""></view>
 						<uni-icons type="closeempty" @click="()=>{$refs.popup.close()}" size="20"></uni-icons>
@@ -178,17 +192,17 @@
 	import Notice from '@/components/notice/index.vue'
 	export default {
 		components: {
-			Tarbar,Notice
+			Tarbar,
+			Notice
 		},
 		created() {
-			this.$nextTick(() => {
-				this.$refs.popup.open('center')
-			})
-			this._getUserInfo() //用户信息
-			this._getNewNotice() //未读公告
-			this._getBannerList() //轮播图列表
-			this._getGoodsTypeList()//商品分类列表
+			this._getGoodsTypeList() //商品分类列表
+			this._getIndexGoodsTypeList() //商品二级分类
+			this._getGoodsActivityList() //包邮专区列表
 			this._getActivityList()//每日活动
+			// this._getUserInfo() //用户信息
+			this._getNewNotice() //未读公告
+			// this._getBannerList() //轮播图列表
 		},
 		data() {
 			return {
@@ -232,33 +246,6 @@
 						url: '/pages/home/components/joinPC/index'
 					}
 				],
-				// 专区内容列表
-				zqnrList: [{
-						img: '1',
-						text: '异型沙发‌',
-						url: ''
-					},
-					{
-						img: '2',
-						text: '转角沙发',
-						url: ''
-					},
-					{
-						img: '3',
-						text: '直排沙发',
-						url: ''
-					},
-					{
-						img: '4',
-						text: '弧形沙发',
-						url: ''
-					},
-					{
-						img: '5',
-						text: '模块沙发',
-						url: ''
-					}
-				],
 				// 分类列表
 				typeList: [{
 						id: 1,
@@ -269,83 +256,121 @@
 						text: '每日活动'
 					},
 					// 分类
-					{
-						id: 3,
-						text: '美妆精选'
-					},
-					{
-						id: 4,
-						text: '家具精选'
-					},
-					{
-						id: 5,
-						text: '设计交集'
-					},
-					{
-						id: 6,
-						text: '美妆精选'
-					},
-					{
-						id: 7,
-						text: '家具精选'
-					},
-					{
-						id: 8,
-						text: '设计交集'
-					}
 				],
 				// 当前分类id
 				type_index: 1,
 				// 公告
 				GGObj: {
-					id: 'id',
-					title: '‌装修的优点',
-					create_time: '发布时间 ',
-					content: '<view>富文本详情</view><br /><view>富文本详情</view><br /><view>富文本详情</view><br /><view>富文本详情</view><br /><view>富文本详情</view><br /><view>富文本详情</view><br />'
+					id: '',
+					title: '‌',
+					create_time: '',
+					content: ''
 				},
+
+				spflList: [], //商品分类列表
+
+				twoTypeList: [], //二级分类列表
+				itemTypeObj: {}, //当前一级分类
+				byzqList: [], //包邮专区列表
+
+				byPage: 1, //包邮页数
 				
-				spflList:[]//商品分类列表
+				mrhdList:[]//每日活动列表
 			}
 		},
-		methods: {
-			// 每日活动
-			_getActivityList(){
-				api.getActivityList({
-					post_params:{
-						currentPage:1,
-						perPage:10
+		methods: {	
+			byPageCli(type) {
+				if (type == '+') {
+					this.byPage = this.byPage + 1
+				} else {
+					if (this.byPage > 1) {
+						this.byPage = this.byPage - 1
+					}else if(this.byPage==1){
+						uni.showToast({
+							title: '已到最小页!',
+							icon: 'none',
+							duration: 2000
+						})
+						return false
 					}
-				}).then((res)=>{
-					const {list} = res.data.data
-					console.log('每日活动',list);
+				}
+				this._getGoodsActivityList()
+			},
+			// 包邮专区列表
+			_getGoodsActivityList() {
+				api.getGoodsActivityList({
+					post_params: {
+						currentPage: this.byPage,
+						perPage: 3
+					}
+				}).then((res) => {
+					const {
+						list
+					} = res.data.data
+					console.log('包邮专区列表', list);
+					this.byzqList = list
+				})
+			},
+			// 二级分类列表
+			_getIndexGoodsTypeList() {
+				console.log('???');
+				api.getIndexGoodsTypeList({
+					post_params: {
+						type: 'b'
+					}
+				}).then((res) => {
+					const {
+						list
+					} = res.data.data
+					console.log('二级分类', list);
+					this.twoTypeList = list.slice(0, 5)
+				})
+			},
+			// 每日活动
+			_getActivityList() {
+				api.getActivityList({
+					post_params: {
+						currentPage: 1,
+						perPage: 2
+					}
+				}).then((res) => {
+					const {
+						list
+					} = res.data.data
+					console.log('每日活动', list);
+					this.mrhdList = list
 				})
 			},
 			// 轮播图改变
-			swChange(e){
-				console.log('轮播图改变',e.detail.current);
-				const {current} = e.detail
+			swChange(e) {
+				console.log('轮播图改变', e.detail.current);
+				const {
+					current
+				} = e.detail
 				this.lbt_index = current
 			},
 			// 商品分类列表
-			_getGoodsTypeList(){
-				api.getGoodsTypeList().then((res)=>{
-					console.log('分类列表',res.data);
-					const {list} =res.data.data
+			_getGoodsTypeList() {
+				api.getGoodsTypeList().then((res) => {
+					console.log('分类列表', res.data.data);
+					const {
+						list
+					} = res.data.data
 					this.spflList = list
 				})
 			},
 			// 轮播图跳转富文本
-			handleFwb(item){
-				console.log('item',item);
+			handleFwb(item) {
+				console.log('item', item);
 				uni.navigateTo({
-					url: '/pages/home/components/fwbContent/index?id='+item.id
+					url: '/pages/home/components/fwbContent/index?id=' + item.id
 				})
 			},
 			// 轮播图列表
 			_getBannerList() {
 				api.getBannerList({
-					post_params:{
-						type:'index'
+					post_params: {
+						type: 'index'
 					}
 				}).then((res) => {
 					const {
@@ -376,6 +401,9 @@
 						create_time: create_time,
 						content: content
 					}
+					this.$nextTick(() => {
+						this.$refs.popup.open('center')
+					})
 				})
 			},
 			// 获取用户信息
@@ -391,8 +419,9 @@
 					this.$store.commit('setUserInfo', data)
 				})
 			},
-			handleItem(index) {
-				this.type_index = index
+			handleItem(item) {
+				this.type_index = item.id
+				this.itemTypeObj = item //当前一级分类
 			},
 			handLBT(index) {
 				this.lbt_index = index
@@ -418,6 +447,4 @@
 		height: 8rpx;
 		background: #4DB23F;
 	}
-
-	
 </style>

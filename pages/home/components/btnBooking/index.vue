@@ -48,7 +48,7 @@
 							class="w200 h200" mode=""></image>
 					</view>
 					<view v-else>
-						<image src="../../../../static/home/btnBooking/bk.png" class="w200 h200" mode=""></image>
+						<image src="@/static/home/btnBooking/bk.png" class="w200 h200" mode=""></image>
 						<view class="col999999 absolute top_bfb38 left_bfb6">点击选择</view>
 					</view>
 				</view>
@@ -56,7 +56,9 @@
 			<view class="mt40">
 				<view class="font-bold">我喜欢的</view>
 				<view class="mt20">
-					<image src="../../../../static/home/btnBooking/upload.png" class="w116 h116 radius10" mode="">
+					<image :src="item" v-for="item in images" :key="item" class="w116 h116 radius10 mr20" mode=""></image>
+					<image @click="selImg()" src="@/static/home/btnBooking/upload.png" class="w116 h116 radius10"
+						mode="">
 					</image>
 				</view>
 			</view>
@@ -147,6 +149,7 @@
 <script>
 	import NavBar from '@/components/navbar/index.vue'
 	import api from '@/request/allApi.js'
+	import {onChooseAvatar} from '@/utils/index.js'
 	export default {
 		data() {
 			return {
@@ -162,26 +165,6 @@
 						name: '装修风格2',
 						image: 'zxfg'
 					},
-					{
-						id: 3,
-						name: '装修风格3',
-						image: 'zxfg'
-					},
-					{
-						id: 4,
-						name: '装修风格4',
-						image: 'zxfg'
-					},
-					{
-						id: 5,
-						name: '装修风格5',
-						image: 'zxfg'
-					},
-					{
-						id: 6,
-						name: '装修风格6',
-						image: 'zxfg'
-					}
 				],
 				// 参数
 				post_params: {
@@ -208,13 +191,11 @@
 						id: 2,
 						name: '模式2'
 					},
-					{
-						id: 3,
-						name: '模式3'
-					}
 				],
 				time: 5, //倒计时
 				timer: '', //计时器
+				
+				images:[]//图片
 
 			}
 		},
@@ -231,26 +212,58 @@
 				}
 			}
 		},
+		onLoad() {
+			// 获取配置项
+			this._getBaseTypes()
+		},
 		methods: {
+			//*选择图片*//
+			selImg() {
+				let that = this
+				uni.chooseImage({
+					count: 9, // 最多可以选择的图片张数，默认9
+					sizeType: ['compressed'], // original 原图，compressed 压缩图，默认二者都有
+					sourceType: ['album', 'camera'], // album 从相册选图，camera 使用相机，默认二者都有
+					success: function(res) {
+						console.log('res', res.tempFiles[0]);
+						const file = res.tempFiles[0]
+						// 上传图片
+						api.getTicket().then((res) => {
+							const {
+								ticket_time
+							} = res.data.data
+							api.getUploadType().then((res_two) => {
+								const {
+									folder,
+									file_type
+								} = res_two.data.data.config
+								const params = {
+									"ticket_time": ticket_time,
+									"folder": folder ? folder : 'topicImg',
+									"file_type": file_type ? file_type : 'image',
+								}
+								// 上传到本地
+								onChooseAvatar(file, params, (error, res) => {
+									if (error) {
+										console.log('上传失败:', res);
+									} else {
+										console.log('上传地址:', res.data.url);
+										that.images.push('https://api.qfcss.cn'+res.data.url) //赋值回去
+									}
+								});
+							})
+						})
+					}
+				})
+			},
+			// 获取配置项
+			_getBaseTypes() {
+				api.getBaseTypes().then((res) => {
+					console.log('配置项', res.data);
+				})
+			},
 			// 定位小区
 			handDw() {
-				// uni.getLocation({
-				// 	type: 'gcj02',
-				// 	highAccuracyExpireTime: '4000',
-				// 	accuracy: 'best',
-				// 	isHighAccuracy: true,
-				// 	altitude: true,
-				// 	success: (res) => {
-				// 		console.log('当前位置经纬度:', res);
-				// 	},
-				// 	fail: (err) => {
-				// 		console.error('定位失败', err);
-				// 		uni.showToast({
-				// 			title: '无法获取位置信息',
-				// 			icon: 'none'
-				// 		});
-				// 	}
-				// });
 				uni.navigateTo({
 					url: '/pages/my/components/map/index'
 				})
