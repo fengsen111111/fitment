@@ -8,7 +8,7 @@
 			</view>
 			<view class="mb20 bg-white p30 radius10 flex justify-between">
 				<view class="">通知设置</view>
-				<uni-icons type="right" @click="handUrl('')" color="#666666" size="20"></uni-icons>
+				<uni-icons type="right" @click="handUrl('/pages/my/components/creatorNotice/index')" color="#666666" size="20"></uni-icons>
 			</view>
 			<view class="mb20 bg-white p30 radius10 flex justify-between">
 				<view class="">隐私设置</view>

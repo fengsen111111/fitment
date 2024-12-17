@@ -183,14 +183,15 @@
 						// image: 'zxfg'
 					}
 				},
-				zxmsList: [{
-						id: 1,
-						name: '模式1'
-					},
-					{
-						id: 2,
-						name: '模式2'
-					},
+				zxmsList: [
+					// {
+					// 	id: 1,
+					// 	name: '模式1'
+					// },
+					// {
+					// 	id: 2,
+					// 	name: '模式2'
+					// },
 				],
 				time: 5, //倒计时
 				timer: '', //计时器
@@ -215,8 +216,15 @@
 		onLoad() {
 			// 获取配置项
 			this._getBaseTypes()
+			// 装修风格
+			this._getDecorationStylesList()
 		},
 		methods: {
+			_getDecorationStylesList(){
+				api.getDecorationStylesList().then((res)=>{
+					console.log('装修风格',res.data);
+				})
+			},
 			//*选择图片*//
 			selImg() {
 				let that = this
@@ -296,7 +304,7 @@
 			// 选择时间
 			handleSubmit(e) {
 				// {year: "2023", month: "07", day: "11", hour: "15", minute: "21", seconds: '55'}
-				this.post_params.time = `${e.year}-${e.month}-${e.day} ${e.hour}:${e.minute}`;
+				this.post_params.time = `${e.year}/${e.month}/${e.day} ${e.hour}:${e.minute}`;
 			},
 			// 提交预约
 			_submitService() {

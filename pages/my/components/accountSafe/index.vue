@@ -159,6 +159,10 @@
 		components: {
 			NavBar,
 		},
+		onLoad(){
+			console.log('userInfo',this.$store.state.userInfo);
+			this.phone = this.$store.state.userInfo.mobile//原来手机号
+		},
 		methods: {
 			// 注销账号
 			handleZX(){

@@ -110,8 +110,8 @@
 			getWeChatCode() {
 				//用于退出登录回来不会再调一次授权登录
 				uni.setStorageSync('wechat_login_tag', 'true');
-				const appID = 'gh_dc77611ed9fc'; //公众号appID
-				const callBack = ''; //回调地址 就是你的完整地址登录页
+				const appID = 'wx87e8f8dfbdc6c22a'; //公众号appID
+				const callBack = 'https://api.qfcss.cn'; //回调地址 就是你的完整地址登录页
 				//通过微信官方接口获取code之后，会重新刷新设置的回调地址【redirect_uri】
 				window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' +
 					appID + '&redirect_uri=' + encodeURIComponent(callBack) +
