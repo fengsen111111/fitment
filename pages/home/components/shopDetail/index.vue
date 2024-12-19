@@ -186,7 +186,7 @@
 					<view class="text16 col-black">客服</view>
 				</view>
 				<view class="flex items-center">
-					<view  class="bg91C42F px50 py20 text-center radius10 col-white text32 font-bold">
+					<view @click="_addCar()" class="bg91C42F px50 py20 text-center radius10 col-white text32 font-bold">
 						加入购物车
 					</view>
 					<view  @click="handUrl('/pages/home/components/shopOrderOk/index')" class="ml30 bg4DB23F px50 py20 text-center radius10 col-white text32 font-bold">
@@ -219,6 +219,17 @@
 			this._getGoodsDetail()//商品详情
 		},
 		methods: {
+			// 加入购物车
+			_addCar(){
+				api.addCar({
+					post_params:{
+						goods_id:this.shop_id,
+						number:1
+					}
+				}).then((res)=>{
+					console.log('加入购物车res.data',res.data);
+				})
+			},
 			// 用户获取商家信息
 			_userGetStoreInfo(){
 				api.userGetStoreInfo({

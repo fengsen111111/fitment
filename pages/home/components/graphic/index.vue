@@ -13,7 +13,7 @@
 					@click="handUrl('/pages/home/components/interiorSend/index')" mode=""></image>
 			</view>
 		</view>
-		<image src="@/static/home/graphic/tw.png" class="w-full h540 mt40" mode=""></image>
+		<image src="@/static/home/graphic/tw.png" class="w-full h540" mode=""></image>
 		<view class="p30">
 			<view class="flex justify-between items-baseline">
 				<view class="font-bold text36">‌装修的优点</view>

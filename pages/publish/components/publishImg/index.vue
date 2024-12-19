@@ -18,7 +18,7 @@
 					<view class="text20 col4DB23F" @click="handUrl('/pages/publish/components/topicSearch/index')">添加
 					</view>
 				</view>
-				<view class="flex col4DB23F">
+				<view class="grid grid-cols-4 col4DB23F">
 					<view class="mr30" v-for="item in topicList" :key="item.id">{{item.name}}</view>
 					<!-- <view class="mr30">话题名称</view> -->
 					<!-- <view class="mr30">话题名称</view> -->

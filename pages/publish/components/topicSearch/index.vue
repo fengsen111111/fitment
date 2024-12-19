@@ -8,7 +8,7 @@
 		</view>
 		<view class="p30 text20 " v-else>
 			<view class="grid grid-cols-4 text-center" style="grid-column-gap:30rpx">
-				<view class="mt20 bgF5F5F5  py6 radius8" @click="handleChe(index)" :class="item.check?'col4DB23F border4DB23F':'col666666'"  v-for="(item,index) in dataList" :key="item">{{item.name}}</view>
+				<view class="mt20 bgF5F5F5  py6 radius8" @click="handleChe(index)" :class="item.check?'col4DB23F border4DB23F':'col666666'"  v-for="(item,index) in dataList" :key="item.id">{{item.name}}</view>
 			</view>
 		</view>
 		

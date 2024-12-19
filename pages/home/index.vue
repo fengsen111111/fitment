@@ -51,7 +51,7 @@
 				<view class="" @click="byPageCli('-')">
 					<image src="../../static/home/home_left.png" class="w50 h120" mode=""></image>
 				</view>
-				<view class="" v-for="item in byzqList" :key="item.id">
+				<view class="" v-for="item in byzqList" :key="item.id" @click="handUrl('/pages/home/components/byzq/index?id='+item.id)">
 					<image :src="item.cover_image" class="w180 h120" mode=""></image>
 				</view>
 				<view class="" @click="byPageCli('+')">

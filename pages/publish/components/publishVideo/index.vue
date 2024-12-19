@@ -17,11 +17,11 @@
 					<view class="font-bold">话题</view>
 					<view class="text20 col4DB23F" @click="handUrl('/pages/publish/components/topicSearch/index')">添加</view>
 				</view>
-				<view class="flex col4DB23F">
-					<view class="mr30">话题名称</view>
-					<view class="mr30">话题名称</view>
-					<view class="mr30">话题名称</view>
-					<view class="mr30">话题名称</view>
+				<view class="grid grid-cols-4 col4DB23F">
+					<view class="mr30" v-for="item in topicList" :key="item.id">{{item.name}}</view>
+					<!-- <view class="mr30">话题名称</view> -->
+					<!-- <view class="mr30">话题名称</view> -->
+					<!-- <view class="mr30">话题名称</view> -->
 				</view>
 			</view>
 			<view class="bg-white mt30 radius10 p20">
@@ -113,7 +113,17 @@
 	import NavBar from '@/components/navbar/index.vue'
 	export default {
 		data() {
-			return {}
+			return {
+				topicList:[],//话题列表
+			}
+		},
+		onShow(){
+			let arr = uni.getStorageSync('topicList') //存入缓存
+			if(arr){
+				arr = JSON.parse(arr)
+				console.log('话题列表',arr) //
+				this.topicList = arr
+			}
 		},
 		components:{NavBar},
 		methods: {

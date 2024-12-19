@@ -16,7 +16,7 @@
 				<view class="col-white  text32 mt40 flex items-center justify-between">
 					<view class="font-bold">我的积分</view>
 					<view class="flex items-center">
-						<view class="font-bold">9999</view>
+						<view class="font-bold">{{userInfo.integral}}</view>
 						<uni-icons type="right" size="26" color="#ffffff" class="ml10"></uni-icons>
 					</view>
 				</view>
@@ -43,11 +43,14 @@
 							info: '+100'
 						}
 					]
-				}
+				},
+				// 用户信息
+				userInfo:{}
 			}
 		},
 		onLoad(){
 			this._getSignList() //获取签到记录
+			this.userInfo = this.$store.state.userInfo
 		},
 		methods: {
 			// 签到

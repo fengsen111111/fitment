@@ -13,35 +13,39 @@
 				</view>
 			</view>
 		</view>
-		<view class="mt30 bg-white text24 p30" style="border-radius: 20rpx 20rpx 0rpx 0rpx;" v-for="item in [1,2,3]"
-			:key="item">
+		<view class="mt30 bg-white text24 p30" style="border-radius: 20rpx 20rpx 0rpx 0rpx;" v-for="item in list"
+			:key="item.id">
 			<view class="">
 				<view class="flex">
-					<view class="w180 h180">
-						<image src="@/static/home/首页推荐商品图示例1.png" class="w180 h180 radius10" mode=""></image>
+					<view class="w180 h180" @click="handUrl('/pages/home/components/shopDetail/index?id='+item.id)">
+						<!-- <image src="@/static/home/首页推荐商品图示例1.png" class="w180 h180 radius10" mode=""></image> -->
+						<image :src="item.cover_image" class="w180 h180 radius10" mode=""></image>
 					</view>
 					<view class="ml20 w-full">
 						<view class="flex items-center justify-between">
 							<view class="flex items-center">
-								<view class="border4DB23F text20 col4DB23F px10 radius4 mr10"
+								<view v-if="item.self_support=='Y'" class="border4DB23F text20 col4DB23F px10 radius4 mr10"
 									style="line-height: 30rpx;">自营</view>
-								<view class="text30 font-bold">{{'新中式沙发冬夏两用豪华套装'+'...'}}</view>
+								<view class="text30 font-bold">
+								<!-- {{'新中式沙发冬夏两用豪华套装'+'...'}} -->
+							    	{{item.name}}
+								</view>
 							</view>
 						</view>
 						<view class="flex justify-between items-center w-full mt10">
 							<view class="flex">
-								<view class="text20">库存:9999</view>
-								<view class="text20 ml40">销量:9999</view>
+								<view class="text20">库存:{{item.stock}}</view>
+								<view class="text20 ml40">销量:{{item.salled_number}}</view>
 							</view>
 							<view class=""></view>
 						</view>
 						<view class="flex justify-between items-center w-full ">
-							<view class="text20">规格:四人沙发</view>
+							<view class="text20">规格:{{item.size_name}}</view>
 							<view></view>
 						</view>
 						<view class=" flex justify-between items-center">
-							<view class="text36 colFF0000 font-bold">￥6666</view>
-							<view class="bg4DB23F py10 px20 radius10 col-white font-bold">加入购物车</view>
+							<view class="text36 colFF0000 font-bold">￥{{item.price}}</view>
+							<view class="bg4DB23F py10 px20 radius10 col-white font-bold" @click="_addCar(item)">加入购物车</view>
 						</view>
 					</view>
 				</view>
@@ -52,34 +56,62 @@
 
 <script>
 	import NavBar from '@/components/navbar/index.vue'
+	import api from '@/request/allApi.js'
 	export default {
 		data() {
 			return {
 				// 分类列表
 				typeList: [{
-						id: 1,
+						id: 'a',
 						text: '今日上新'
 					},
 					{
-						id: 2,
+						id: 'b',
 						text: '最近三日'
 					},
 					{
-						id: 3,
+						id: 'c',
 						text: '最近七日'
 					},
 				],
 				// 当前分类id
-				type_index: 1,
+				type_index: 'a',
 
 			}
+		},
+		onLoad(){
+			this._getGoodsList()
 		},
 		components: {
 			NavBar,
 		},
 		methods: {
+			// 加入
+			_addCar(item){
+				api.addCar({
+					post_params:{
+						goods_id:item.id,
+						number:1
+					}
+				}).then((res)=>{
+					console.log('加入购物车res.data',res.data);
+				})
+			},
+			// 商品列表
+			_getGoodsList(){
+				api.getGoodsList({
+					post_params:{
+						new_goods: this.type_index
+					}
+				}).then((res)=>{
+					const {list} = res.data.data
+					console.log('包邮专区',list);
+					this.list = list
+				})
+			},
 			handleItem(index) {
 				this.type_index = index
+				this._getGoodsList()
 			},
 			handUrl(url) {
 				uni.navigateTo({

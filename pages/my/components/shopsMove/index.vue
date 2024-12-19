@@ -32,6 +32,9 @@
 		components:{
 			NavBar
 		},
+		onLoad(){
+			this._getRichTextContent()
+		},
 		methods: {
 			// 商家入驻介绍
 			_getRichTextContent(){
@@ -40,8 +43,7 @@
 						type:'store_entry_introduce'
 					}
 				}).then((res)=>{
-					const {content} = res.data.data
-					this.content = content
+					this.content = res.data.data
 				})
 			},
 			handUrl(url){

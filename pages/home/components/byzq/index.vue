@@ -1,16 +1,13 @@
 <template>
 	<view class="bgF9F9F9 h100vh">
-		<NavBar :navType="'标题'" :title="'性价比好货'" />
+		<NavBar :navType="'标题'" :title="'包邮专区'" />
 		<view class="mt30 bg-white text24 p30" style="border-radius: 20rpx 20rpx 0rpx 0rpx;" v-for="item in list"
 			:key="item.id">
 			<view class="">
 				<view class="flex">
-					<view class="w180 h180 relative" @click="handUrl('/pages/home/components/shopDetail/index?id='+item.id)">
+					<view class="w180 h180" @click="handUrl('/pages/home/components/shopDetail/index?id='+item.id)">
 						<!-- <image src="@/static/home/首页推荐商品图示例1.png" class="w180 h180 radius10" mode=""></image> -->
 						<image :src="item.cover_image" class="w180 h180 radius10" mode=""></image>
-						<view class="absolute text20 col-white top0 px10 radius4" style="background: linear-gradient( 134deg, #FA311D 0%, #FF8E34 100%);line-height: 36rpx;">
-							推荐好货
-						</view>
 					</view>
 					<view class="ml20 w-full">
 						<view class="flex items-center justify-between">
@@ -75,11 +72,14 @@
 					console.log('加入购物车res.data',res.data);
 				})
 			},
-			// 商品列表
 			_getGoodsList(){
-				api.getGoodsList().then((res)=>{
+				api.getGoodsList({
+					post_params:{
+						goods_activity_id: this.option.id
+					}
+				}).then((res)=>{
 					const {list} = res.data.data
-					console.log('性价比好货',list);
+					console.log('包邮专区',list);
 					this.list = list
 				})
 			},

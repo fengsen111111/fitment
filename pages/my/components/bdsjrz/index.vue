@@ -23,8 +23,10 @@
 				</view>
 				<view class="mt40">
 					<view class="font-bold">店铺地址</view>
-					<view class="mt20 bgF5F5F5 py20 px30 radius10">
-						<input type="text" v-model="form.address" placeholder="输入店铺地址" />
+					<view class="mt20 bgF5F5F5 py20 px30 radius10 flex items-center">
+						<input type="text" class="w-full" v-model="form.address" placeholder="输入店铺地址" />
+						<image src="../../../../static/home/btnBooking/dw.png" class="w22 h28" @click="handDw" mode="">
+						</image>
 					</view>
 				</view>
 				<view class="mt40">
@@ -88,6 +90,12 @@
 			NavBar
 		},
 		methods: {
+			// 定位小区
+			handDw() {
+				uni.navigateTo({
+					url: '/pages/my/components/map/index'
+				})
+			},
 			_submitEntryApply() {
 				if (this.status) {
 					uni.showToast({

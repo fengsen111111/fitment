@@ -226,6 +226,9 @@
 		},
 		{
 			"path":"pages/home/components/citySel/index"
+		},
+		{
+			"path":"pages/home/components/byzq/index"
 		}
 	],
 	"globalStyle": {
