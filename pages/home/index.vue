@@ -308,7 +308,7 @@
 						list
 					} = res.data.data
 					console.log('包邮专区列表', list);
-					this.byzqList = list
+					this.byzqList = list.slice(0,3)
 				})
 			},
 			// 二级分类列表
