@@ -2,6 +2,7 @@
 	<view>
 		<!-- 头部 -->
 		<view class="p30">
+			<view class="h40"></view>
 			<view class="flex justify-between col4DB23F">
 				<view class="text-center flex items-center">
 					<uni-icons type="location" size="24" color="#4DB23F"></uni-icons>
@@ -31,12 +32,12 @@
 			<view class="flex justify-between mt30" style="flex-wrap: wrap;">
 				<!-- 视频 -->
 				<view class="bg-white w340 mb20" v-for="(item,index) in [1,2,1,2,1,2]" :key="index">
-					<image @click="handUrl('/pages/home/components/video/index')" :src="require('@/static/community/社区'+item+'.png')" class="w340 h540" mode=""></image>
+					<image @click="handUrl('/pages/home/components/video/index')" :src="require('@/static/community/sq'+item+'.png')" class="w340 h540" mode=""></image>
 					<view class="px20 col333333 pb14">
-						<view class="font-bold">节省时间和精力‌：通过选择全屋整装或整装装修</view>
+						<view class="font-bold text24">节省时间和精力‌：通过选择全屋整装或整装装修</view>
 						<view class="flex justify-between text20 mt10">
 							<view class="flex items-center">
-								<image src="../../static/home/区间分类案例2.png" class="w28 h28 radius20" mode="">
+								<image src="../../static/home/qjflal2.png" class="w28 h28 radius20" mode="">
 								</image>
 								<view class="ml10">一只小海螺</view>
 							</view>

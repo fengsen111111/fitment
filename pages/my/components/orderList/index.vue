@@ -34,7 +34,7 @@
 						<view class="flex mb20 justify-between items-center" v-for="(iss,index_iss) in item.goods_list"
 							:key="index_iss">
 							<view class="w136 h136">
-								<!-- <image src="@/static/home/首页推荐商品图示例1.png" class="w136 h136 radius10" mode=""></image> -->
+								<!-- <image src="@/static/home/sytjspslt1.png" class="w136 h136 radius10" mode=""></image> -->
 								<image src="iss.cover_image" class="w136 h136 radius10" mode=""></image>
 							</view>
 							<view class="w-full ml20" style="line-height: 30rpx;">

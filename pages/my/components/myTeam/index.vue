@@ -10,7 +10,7 @@
 			<view v-for="item in [1,2,3]" :key="item" class="mb20 bg-white px30 py20 radius10 items-center flex justify-between">
 				<view class="flex items-center">
 					<view class="w48 h48">
-						<image src="@/static/home/区间分类案例2.png" class="w48 h48 radius_bfb50" mode=""></image>
+						<image src="@/static/home/qjflal2.png" class="w48 h48 radius_bfb50" mode=""></image>
 					</view>
 					<view class="text24 font-bold ml20">一只小海螺</view>
 				</view>

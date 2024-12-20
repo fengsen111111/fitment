@@ -18,7 +18,7 @@
 			<view class="">
 				<view class="flex">
 					<view class="w180 h180">
-						<image src="@/static/home/首页推荐商品图示例1.png" class="w180 h180 radius10" mode=""></image>
+						<image src="@/static/home/sytjspslt1.png" class="w180 h180 radius10" mode=""></image>
 					</view>
 					<view class="ml20 w-full">
 						<view class="flex items-center justify-between">

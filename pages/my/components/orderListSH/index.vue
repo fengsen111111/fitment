@@ -31,7 +31,7 @@
 						</view>
 						<view class="flex mt10">
 							<view class="w116 h116 radius10 mr10" v-for="item in [1,2,3]" :key="item">
-								<image src="@/static/home/首页推荐商品图示例1.png" class="w116 h116 radius10" mode=""></image>
+								<image src="@/static/home/sytjspslt1.png" class="w116 h116 radius10" mode=""></image>
 							</view>
 						</view>
 					</view>
@@ -60,7 +60,7 @@
 								<uni-icons type="checkbox-filled" size="20" color="#4DB23F"></uni-icons>
 							</view>
 							<view class="w136 h136 ml10">
-								<image src="@/static/home/首页推荐商品图示例1.png" class="w136 h136 radius10" mode=""></image>
+								<image src="@/static/home/sytjspslt1.png" class="w136 h136 radius10" mode=""></image>
 							</view>
 						</view>
 						<view class="w-full ml20" style="line-height: 30rpx;">

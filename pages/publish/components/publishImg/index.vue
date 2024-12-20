@@ -33,7 +33,7 @@
 				</view>
 				<view class="flex mt30">
 					<view class="w180 h180">
-						<image src="@/static/home/首页推荐商品图示例1.png" class="w180 h180" mode=""></image>
+						<image src="@/static/home/sytjspslt1.png" class="w180 h180" mode=""></image>
 					</view>
 					<view class="ml20">
 						<view class="flex items-center">

@@ -6,7 +6,7 @@
 			<view class=" p30 bg-white">
 				<view class="flex pb30 mb30" style="border-bottom: 1px solid #999999;" v-for="item in [1,2,3]" :key="item">
 					<view class="w180 h180">
-						<image src="@/static/home/首页推荐商品图示例1.png" class="w180 h180" mode=""></image>
+						<image src="@/static/home/sytjspslt1.png" class="w180 h180" mode=""></image>
 					</view>
 					<view class="ml20">
 						<view class="flex items-center">

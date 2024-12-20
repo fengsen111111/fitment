@@ -41,7 +41,7 @@
 						微信授权登录
 					</view>
 				</view>
-				<view class="flex mt176">
+				<view class="flex text24 mt176">
 					<view class="flex items-center mx-auto">
 						<uni-icons @click="chenckHand" v-if="chenck" type="circle" size="24"
 							color="#999999"></uni-icons>

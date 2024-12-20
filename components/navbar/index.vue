@@ -1,6 +1,6 @@
 <template>
 	<view class="">
-		<view class="bg4DB23F" v-if="navType=='搜索'">
+		<view class="bg4DB23F pt40" v-if="navType=='搜索'">
 			<view class="flex pt25 px30  items-center pb14 justify-between">
 				<uni-icons type="left" size="30" style="margin-left: -10rpx;" @click="back()" color="#ffffff"></uni-icons>
 				<view class="bg-white flex items-center py10 px20 radius40">
@@ -10,14 +10,14 @@
 				<view class="bg91C42F col-white font-bold text28 px30 py10 radius40" @click="tjValue()">搜索</view>
 			</view>
 		</view>
-		<view class="bg4DB23F" v-else-if="navType=='标题'">
+		<view class="bg4DB23F pt40" v-else-if="navType=='标题'">
 			<view class="pt25 px30 grid grid-cols-3 pb20 justify-between">
 				<uni-icons type="left" size="30" style="text-align: left;margin-left: -10rpx;" @click="back()" color="#ffffff"></uni-icons>
 				<view class="text-center text36 font-bold col-white">{{title}}</view>
 				<view class="w15"></view>
 			</view>
 		</view>
-		<view class="bg4DB23F" v-else-if="navType=='搜索2'">
+		<view class="bg4DB23F pt40" v-else-if="navType=='搜索2'">
 			<view class="flex pt25 px30  items-center pb14 justify-between">
 				<uni-icons type="left" size="30" style="margin-left: -10rpx;" @click="back()" color="#ffffff"></uni-icons>
 				<view class="bg-white flex items-center py10 px20 radius40">
@@ -29,7 +29,7 @@
 			</view>
 		</view>
 		<view class="" v-else-if="navType=='solt'">
-			<view class="bg4DB23F">
+			<view class="bg4DB23F pt40">
 				<view class="pt25 px30 grid grid-cols-3 pb20 items-center">
 					<uni-icons type="left" size="30" style="text-align: left;margin-left: -10rpx;" @click="back()" color="#ffffff"></uni-icons>
 					<view class="text-center text36 font-bold col-white">{{title}}</view>

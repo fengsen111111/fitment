@@ -41,7 +41,7 @@
 				<view class="flex pb30 mb30" style="border-bottom: 1px solid #999999;" v-for="item in shopList"
 					:key="item.id">
 					<view class="w180 h180" @click="handUrl('/pages/home/components/shopDetail/index')">
-						<!-- <image src="@/static/home/首页推荐商品图示例1.png" class="w180 h180" mode=""></image> -->
+						<!-- <image src="@/static/home/sytjspslt1.png" class="w180 h180" mode=""></image> -->
 						<image :src="item.cover_image" class="w180 h180" mode=""></image>
 					</view>
 					<view class="ml20 w-full">

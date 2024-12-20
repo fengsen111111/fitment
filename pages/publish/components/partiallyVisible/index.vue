@@ -6,7 +6,7 @@
 				:key="item.id">
 				<view class="flex items-center">
 					<view class="w60 h60">
-						<!-- <image src="@/static/home/首页推荐商品图示例1.png" class="w60 h60 radius_bfb50" mode=""></image> -->
+						<!-- <image src="@/static/home/sytjspslt1.png" class="w60 h60 radius_bfb50" mode=""></image> -->
 						<image :src="item.head_image" class="w60 h60 radius_bfb50" mode=""></image>
 					</view>
 					<view class="font-bold ml20 col333333 text28">{{item.nickname}}</view>

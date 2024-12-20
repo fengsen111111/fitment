@@ -13,7 +13,7 @@
 						{{item.title}}
 					</view>
 					<view class="flex items-center">
-						<!-- <image src="@/static/home/区间分类案例2.png" class="w28 h28 radius20" mode=""></image> -->
+						<!-- <image src="@/static/home/qjflal2.png" class="w28 h28 radius20" mode=""></image> -->
 						<image :src="item.head_image" class="w28 h28 radius20" mode=""></image>
 						<view class="ml10 text20">{{item.nickname}}</view>
 					</view>

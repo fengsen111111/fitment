@@ -31,10 +31,10 @@
 					<view class="flex items-center ">
 						<view class="text28">任务描述</view>
 					</view>
-					<view class="flex">
+					<view class="flex text28">
 						<view class="radius10 bgFBB333 col-white px10 py6">去完成</view>
 						<view class="radius10 bg4DB23F col-white px10 py6">去分享</view>
-						<view class="radius10  col91C42F px10 py6">已完成</view>
+						<view class="radius10 col91C42F px10 py6">已完成</view>
 					</view>
 				</view>
 			</view>
@@ -49,7 +49,7 @@
 				</view>
 				<view class="px50 text-center">
 					<view class="w538 h538">
-						<image src="@/static/home/首页推荐视频封面1.png" class="w538 h538" mode=""></image>
+						<image src="@/static/home/sytjspfm1.png" class="w538 h538" mode=""></image>
 					</view>
 					<view class="mt77 col-white font-bold radius10 py17 w-full bg4DB23F">立即分享</view>
 					<view class="mt20 col4DB23F font-bold radius10 py17 w-full border4DB23F">保存到手机</view>

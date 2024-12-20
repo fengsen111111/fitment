@@ -4,7 +4,7 @@
 		<view class="px30 text28">
 			<view v-for="item in [1,2,3,4]" :key="item" class="mt30 flex items-center justify-between p30 bg-white radius10">
 				<view class="flex items-center">
-					<image src="@/static/home/区间分类案例2.png" class="w60 h60 radius_bfb50" mode="">
+					<image src="@/static/home/qjflal2.png" class="w60 h60 radius_bfb50" mode="">
 					</image>
 					<view class="ml20">一只小海螺</view>
 				</view>

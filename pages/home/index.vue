@@ -2,10 +2,11 @@
 	<view>
 		<!-- 头部 -->
 		<view class="bg_top">
+			<view class="h40"></view>
 			<view class="flex justify-between col-white">
 				<view class="text-center" @click="handUrl('/pages/home/components/citySel/index')">
 					<uni-icons type="location" size="30" color="#FFFFFF"></uni-icons>
-					<view class="text20 mt-16">成都</view>
+					<view class="text20" style="line-height: 20rpx;">成都</view>
 				</view>
 				<view class="px30 w-4-5" @click="handUrl('/pages/home/components/search/index')">
 					<view class="bg-white py14 px20 flex items-center radius50">
@@ -15,7 +16,7 @@
 				</view>
 				<view class="text-center" @click="handUrl('/pages/home/components/sign/index')">
 					<uni-icons type="calendar" size="30" color="#FFFFFF"></uni-icons>
-					<view class="text16  mt-16">签到</view>
+					<view class="text16" style="line-height: 16rpx;">签到</view>
 				</view>
 			</view>
 			<view class="mt36">
@@ -23,7 +24,7 @@
 					:dots-styles="{selectedBackgroundColor:'#91C42F',backgroundColor:'#999999'}">
 					<swiper class="swiper-box radius10 h300" :current="lbt_index" @change="swChange">
 						<swiper-item @click="handleFwb(item)" v-for="(item, index) in info" :key="index">
-							<image src="../../static/home/首页轮播图.png" class="h300 w-full radius10" mode=""></image>
+							<image src="../../static/home/sylbt.png" class="h300 w-full radius10" mode=""></image>
 						</swiper-item>
 					</swiper>
 				</uni-swiper-dot>
@@ -64,7 +65,7 @@
 					<view class="">
 						<image :src="item.icon" class="w100 h100 radius10" mode=""></image>
 					</view>
-					<view class="mt-10">{{item.name}}</view>
+					<view class="">{{item.name}}</view>
 				</view>
 			</view>
 			<!-- 查看更多 -->
@@ -113,7 +114,7 @@
 							<view class="">
 								<image :src="item.icon" class="w100 h100 radius10" mode=""></image>
 							</view>
-							<view class="mt-10">{{item.name}}</view>
+							<view class="">{{item.name}}</view>
 						</view>
 					</view>
 					<view v-if="itemTypeObj.children.length==0">分类暂无数据！</view>
@@ -126,10 +127,10 @@
 				<view>
 					<view class="bg-white w340 mb20" v-for="(item,index) in [1,2,3,4]" :key="item">
 						<image @click="handUrl('/pages/home/components/graphic/index')"
-							src="../../static/home/首页推荐商品图示例1.png" class="w340 h340" mode=""></image>
+							src="../../static/home/sytjspslt1.png" class="w340 h340" mode=""></image>
 						<view class="px20 pb14">
-							<view class="col333333 font-bold">新中式沙发冬夏两用</view>
-							<view class="colFF0000 font-bold mt10">￥6666</view>
+							<view class="col333333 font-bold text28">新中式沙发冬夏两用</view>
+							<view class="colFF0000 font-bold mt10 text28">￥6666</view>
 							<view class="flex text20 mt10" style="line-height: normal">
 								<view class="bg4DB23F col-white px10 radius4">自营</view>
 								<view class="ml20 border4DB23F col4DB23F px10 radius4">销量 6.6w</view>
@@ -145,12 +146,12 @@
 				<view class="">
 					<view class="bg-white w340 mb20" v-for="(item,index) in [1,2,3]" :key="item">
 						<image @click="handUrl('/pages/home/components/video/index')"
-							src="../../static/home/首页推荐视频封面1.png" class="w340 h575" mode=""></image>
+							src="../../static/home/sytjspfm1.png" class="w340 h575" mode=""></image>
 						<view class="px20 col333333 pb14">
 							<view class="font-bold">现代北欧风格多功能伸 缩茶几</view>
 							<view class="flex justify-between text20 mt10">
 								<view class="flex items-center">
-									<image src="../../static/home/区间分类案例2.png" class="w28 h28 radius20" mode="">
+									<image src="../../static/home/qjflal2.png" class="w28 h28 radius20" mode="">
 									</image>
 									<view class="ml10">一只小海螺</view>
 								</view>

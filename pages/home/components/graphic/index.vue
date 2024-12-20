@@ -3,7 +3,7 @@
 		<view class="h60"></view>
 		<view class=" flex justify-between p30">
 			<view class="flex items-center">
-				<image src="@/static/home/区间分类案例2.png" class="w48 h48 radius_bfb50" mode="">
+				<image src="@/static/home/qjflal2.png" class="w48 h48 radius_bfb50" mode="">
 				</image>
 				<view class="ml10">一只小海螺</view>
 			</view>
@@ -39,7 +39,7 @@
 				<view class="mt20">
 					<view class="flex">
 						<view class="w48">
-							<image src="@/static/home/区间分类案例2.png" class="w48 h48 radius_bfb50" mode="">
+							<image src="@/static/home/qjflal2.png" class="w48 h48 radius_bfb50" mode="">
 							</image>
 						</view>
 						<view class="ml20 text20">

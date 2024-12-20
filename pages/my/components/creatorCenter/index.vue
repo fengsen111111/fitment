@@ -1,6 +1,7 @@
 <template>
 	<view class="">
 		<view class="bgSign" :style="{ backgroundImage: `url(${backgroundImage})` }">
+			<view class="h40"></view>
 			<view class="flex justify-between items-center col-white pt25 px30">
 				<uni-icons type="left" size="30" color="#ffffff" @click="back()"></uni-icons>
 				<view class="flex items-center">
@@ -102,7 +103,7 @@
 				</view>
 				<view class="mt30 grid grid-cols-2" style="grid-column-gap:10rpx">
 					<view class="bg-white w340 mb20" v-for="(item,index) in czlb" :key="item.id">
-						<!-- <image @click="handUrl('/pages/home/components/video/index')" src="@/static/home/首页推荐视频封面1.png" class="w340 h540" mode=""></image> -->
+						<!-- <image @click="handUrl('/pages/home/components/video/index')" src="@/static/home/sytjspfm1.png" class="w340 h540" mode=""></image> -->
 						<image @click="handUrl('/pages/home/components/video/index')" :src="item.image"
 							class="w340 h540" mode=""></image>
 						<view class="px20 col333333 pb14">
@@ -194,7 +195,7 @@
 		/* background-size: 100% 100%; */
 		background-color: #374858;
 		/* height: 100vh; */
-		height: 662rpx;
+		height: 702rpx;
 		width: 100%;
 	}
 </style>

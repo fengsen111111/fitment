@@ -1,5 +1,6 @@
 <template>
 	<view class="bgF5F5F5">
+		<view class="h40"></view>
 		<view class="flex text-center text20 justify-around p40">
 			<view class="flex">
 				<view class="">
@@ -26,7 +27,7 @@
 		<view class="px30 text20">
 			<view class="bg-white radius10 flex items-center p30 mb30" v-for="item in [1,2,3,4,5]" :key="item">
 				<view class="flex ">
-					<image src="../../static/home/区间分类案例2.png" class="w60 h60 radius_bfb50" mode=""></image>
+					<image src="../../static/home/qjflal2.png" class="w60 h60 radius_bfb50" mode=""></image>
 					<view class="bgFF0000 w16 h16 radius_bfb50 relative left-16"></view>
 				</view>
 				<view class="w-full ml20">

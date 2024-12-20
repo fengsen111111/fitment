@@ -74,7 +74,7 @@
 				<view class="p25">
 					<view class="flex mb20 justify-between items-center" v-for="item in [1,2]" :key="item">
 						<view class="w136 h136">
-							<image src="@/static/home/首页推荐商品图示例1.png" class="w136 h136 radius10" mode=""></image>
+							<image src="@/static/home/sytjspslt1.png" class="w136 h136 radius10" mode=""></image>
 						</view>
 						<view class="w-full ml20" style="line-height: 30rpx;">
 							<view class="flex justify-between items-center">
@@ -99,7 +99,7 @@
 					<view style="line-height: 30rpx;">节省时间和精力‌：通过选择全屋整装或整装装修，消费者可以减少在装修过程中花费的时间和精力。这种方式让消费者无需亲自寻找不同的装修材料和供应商，而是通过一个整装公司完成所有工作，从而节省大量时间和精力。</view>
 					<view class="flex mt10">
 						<view class="w116 h116 radius10 mr10" v-for="item in [1,2,3]" :key="item">
-							<image src="@/static/home/首页推荐商品图示例1.png" class="w116 h116 radius10" mode=""></image>
+							<image src="@/static/home/sytjspslt1.png" class="w116 h116 radius10" mode=""></image>
 						</view>
 					</view>
 				</view>

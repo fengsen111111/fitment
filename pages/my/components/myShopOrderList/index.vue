@@ -23,7 +23,7 @@
 					<view class="p25">
 						<view class="flex mb20 justify-between items-center" v-for="item in [1,2]" :key="item">
 							<view class="w136 h136">
-								<image src="@/static/home/首页推荐商品图示例1.png" class="w136 h136 radius10" mode=""></image>
+								<image src="@/static/home/sytjspslt1.png" class="w136 h136 radius10" mode=""></image>
 							</view>
 							<view class="w-full ml20" style="line-height: 30rpx;">
 								<view class="flex justify-between items-center">

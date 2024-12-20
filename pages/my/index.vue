@@ -1,10 +1,11 @@
 <template>
 	<view>
 		<view class="userBg">
+			<view class="h40"></view>
 			<view class="flex justify-between items-center p30">
 				<view class="text-center" @click="handUrl('/pages/home/components/citySel/index')">
 					<uni-icons type="location" size="26" color="#FFFFFF"></uni-icons>
-					<view class="text20 mt-16">成都</view>
+					<view class="text20" style="line-height: 20rpx;">成都</view>
 				</view>
 				<view class="flex">
 					<uni-icons @click="handUrl('/pages/my/components/creatorCenterEdit/index')" type="compose" size="30"

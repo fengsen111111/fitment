@@ -49,7 +49,7 @@
 				<view class="flex pb30 mb30" style="border-bottom: 1px solid #999999;" v-for="item in jfspList"
 					:key="item.id">
 					<view class="w128 h128">
-						<!-- <image src="@/static/home/首页推荐商品图示例1.png" class="w128 h128" mode=""></image> -->
+						<!-- <image src="@/static/home/sytjspslt1.png" class="w128 h128" mode=""></image> -->
 						<image :src="item.cover_image" class="w128 h128" mode=""></image>
 					</view>
 					<view class="ml20 w-full">

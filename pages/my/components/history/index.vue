@@ -7,7 +7,7 @@
 				<view class="flex pb30 mb30" style="border-bottom: 1px solid #999999;" v-for="item in [1,2,3]"
 					:key="item">
 					<view class="w120 h120 " @click="handUrl('/pages/home/components/shopDetail/index')">
-						<image src="@/static/home/首页推荐商品图示例1.png" class="w120 h120 " mode=""></image>
+						<image src="@/static/home/sytjspslt1.png" class="w120 h120 " mode=""></image>
 					</view>
 					<view class="ml20 w-full">
 						<view class="flex items-center justify-between">

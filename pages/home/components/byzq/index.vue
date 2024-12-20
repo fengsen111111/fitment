@@ -6,7 +6,7 @@
 			<view class="">
 				<view class="flex">
 					<view class="w180 h180" @click="handUrl('/pages/home/components/shopDetail/index?id='+item.id)">
-						<!-- <image src="@/static/home/首页推荐商品图示例1.png" class="w180 h180 radius10" mode=""></image> -->
+						<!-- <image src="@/static/home/sytjspslt1.png" class="w180 h180 radius10" mode=""></image> -->
 						<image :src="item.cover_image" class="w180 h180 radius10" mode=""></image>
 					</view>
 					<view class="ml20 w-full">

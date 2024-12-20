@@ -15,7 +15,7 @@
 			
 			<view class="px36 mt236">
 				<view class="flex items-center text30 bg-black col-white text-center radius10 py30">
-					<view class="flex mx-auto">
+					<view class="flex items-center mx-auto">
 						<uni-icons type="checkbox-filled" size="30" color="#4DB23F"></uni-icons>
 						<view class="ml30">内容审核中</view>
 					</view>

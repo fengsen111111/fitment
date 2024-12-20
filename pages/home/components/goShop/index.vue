@@ -119,7 +119,7 @@
 			<!--  -->
 			<view class="mt15 px30 grid grid-cols-2" style="grid-column-gap:30rpx">
 				<view class="bg-white w340 mb20" v-for="(item,index) in shopList" :key="item.id">
-					<!-- <image @click="handUrl('/pages/home/components/graphic/index')" src="@/static/home/首页推荐商品图示例1.png" class="w340 h340" mode=""></image> -->
+					<!-- <image @click="handUrl('/pages/home/components/graphic/index')" src="@/static/home/sytjspslt1.png" class="w340 h340" mode=""></image> -->
 					<image @click="handUrl('/pages/home/components/graphic/index')" :src="item.cover_image"
 						class="w340 h340" mode=""></image>
 					<view class="px20 pb14">
@@ -163,7 +163,7 @@
 			<!--  -->
 			<view class="mt15 px30 grid grid-cols-2" style="grid-column-gap:30rpx">
 				<view class="bg-white w340 mb20" v-for="(item,index) in shopList" :key="item.id">
-					<!-- <image @click="handUrl('/pages/home/components/graphic/index')" src="@/static/home/首页推荐商品图示例1.png" class="w340 h340" mode=""></image> -->
+					<!-- <image @click="handUrl('/pages/home/components/graphic/index')" src="@/static/home/sytjspslt1.png" class="w340 h340" mode=""></image> -->
 					<image @click="handUrl('/pages/home/components/graphic/index')" :src="item.cover_image"
 						class="w340 h340" mode=""></image>
 					<view class="px20 pb14">
@@ -187,7 +187,7 @@
 				<view class="flex justify-between items-center mt30">
 					<view class="flex items-center">
 						<view class="w48 h48">
-							<!-- <image src="/static/home/区间分类案例2.png" class="w48 h48 radius_bfb50" mode=""></image> -->
+							<!-- <image src="/static/home/qjflal2.png" class="w48 h48 radius_bfb50" mode=""></image> -->
 							<image :src="item.head_image" class="w48 h48 radius_bfb50" mode=""></image>
 						</view>
 						<view class="text26 font-bold ml20">{{item.nickname}}</view>
@@ -210,12 +210,12 @@
 			<view class="flex justify-between mt30 px30" style="flex-wrap: wrap;">
 				<view class="bg-white w340 mb20" v-for="(item,index_foue) in [1,2,1,2,1,2]" :key="index_foue">
 					<image @click="handUrl('/pages/home/components/video/index')"
-						:src="require('@/static/community/社区'+item+'.png')" class="w340 h540" mode=""></image>
+						:src="require('@/static/community/sq'+item+'.png')" class="w340 h540" mode=""></image>
 					<view class="px20 col333333 pb14">
 						<view class="font-bold">节省时间和精力‌：通过选择全屋整装或整装装修</view>
 						<view class="flex justify-between text20 mt10">
 							<view class="flex items-center">
-								<image src="@/static/home/区间分类案例2.png" class="w28 h28 radius20" mode="">
+								<image src="@/static/home/qjflal2.png" class="w28 h28 radius20" mode="">
 								</image>
 								<view class="ml10">一只小海螺</view>
 							</view>

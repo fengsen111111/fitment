@@ -12,7 +12,7 @@
 				<view class="ml30 w-full">
 					<view class="flex w-full">
 						<view class="w100 h100">
-							<!-- <image class="w100 h100" src="@/static/home/首页推荐商品图示例1.png" mode=""></image> -->
+							<!-- <image class="w100 h100" src="@/static/home/sytjspslt1.png" mode=""></image> -->
 							<image class="w100 h100" :src="item.cover_image" mode=""></image>
 						</view>
 						<view class="ml20 text20">

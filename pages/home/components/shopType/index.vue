@@ -13,7 +13,7 @@
 					<view class="grid text-center grid-cols-4 pt25" style="grid-column-gap:40rpx">
 						<view class="mb30" v-for="item in typeItem" :key="item.id">
 							<view class="w100 h100" @click="handUrl('/pages/home/components/shopTypeTwo/index?integral_goods_type_id='+item.id)">
-								<image src="@/static/home/首页推荐商品图示例1.png" class="w100 h100 radius10" mode=""></image>
+								<image src="@/static/home/sytjspslt1.png" class="w100 h100 radius10" mode=""></image>
 							</view>
 							<view class="text20 font-bold mt5">{{item.name}}</view>
 						</view>

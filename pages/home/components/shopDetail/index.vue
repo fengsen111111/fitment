@@ -64,7 +64,7 @@
 			<view class="">
 				<view class="flex items-center mt25" v-for="item in details.team" :key="item.id">
 					<view class="w60 h60">
-						<!-- <image src="/static/home/区间分类案例2.png" class="w60 h60 radius_bfb50" mode=""></image> -->
+						<!-- <image src="/static/home/qjflal2.png" class="w60 h60 radius_bfb50" mode=""></image> -->
 						<image :src="item.head_image" class="w60 h60 radius_bfb50" mode=""></image>
 					</view>
 					<view class="text30 font-bold ml20">{{item.nickname}}</view>
@@ -156,7 +156,7 @@
 				<view class="flex justify-between items-center mt30">
 					<view class="flex items-center">
 						<view class="w48 h48">
-							<!-- <image src="/static/home/区间分类案例2.png" class="w48 h48 radius_bfb50" mode=""></image> -->
+							<!-- <image src="/static/home/qjflal2.png" class="w48 h48 radius_bfb50" mode=""></image> -->
 							<image :src="item.head_image" class="w48 h48 radius_bfb50" mode=""></image>
 						</view>
 						<view class="text26 font-bold ml20">{{item.nickname}}</view>
