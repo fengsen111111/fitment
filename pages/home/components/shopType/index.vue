@@ -4,7 +4,7 @@
 		<view class="flex">
 			<view class="bgF5F5F5 text-center" style="height: 95vh;width: 20%;">
 				<view class="py30">
-					<view @click="handleItem(item)" class="py30" :class="type_index==item.id?'font-bold':'col666666'"
+					<view @click="handleItem(item)" class="py30 text24" :class="type_index==item.id?'font-bold':'col666666'"
 						v-for="item in typeList" :key="item.id">{{item.name}}</view>
 				</view>
 			</view>

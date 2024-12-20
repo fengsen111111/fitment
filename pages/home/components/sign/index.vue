@@ -24,7 +24,7 @@
 			</view>
 		</view>
 		<view class="px40">
-			<view class="mt30 bg-white p30 flex justify-between radius10 items-center" v-for="item in [1,2,3]" :key="item">
+			<view class="mt30 bg-white p30 flex justify-between radius10 items-center" v-for="item in [1,2]" :key="item">
 				<view class="text28 font-bold">任务描述</view>
 				<view class="col-white text20 bgFBB333 radius10 px10">去完成</view>
 			</view>

@@ -80,7 +80,7 @@
 					<view class="w15"></view>
 					<uni-icons type="closeempty" size="20" @click="()=>{$refs.popup.close()}"></uni-icons>
 				</view>
-				<view class="px20">
+				<view class="px20 text24">
 					<view class="my20" :class="sort=='a'?'col4DB23F':''" @click="checkSort('a')">综合</view>
 					<view class="my20" :class="sort=='b'?'col4DB23F':''" @click="checkSort('b')">销量优先</view>
 				</view>
@@ -94,7 +94,7 @@
 					<view class="">选择品牌</view>
 					<uni-icons type="closeempty" size="20" @click="()=>{$refs.popupPP.close()}"></uni-icons>
 				</view>
-				<view class="px20">
+				<view class="px20 text24">
 					<view class="my20" :class="ppIndex==item.id?'col4DB23F':''" @click="checkIndex(item)"
 						v-for="item in ppList" :key="item.id">{{item.name}}</view>
 				</view>

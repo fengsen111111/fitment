@@ -26,7 +26,7 @@
 					fabulousCount: 10, //点赞数量
 					commentCount: 1000, //评论数量
 					shareCount: 499, //转发数量
-					videoUrl: 'https://hsqs.bmwax.cn/202411071635/11d745064a52e5e561a7e596facb5259/mqrcode%2F798689%2F1730968492_0498419955_%E7%AB%96%E5%B1%8F.mp4',//视频资源地址
+					videoUrl: 'https://hs01.afbza.cn/mqrcode/798689/1734698352_3173291263_横屏.mp4',//视频资源地址
 					posterUrl: 'https://img-my.csdn.net/uploads/201407/26/1406383299_1976.jpg',
 					commentObj: {
 						count: 520,
@@ -66,7 +66,7 @@
 					fabulousCount: 1,
 					commentCount: 1000,
 					shareCount: 499,
-					videoUrl: 'https://hsqs.bmwax.cn/202411071641/d8979f812c4eb74b39d945560732c961/mqrcode%2F798689%2F1730968871_5950703669_%E6%A8%AA%E5%B1%8F.mp4',
+					videoUrl: 'https://hs01.afbza.cn/mqrcode/798689/1734698551_6207398521_竖屏.mp4',
 					commentObj: {
 						count: 100,
 						list: [{
@@ -103,7 +103,7 @@
 					fabulousCount: 1,
 					commentCount: 1000,
 					shareCount: 499,
-					videoUrl: 'https://v-cdn.zjol.com.cn/276984.mp4',
+					videoUrl: 'https://hs01.afbza.cn/mqrcode/798689/1734698352_3173291263_横屏.mp4',
 					commentObj: {
 						count: 234,
 						list: [{
@@ -140,7 +140,7 @@
 					fabulousCount: 1,
 					commentCount: 1000,
 					shareCount: 499,
-					videoUrl: 'https://v-cdn.zjol.com.cn/276985.mp4',
+					videoUrl: 'https://hs01.afbza.cn/mqrcode/798689/1734698352_3173291263_横屏.mp4',
 					commentObj: {
 						count: 523,
 						list: [{

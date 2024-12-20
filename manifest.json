@@ -19,7 +19,8 @@
         "modules" : {
             "VideoPlayer" : {},
             "Geolocation" : {},
-            "Maps" : {}
+            "Maps" : {},
+            "Camera" : {}
         },
         /* 模块配置 */
         "distribute" : {
@@ -64,7 +65,8 @@
                         "appkey_ios" : "d31a5e61de12b4536b873e5ee5c05589",
                         "appkey_android" : "d31a5e61de12b4536b873e5ee5c05589"
                     }
-                }
+                },
+                "payment" : {}
             }
         }
     },

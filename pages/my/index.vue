@@ -153,7 +153,7 @@
 		},
 		created() {
 			this.userInfo = this.$store.state.userInfo
-			if (this.userInfo.store_status == 'c') {
+			if (this.userInfo?.store_status == 'c') {
 				this.iconList.push({
 					id: 7,
 					text: '店铺管理',

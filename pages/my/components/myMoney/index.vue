@@ -77,7 +77,9 @@
 			}
 		},
 		created(){
-			this.userInfo = this.$store.state.userInfo
+			if(this.$store.state.userInfo){
+				this.userInfo = this.$store.state.userInfo
+			}
 		},
 		components: {
 			NavBar,

@@ -5,21 +5,21 @@
 			<view class="flex">
 				<view class="">
 					<image src="../../static/message/icon1.png" class="w60 h60 " mode=""></image>
-					<view class="mt-10">客服消息</view>
+					<view class="">客服消息</view>
 				</view>
 				<view class="bgFF0000 w16 h16 radius_bfb50 relative left-24"></view>
 			</view>
 			<view class="flex">
 				<view class="">
 					<image src="../../static/message/icon2.png" class="w60 h60 " mode=""></image>
-					<view class="mt-10">点赞评论</view>
+					<view class="">点赞评论</view>
 				</view>
 				<view class="bgFF0000 w16 h16 radius_bfb50 relative left-24"></view>
 			</view>
 			<view class="flex">
 				<view class="">
 					<image src="../../static/message/icon3.png" class="w60 h60 " mode=""></image>
-					<view class="mt-10">我的消息</view>
+					<view class="">我的消息</view>
 				</view>
 				<view class="bgFF0000 w16 h16 radius_bfb50 relative left-24"></view>
 			</view>
