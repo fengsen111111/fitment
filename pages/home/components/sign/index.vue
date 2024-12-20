@@ -1,5 +1,6 @@
 <template>
 	<view class="bgSign">
+		<view class="h40"></view>
 		<view class="flex justify-between col-white pt25 px30">
 			<uni-icons type="left" size="30" color="#ffffff" @click="back()"></uni-icons>
 			<view class="text36 font-bold">签到中心</view>
@@ -50,7 +51,9 @@
 		},
 		onLoad(){
 			this._getSignList() //获取签到记录
-			this.userInfo = this.$store.state.userInfo
+			if(this.$store.state.userInfo){
+				this.userInfo = this.$store.state.userInfo
+			}
 		},
 		methods: {
 			// 签到

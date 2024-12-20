@@ -1,5 +1,6 @@
 <template>
 	<view class="bgSign">
+		<view class="h40"></view>
 		<view class="flex justify-between col-white pt25 px30">
 			<uni-icons type="left" size="30" color="#ffffff" @click="back()"></uni-icons>
 			<view class="text36 font-bold">任务中心</view>
