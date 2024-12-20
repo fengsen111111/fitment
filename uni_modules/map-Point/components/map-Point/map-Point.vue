@@ -18,7 +18,7 @@
 					<view class="u-search-box">
 						<view class="flex justify-between items-center">
 							<input v-model="keyword" placeholder="搜索地点"  @confirm="changeword" class="col-black bg-white radius10 px20 py17" style="width: 80%;" />
-							<view class="col-white px20 radius10 py10 bg4DB23F" @click="changeword">搜索</view>
+							<view class="col-white px20 radius10 py10 bg4DB23F text28" @click="changeword">搜索</view>
 						</view>
 					</view>
 					<view class="list-item-name-box">
@@ -599,7 +599,7 @@
 
 			.map-box {
 				width: 100%;
-				height: 47%;
+				height: 45%;
 
 				#myMap {
 					width: 100%;

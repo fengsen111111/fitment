@@ -148,7 +148,7 @@
 						<image @click="handUrl('/pages/home/components/video/index')"
 							src="../../static/home/sytjspfm1.png" class="w340 h575" mode=""></image>
 						<view class="px20 col333333 pb14">
-							<view class="font-bold">现代北欧风格多功能伸 缩茶几</view>
+							<view class="font-bold text28">现代北欧风格多功能伸 缩茶几</view>
 							<view class="flex justify-between text20 mt10">
 								<view class="flex items-center">
 									<image src="../../static/home/qjflal2.png" class="w28 h28 radius20" mode="">

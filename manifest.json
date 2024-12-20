@@ -17,7 +17,9 @@
             "delay" : 0
         },
         "modules" : {
-            "VideoPlayer" : {}
+            "VideoPlayer" : {},
+            "Geolocation" : {},
+            "Maps" : {}
         },
         /* 模块配置 */
         "distribute" : {
@@ -47,7 +49,22 @@
             },
             /* ios打包配置 */
             "sdkConfigs" : {
-                "ad" : {}
+                "ad" : {},
+                "geolocation" : {
+                    "amap" : {
+                        "name" : "amapBRQVmlFVz",
+                        "__platform__" : [ "ios", "android" ],
+                        "appkey_ios" : "d31a5e61de12b4536b873e5ee5c05589",
+                        "appkey_android" : "d31a5e61de12b4536b873e5ee5c05589"
+                    }
+                },
+                "maps" : {
+                    "amap" : {
+                        "name" : "amapBRQVmlFVz",
+                        "appkey_ios" : "d31a5e61de12b4536b873e5ee5c05589",
+                        "appkey_android" : "d31a5e61de12b4536b873e5ee5c05589"
+                    }
+                }
             }
         }
     },

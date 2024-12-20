@@ -96,7 +96,7 @@
 		/* 上半部分圆角 */
 		box-shadow: 0 -3rpx 6rpx rgba(0, 0, 0, 0.2);
 		padding: 10rpx;
-		top: -46px;
+		top: -45px;
 	}
 
 	.border_BY {
