@@ -63,21 +63,36 @@
 		},
 		methods: {
 			_addCar(item){
+				uni.showLoading({
+					title: "加载中"
+				})
 				api.addCar({
 					post_params:{
 						goods_id:item.id,
 						number:1
 					}
 				}).then((res)=>{
+					uni.hideLoading()
 					console.log('加入购物车res.data',res.data);
+					if(res.data.code==1){
+						uni.showToast({
+							title: '加入成功！',
+							icon: 'success',
+							duration: 4000
+						})
+					}
 				})
 			},
 			_getGoodsList(){
+				uni.showLoading({
+					title: "加载中"
+				})
 				api.getGoodsList({
 					post_params:{
 						goods_activity_id: this.option.id
 					}
 				}).then((res)=>{
+					uni.hideLoading()
 					const {list} = res.data.data
 					console.log('包邮专区',list);
 					this.list = list

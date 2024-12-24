@@ -36,7 +36,7 @@
 		<view class="h140"></view>
 		<view class="h120"></view>
 		<view class="flex">
-			<view class="flex mx-auto mt65 text18 px30">
+			<view class="flex items-center mx-auto mt65 text18 px30">
 				<uni-icons @click="()=>{status=!status}" v-if="status" type="circle" size="16"></uni-icons>
 				<uni-icons @click="()=>{status=!status}" v-else type="checkbox-filled" size="16" color="#4DB23F"></uni-icons>
 				<view class="ml10">已仔细阅读并自愿同意</view>

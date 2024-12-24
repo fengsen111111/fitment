@@ -52,14 +52,25 @@
 	export default {
 		data() {
 			return {
-				item:{}//
+				item:{},//
+				dz:{},//地址
 			}
 		},
 		onLoad(option){
-			this.item = JSON.parse(option.item)
+			if(option.item){
+				this.item = JSON.parse(option.item)
+			}
 		},
 		components: {
 			NavBar
+		},
+		onShow(){
+			if(uni.getStorageSync('xdwz')){
+				this.item = {}
+				this.item.address = JSON.parse(uni.getStorageSync('xdwz')).address
+				this.item.location = JSON.parse(uni.getStorageSync('xdwz')).location
+				console.log('地址show',this.item);
+			}
 		},
 		methods: {
 			handUrl(url) {
@@ -71,13 +82,32 @@
 				uni.showLoading({
 					title: "加载中"
 				})
+				if (!this.item.mobile) {
+					uni.showToast({
+						title: '请输入手机号',
+						icon: 'none',
+						duration: 2000
+					})
+					return false
+				} else {
+					// 手机号格式验证（中国大陆手机号）
+					const regex = /^1[3-9]\d{9}$/;
+					if (this.item.mobile && !regex.test(this.item.mobile)) {
+						uni.showToast({
+							title: '手机号格式错误',
+							icon: 'none',
+							duration: 2000
+						})
+						return false
+					}
+				}
 				api.editUserAddress({
 					post_params:{
-						id:this.item.id,
+						id:this.item.id?this.item.id:'',
 						is_default:this.item.is_default=='Y'?'Y':'N',
 						name:this.item.name,
 						mobile:this.item.mobile,
-						location: uni.getStorageSync('location'),
+						location: this.item.location,
 						address:this.item.address
 					}
 				}).then((res)=>{

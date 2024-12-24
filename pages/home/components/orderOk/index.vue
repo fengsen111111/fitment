@@ -16,21 +16,21 @@
 
 			<view class="mt40">订单商品</view>
 			<view class="mt20 bg-white radius10 text24 p20 flex items-center">
-				<view class="w128 h128">
-					<image src="@/static/home/pointsMall/shop.png" class="w128 h128 radius10" mode=""></image>
+				<view class="w128 h128" v-if="item.images">
+					<image :src="item.images[0]" class="w128 h128 radius10" mode=""></image>
 				</view>
 				<view class=" ml30">
-					<view class="text30 font-bold">精品多钻豪华富贵18K铂金520海...</view>
+					<view class="text30 font-bold" v-if="item.name">{{item.name.length>20?item.name.slice(0,20)+'...':item.name}}</view>
 					<view class="flex justify-between mt10">
 						<view class="flex">
-							<view class="">库存:9999</view>
-							<view class="ml20">销量:9999</view>
+							<view class="">库存:{{item.stock}}</view>
+							<view class="ml20">销量:{{item.salled_number?item.salled_number:0}}</view>
 						</view>
 						<view class="text30 col333333 font-bold">数量：1</view>
 					</view>
 					<view class="flex text28 colFF0000 ">
-						<view class="">积分 6666</view>
-						<view class="ml20">￥ 6666</view>
+						<view class="">积分 {{item.integral}}</view>
+						<view class="ml20">￥{{item.price}}</view>
 					</view>
 				</view>
 			</view>
@@ -47,7 +47,7 @@
 				<view class="flex items-center text24">
 					<view class="flex items-center">
 						<view class="col666666 ">邮费</view>
-						<view class="colFF0000 ml10 ">￥{{transport}}</view>
+						<view class="colFF0000 ml10 ">￥{{carriage_price}}</view>
 					</view>
 					<!-- handUrl('/pages/home/components/myRedemptions/index') -->
 					<view @click="payShop"
@@ -73,32 +73,50 @@
 				
 				price:'',//价格 
 				integral:'',//积分 
-				transport:'',//运费  
+				carriage_price:'',//运费  
+				
+				option:{},
+				item:{},//积分详情
 			}
 		},
 		components: {
 			NavBar
 		},
 		onLoad(option) {
+			this.option = option
 			this._getUserAddressList() //默认地址
-			this._computeIntegralGoodsOrder() //计算积分商品价格
+			this._getIntegralGoodsDetail()//积分详情
 		},
 		methods: {
+			// 积分详情
+			_getIntegralGoodsDetail(){
+				api.getIntegralGoodsDetail({
+					post_params:{
+						id:this.option.id
+					}
+				}).then((res)=>{
+					console.log('积分详情',res.data.data);
+					const {data} = res.data
+					this.item = data
+				})
+			},
 			// 计算积分商品价格
 			_computeIntegralGoodsOrder() {
 				api.computeIntegralGoodsOrder({
 					post_params: {
-						id: '' //积分商品id
+						id:this.option.id ,//积分商品id
+						user_address_id:this.mrdz.id
 					}
 				}).then((res) => {
+					console.log('计算价格',res.data.data);
 					const {
 						price,
 						integral,
-						transport
-					} = res.data
+						carriage_price
+					} = res.data.data
 					this.price = price
 					this.integral = integral
-					this.transport = transport
+					this.carriage_price = carriage_price
 				})
 			},
 			// 收货地址
@@ -106,7 +124,7 @@
 				api.getUserAddressList({
 					post_params: {
 						currentPage: 1,
-						perPage: 100
+						perPage: 10
 					}
 				}).then((res) => {
 					const {
@@ -117,6 +135,7 @@
 							this.mrdz = item
 						}
 					})
+					this._computeIntegralGoodsOrder() //计算积分商品价格
 				})
 			},
 			handUrl(url) {
@@ -126,25 +145,30 @@
 			},
 			// 下单积分商品
 			payShop(){
+				uni.showLoading({
+					title: "加载中"
+				})
 				api.createIntegralGoodsOrder({
 					post_params:{
 						user_address_id:this.mrdz.id,
-						id:''
+						id:this.option.id
 					}
 				}).then((res)=>{
-					const {result,order_id} = res.data
+					uni.hideLoading()
+					const {result,order_id} = res.data.data
+					console.log('result',result);
 					if(result=='a'){
 						// a交易成功  b积分不足  c需要微信支付  
 						uni.showToast({
 							title: '交易成功',
 							icon: 'none',
-							duration: 2000
+							duration: 4000
 						})
 					}else if(result=='b'){
 						uni.showToast({
 							title: '积分不足',
 							icon: 'none',
-							duration: 2000
+							duration: 4000
 						})
 					}else{
 						// 支付积分商品订单
@@ -153,8 +177,8 @@
 								order_id:order_id
 							}
 						}).then((res)=>{
-							const {pay_data} =res.data
-							console.log('支付数据',pay_data);
+							const {pay_data} =res.data.data
+							console.log('支付数据',pay_data,res.data);
 						})
 					}
 				})

@@ -40,7 +40,7 @@
 			<view class="py30 bg-white" style="min-height: 57vh">
 				<view class="flex pb30 mb30" style="border-bottom: 1px solid #999999;" v-for="item in shopList"
 					:key="item.id">
-					<view class="w180 h180" @click="handUrl('/pages/home/components/shopDetail/index')">
+					<view class="w180 h180" @click="handUrl('/pages/home/components/shopDetail/index?id='+item.id)">
 						<!-- <image src="@/static/home/sytjspslt1.png" class="w180 h180" mode=""></image> -->
 						<image :src="item.cover_image" class="w180 h180" mode=""></image>
 					</view>
@@ -64,7 +64,7 @@
 								</view>
 								<view class="flex w-full items-center justify-between">
 									<view class="colFF0000 text36 font-bold">￥ {{item.price}}</view>
-									<view class="font-bold text28 col-white bg4DB23F radius10 py10 px20">加入购物车</view>
+									<view @click="_addCar(item)" class="font-bold text28 col-white bg4DB23F radius10 py10 px20">加入购物车</view>
 								</view>
 							</view>
 						</view>
@@ -116,7 +116,9 @@
 				integral_goods_type_id: '', //商品分类id
 				price_start: '', //价格起
 				price_end: '', //价格止  
-				sort: 'a' //a综合 b销量优先
+				sort: 'a' ,//a综合 b销量优先
+				
+				shopList:[]//
 			}
 		},
 		components: {
@@ -128,6 +130,28 @@
 			this._getGoodsList() //商品列表
 		},
 		methods: {
+			// 加入购物车
+			_addCar(item){
+				uni.showLoading({
+					title: "加载中"
+				})
+				api.addCar({
+					post_params:{
+						goods_id: item.id,
+						number:1
+					}
+				}).then((res)=>{
+					console.log('加入购物车',res.data);
+					uni.hideLoading()
+					if(res.data.code==1){
+						uni.showToast({
+							title: '加入成功！',
+							icon: 'success',
+							duration: 2000
+						})
+					}
+				})
+			},
 			checkSort(index){
 				this.sort = index
 				this.$refs.popup.close()

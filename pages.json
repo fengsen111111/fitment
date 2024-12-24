@@ -229,6 +229,9 @@
 		},
 		{
 			"path":"pages/home/components/byzq/index"
+		},
+		{
+			"path": "pages/home/components/shopOrderOkShopping/index"
 		}
 	],
 	"globalStyle": {

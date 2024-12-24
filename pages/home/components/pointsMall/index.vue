@@ -28,7 +28,7 @@
 					<image class="w15 h10 ml10" src="@/static/home/pointsMall/bottom.png" mode=""></image>
 				</view>
 				<view class="flex items-center" @click="()=>{$refs.popupPP.open('bottom')}" >
-					<view class="">品牌</view>
+					<view class="">{{ppObj.name?ppObj.name:'品牌'}}</view>
 					<image class="w15 h10 ml10" src="@/static/home/pointsMall/bottom.png" mode=""></image>
 				</view>
 				<view :class="sfzy?'col4DB23F':''" @click="()=>{sfzy=!sfzy}">自营</view>
@@ -57,7 +57,7 @@
 							<view class="flex items-center">
 								<view v-if="item.platform_goods=='Y'" class="border4DB23F text20 col4DB23F px10 radius4 mr10" style="line-height: 30rpx;">自营</view>
 								<!-- <view class="text30 font-bold">{{'精品多钻豪华富贵18'+'...'}}</view> -->
-								<view v-if="item.name" class="text30 font-bold">{{item.name.length>8?item.name.slice(0,8):item.name}}</view>
+								<view v-if="item.name" class="text30 font-bold">{{item.name.length>12?item.name.slice(0,12)+'...':item.name}}</view>
 							</view>
 							<view class="col333333 text24 ml40">规格:{{item.size_name}}</view>
 						</view>
@@ -65,14 +65,14 @@
 							<view class="">
 								<view class="flex col333333 text24">
 									<view class="">库存:{{item.stock}}</view>
-									<view class="ml40">销量:{{item.salled_number}}</view>
+									<view class="ml40">销量:{{item.salled_number||0}}</view>
 								</view>
 								<view class="flex text28 items-center">
 									<view class=" colFF0000 font-bold">积分 {{item.integral}}</view>
 									<view class="colFF0000 ml20  font-bold">￥ {{item.price}}</view>
 								</view>
 							</view>
-							<view @click="handUrl('/pages/home/components/pointsMallDetail/index')" class="col-white text28 font-bold bg4DB23F px30 radius10 text-center h70"
+							<view @click="handUrl('/pages/home/components/pointsMallDetail/index?id='+item.id)" class="col-white text28 font-bold bg4DB23F px30 radius10 text-center h70"
 								style="line-height: 70rpx;">
 								兑换
 							</view>
@@ -118,48 +118,8 @@
 		data() {
 			return {
 				// 分类列表
-				typeList: [{
-						id: 1,
-						name: '项链'
-					},
-					{
-						id: 2,
-						name: '衣服'
-					},
-					{
-						id: 3,
-						name: '鞋子'
-					},
-					{
-						id: 4,
-						name: '饰品'
-					},
-					{
-						id: 5,
-						name: '挂件'
-					},
-					{
-						id: 6,
-						name: '配饰'
-					},
-					{
-						id: 7,
-						name: '鞋子'
-					},
-					{
-						id: 8,
-						name: '饰品'
-					},
-					{
-						id: 9,
-						name: '挂件'
-					},
-					{
-						id: 10,
-						name: '配饰'
-					},
-				],
-				type_index: 1,// 当前分类id
+				typeList: [],
+				type_index: '',// 当前分类id
 				key_word:'',//关键词
 				price_start:'',//价格起
 				price_end:'',//价格止
@@ -167,10 +127,12 @@
 				ppIndex:'',//品牌ID  
 				sort: 'a' ,//a综合 b销量优先
 				ppList:[],//品牌列表
+				ppObj:{},//点击的品牌
 				
 				jfspList:[],//积分商品列表
 				
 				userInfo:{},//用户信息
+				
 				
 			}
 		},
@@ -178,7 +140,9 @@
 			NavBar,
 		},
 		created(){
-			this.userInfo = this.$store.state.userInfo
+			if(this.$store.state.userInfo){
+				this.userInfo = this.$store.state.userInfo
+			}
 			this._getIntegralGoodsTypeList()//积分商品分类列表
 			this._getIntegralGoodsBrandList()//积分商品品牌列表
 			this._getIntegralGoodsList()//获取积分商品列表
@@ -192,9 +156,12 @@
 			},
 			// 获取积分商品列表
 			_getIntegralGoodsList(){
+				uni.showLoading({
+					title: "加载中"
+				})
 				api.getIntegralGoodsList({
 					post_params:{
-						key_word: '', //关键词
+						key_word: this.key_word, //关键词
 						integral_goods_type_id: this.type_index, //积分商品分类ID 
 						price_start: this.price_start, //价格起  
 						price_end: this.price_end, //价格止  
@@ -205,6 +172,7 @@
 						perPage: 10
 					}
 				}).then((res)=>{
+					uni.hideLoading()
 					const {list} = res.data.data
 					this.jfspList = list
 				})
@@ -230,6 +198,8 @@
 			},
 			checkIndex(item) {
 				this.ppIndex = item.id
+				this.ppObj = item
+				this.$refs.popupPP.close()
 			},
 			handleItem(index) {
 				this.type_index = index

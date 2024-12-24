@@ -71,7 +71,7 @@
 	export default {
 		data() {
 			return {
-				status: 'b',
+				status: 'a',
 				// 
 				active: 0,
 				list2: [{
@@ -95,6 +95,11 @@
 		},
 		components: {
 			NavBar
+		},
+		watch:{
+			status(oldVal,newVal){
+				this._getIntegralGoodsOrderList()
+			}
 		},
 		onLoad(){
 			this._getIntegralGoodsOrderList()
@@ -127,6 +132,9 @@
 			},
 			// 订单列表
 			_getIntegralGoodsOrderList(){
+				uni.showLoading({
+					title: "加载中"
+				})
 				api.getIntegralGoodsOrderList({
 					post_params:{
 						status: this.status,
@@ -134,6 +142,7 @@
 						perPage:10
 					}
 				}).then((res)=>{
+					uni.hideLoading()
 					const {list} = res.data.data
 					this.dataList = list
 				})

@@ -5,7 +5,7 @@
 			<view class="bg-white radius10 mb20" v-for="item in dataList" :key="item.id">
 				<view class="p20">
 					<view class="col-black font-bold">{{item.name}} {{item.mobile}}</view>
-					<view class="col666666">{{item.complete_address}}</view>
+					<view class="col666666">{{item.address}}</view>
 				</view>
 				<view class="bg999999 h1"></view>
 				<view class="p20 flex justify-between">
@@ -50,6 +50,7 @@
 		methods: {
 			// 跳转新增
 			addAddress(){
+				uni.setStorageSync('xdwz','')
 				uni.navigateTo({
 					url: '/pages/my/components/addressEdit/index'
 				})

@@ -19,7 +19,8 @@
 									style="line-height: 30rpx;">自营</view>
 								<view class="text30 font-bold">
 								<!-- {{'新中式沙发冬夏两用豪华套装'+'...'}} -->
-							    	{{item.name}}
+							    	<!-- {{item.name}} -->
+									{{item.name.length>13?item.name.slice(0,13)+'...':item.name}}
 								</view>
 							</view>
 						</view>
@@ -66,18 +67,33 @@
 		},
 		methods: {
 			_addCar(item){
+				uni.showLoading({
+					title: "加载中"
+				})
 				api.addCar({
 					post_params:{
 						goods_id:item.id,
 						number:1
 					}
 				}).then((res)=>{
+					uni.hideLoading()
 					console.log('加入购物车res.data',res.data);
+					if(res.data.code==1){
+						uni.showToast({
+							title: '加入成功！',
+							icon: 'success',
+							duration: 4000
+						})
+					}
 				})
 			},
 			// 商品列表
 			_getGoodsList(){
+				uni.showLoading({
+					title: "加载中"
+				})
 				api.getGoodsList().then((res)=>{
+					uni.hideLoading()
 					const {list} = res.data.data
 					console.log('性价比好货',list);
 					this.list = list

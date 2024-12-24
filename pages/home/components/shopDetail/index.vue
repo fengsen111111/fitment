@@ -1,7 +1,8 @@
 <template>
 	<view class=" h100vh ">
 		<view class="relative">
-			<image src="@/static/home/shopDetails/shopDetails.png" class="w-full h780" mode=""></image>
+			<!-- <image src="@/static/home/shopDetails/shopDetails.png" class="w-full h780" mode=""></image> -->
+			<image :src="imgUrl" class="w-full h780" mode=""></image>
 			<view class="absolute top0 w-full">
 				<view class="flex pt38 px10 w-full items-center pb14 justify-between">
 					<uni-icons type="left" size="30"  @click="fhsyy()" color="#ffffff"></uni-icons>
@@ -9,7 +10,8 @@
 					<view class="flex mr40">
 						<view class="w32 h32 mr50">
 							<!-- <image src="@/static/home/shopDetails/sc.png" class="w32 h32" mode=""></image> -->
-							<uni-icons type="star" size="30" color="#ffffff"></uni-icons>
+							<uni-icons @click="_collectionGoods()" type="star" v-if="details.is_collection=='Y'" size="30" color="#FBB333"></uni-icons>
+							<uni-icons @click="_collectionGoods()" type="star" v-else size="30" color="#ffffff"></uni-icons>
 						</view>
 						<view class="w32 h32">
 							<!-- <image src="@/static/home/shopDetails/fx.png" class="w32 h32" mode=""></image> -->
@@ -21,8 +23,8 @@
 		</view>
 		<view class="p30 bg-white">
 			<view class="flex overflow-auto example">
-				<view v-for="item in [1,2,3,4,5,6,7,8]" class="mr50 text28 text-center " :key="item">
-					<image src="@/static/home/shopDetails/shopDetails.png" class="w120 h120 radius10" mode=""></image>
+				<view v-for="item in details.images" class="mr50 text28 text-center " :key="item">
+					<image :src="item" class="w120 h120 radius10" mode=""></image>
 				</view>
 			</view>
 			<view class="flex justify-between mt50">
@@ -32,16 +34,16 @@
 				<view class="col333333 text24">规格:{{details.size_name}}</view>
 			</view>
 			<view class="mt20 flex"  style="line-height: 30rpx;">
-				<view class=" text24 px10 py5 colFF0000 radius4">满100减20</view>
-				<view class="borderFF0000 text24 px10 py5 colFF0000 radius4 ml20">10元无门槛</view>
-				<view class="borderFF0000 text24 px10 py5 colFF0000 radius4 ml20">6折全场通用</view>
+				<view class="borderFF0000 text24 px10 py5 colFF0000 radius4">满100减20??</view>
+				<view class="borderFF0000 text24 px10 py5 colFF0000 radius4 ml20">10元无门槛??</view>
+				<view class="borderFF0000 text24 px10 py5 colFF0000 radius4 ml20">6折全场通用??</view>
 			</view>
 			<view class="mt20 font-bold text30">{{details.name}}</view>
 			<view class="mt20 flex col4DB23F text24 "  style="line-height: 30rpx;">
-				<view class=" border4DB23F px10 py5  radius4">秒杀</view>
-				<view class=" border4DB23F px10 py5  radius4 ml10">拼团</view>
-				<view class=" border4DB23F px10 py5  radius4 ml10">积分抵现</view>
-				<view class=" border4DB23F px10 py5  radius4 ml10">包邮</view>
+				<view class=" border4DB23F px10 py5  radius4 mr10" v-for="(iss,index_ser) in details.services" :key="index_ser">{{iss.name}}</view>
+				<!-- <view class=" border4DB23F px10 py5  radius4 mr10">拼团</view>
+				<view class=" border4DB23F px10 py5  radius4 mr10">积分抵现</view>
+				<view class=" border4DB23F px10 py5  radius4 mr10">包邮</view> -->
 			</view>
 			<view class="flex justify-between items-center mt20">
 				<view class="flex items-center">
@@ -92,14 +94,18 @@
 			<view class=" col333333 font-bold text28">商品详情</view>
 			<view class="bgF5F5F5 py20 px50 col999999 mt20 radius10">
 				<!-- 展开 -->
-				<view v-if="sfzk" class="flex my10 justify-between" v-for="(item,index) in details.attribute" :key="index">
-					<view class="">{{item.key}}</view>
-					<view class="col-black">{{item.value}}</view>
+				<view v-if="sfzk">
+					<view class="flex my10 justify-between" v-for="(item,index) in details.attributes" :key="index">
+						<view class="">{{item.key}}</view>
+						<view class="col-black">{{item.value}}</view>
+					</view>
 				</view>
 				<!-- 不展开 -->
-				<view v-else class="flex my10 justify-between" v-for="(item,index_two) in details.attribute_two" :key="index_two">
-					<view class="">{{item.key}}</view>
-					<view class="col-black">{{item.value}}</view>
+				<view v-else >
+					<view class="flex my10 justify-between" v-for="(item,index_two) in details.attribute_two" :key="index_two">
+						<view class="">{{item.key}}</view>
+						<view class="col-black">{{item.value}}</view>
+					</view>
 				</view>
 			<!-- 	<view class="flex my10 justify-between">
 					<view class="">形状</view>
@@ -128,19 +134,20 @@
 			<view class=" flex justify-between w-full items-center">
 				<view class="flex items-center">
 					<view class="w80 h80">
-						<image src="@/static/home/shopDetails/shopImg.png" class="w80 h80" mode=""></image>
+						<!-- <image src="@/static/home/shopDetails/shopImg.png" class="w80 h80" mode=""></image> -->
+						<image :src="sjxx.logo" class="w80 h80" mode=""></image>
 					</view>
 					<view class="ml20">
 						<view class="flex"  style="line-height: 30rpx;">
-							<view class="font-bold text24 ">{{sjxx.name}}</view>
+							<view class="font-bold text24 ">{{sjxx.store_name}}</view>
 							<view v-if="sjxx.is_platform=='Y'" class="font-bold text20 px10 ml20 col4DB23F border4DB23F radius4">自营</view>
 						</view>
 						<view class="flex">
-							<uni-icons v-if="sjxx.score>=1" type="star-filled" color="#FF0000" class="mr10" size="16"></uni-icons>
-							<uni-icons v-if="sjxx.score>=2" type="star-filled" color="#FF0000" class="mr10" size="16"></uni-icons>
-							<uni-icons v-if="sjxx.score>=3" type="star-filled" color="#FF0000" class="mr10" size="16"></uni-icons>
-							<uni-icons v-if="sjxx.score>=4" type="star-filled" color="#FF0000" class="mr10" size="16"></uni-icons>
-							<uni-icons v-if="sjxx.score>=5" type="star-filled" color="#FF0000" class="mr10" size="16"></uni-icons>
+							<uni-icons v-if="Number(sjxx.score)>=1" type="star-filled" color="#FF0000" class="mr10" size="16"></uni-icons>
+							<uni-icons v-if="Number(sjxx.score)>=2" type="star-filled" color="#FF0000" class="mr10" size="16"></uni-icons>
+							<uni-icons v-if="Number(sjxx.score)>=3" type="star-filled" color="#FF0000" class="mr10" size="16"></uni-icons>
+							<uni-icons v-if="Number(sjxx.score)>=4" type="star-filled" color="#FF0000" class="mr10" size="16"></uni-icons>
+							<uni-icons v-if="Number(sjxx.score)>=5" type="star-filled" color="#FF0000" class="mr10" size="16"></uni-icons>
 							<view class="col666666 text24 mr10 ml10">评分</view>
 							<view class="colFF0000 font-bold">{{sjxx.score}}</view>
 						</view>
@@ -174,13 +181,16 @@
 				</view>
 			</view>
 		</view>
+		<view class="mt20 p30 bg-white">
+			<view v-html="details.detail"></view>
+		</view>
 		<view class="h140"></view>
 		
 		<!--  -->
 		<view class="fixed bottom0 w-full" style="box-shadow: 0rpx -3rpx 6rpx 1rpx rgba(0,0,0,0.4);">
 			<view class="flex justify-between items-center bg-white p30 ">
 				<view class="text-center ml30 relative top10">
-					<view class="w40 h40" >
+					<view class="w40 h40">
 						<image src="@/static/home/shopDetails/kf.png" class="w40 h40" mode=""></image>
 					</view>
 					<view class="text16 col-black">客服</view>
@@ -189,7 +199,7 @@
 					<view @click="_addCar()" class="bg91C42F px50 py20 text-center radius10 col-white text32 font-bold">
 						加入购物车
 					</view>
-					<view  @click="handUrl('/pages/home/components/shopOrderOk/index')" class="ml30 bg4DB23F px50 py20 text-center radius10 col-white text32 font-bold">
+					<view  @click="handUrl('/pages/home/components/shopOrderOk/index?id='+shop_id)" class="ml30 bg4DB23F px50 py20 text-center radius10 col-white text32 font-bold">
 						立即购买
 					</view>
 				</view>
@@ -209,6 +219,7 @@
 				sfzk:false,//是否展开
 				sjxx:{},//商家信息
 				sjpj:[],//商家评价
+				imgUrl:''//封面图
 			}
 		},
 		components: {
@@ -219,8 +230,34 @@
 			this._getGoodsDetail()//商品详情
 		},
 		methods: {
+			// 收藏
+			_collectionGoods(){
+				const _this = this
+				uni.showLoading({
+					title: "加载中"
+				})
+				api.collectionGoods({
+					post_params:{
+						goods_id:this.shop_id
+					}
+				}).then((res)=>{
+					uni.hideLoading()
+					console.log('收藏',res.data);
+					if(res.data.code==1){
+						uni.showToast({
+							title: '收藏成功！',
+							icon: 'success',
+							duration: 2000
+						})
+						_this._getGoodsDetail()//商品详情
+					}
+				})
+			},
 			// 加入购物车
 			_addCar(){
+				uni.showLoading({
+					title: "加载中"
+				})
 				api.addCar({
 					post_params:{
 						goods_id:this.shop_id,
@@ -228,6 +265,14 @@
 					}
 				}).then((res)=>{
 					console.log('加入购物车res.data',res.data);
+					uni.hideLoading()
+					if(res.data.code==1){
+						uni.showToast({
+							title: '加入成功！',
+							icon: 'success',
+							duration: 2000
+						})
+					}
 				})
 			},
 			// 用户获取商家信息
@@ -237,7 +282,7 @@
 						store_id: this.details.store_id
 					}
 				}).then((res)=>{
-					console.log('商家信息',res.data);
+					console.log('商家信息',res.data.data);
 					const {data} = res.data
 					this.sjxx = data
 				})
@@ -264,11 +309,13 @@
 						id: this.shop_id
 					}
 				}).then((res)=>{
-					console.log('商品详情',res.data.data);
+					this.details = {}
 					const { data } = res.data
-					data.attribute_two = data.attribute.slice(0,6)
+					data.attribute_two = data.attributes.slice(0,4)
 					this.details = data
-					this._userGetStoreInfo()//商家信息\
+					this.imgUrl = data.images[0]
+					console.log('商品详情',res.data.data);
+					this._userGetStoreInfo()//商家信息
 					this._userGetStoreEvaluate()//商家评价
 				})
 			},

@@ -22,24 +22,25 @@
 				<view class=" flex justify-between w-full items-center">
 					<view class="flex items-center">
 						<view class="w80 h80">
-							<image src="@/static/home/shopDetails/shopImg.png" class="w80 h80" mode=""></image>
+							<!-- <image src="@/static/home/shopDetails/shopImg.png" class="w80 h80" mode=""></image> -->
+							<image :src="sjxx.logo" class="w80 h80" mode=""></image>
 						</view>
 						<view class="ml20">
 							<view class="flex" style="line-height: 30rpx;">
-								<view class="font-bold text24">{{sjxx.name}}</view>
+								<view class="font-bold text24">{{sjxx.store_name}}</view>
 								<view v-if="sjxx.is_platform=='Y'"
 									class="font-bold text20 px10 ml20 col4DB23F border4DB23F radius4">自营</view>
 							</view>
 							<view class="flex">
-								<uni-icons v-if="sjxx.score>=1" type="star-filled" color="#FF0000" class="mr10"
+								<uni-icons v-if="Number(sjxx.score)>=1" type="star-filled" color="#FF0000" class="mr10"
 									size="16"></uni-icons>
-								<uni-icons v-if="sjxx.score>=2" type="star-filled" color="#FF0000" class="mr10"
+								<uni-icons v-if="Number(sjxx.score)>=2" type="star-filled" color="#FF0000" class="mr10"
 									size="16"></uni-icons>
-								<uni-icons v-if="sjxx.score>=3" type="star-filled" color="#FF0000" class="mr10"
+								<uni-icons v-if="Number(sjxx.score)>=3" type="star-filled" color="#FF0000" class="mr10"
 									size="16"></uni-icons>
-								<uni-icons v-if="sjxx.score>=4" type="star-filled" color="#FF0000" class="mr10"
+								<uni-icons v-if="Number(sjxx.score)>=4" type="star-filled" color="#FF0000" class="mr10"
 									size="16"></uni-icons>
-								<uni-icons v-if="sjxx.score>=5" type="star-filled" color="#FF0000" class="mr10"
+								<uni-icons v-if="Number(sjxx.score)>=5" type="star-filled" color="#FF0000" class="mr10"
 									size="16"></uni-icons>
 								<view class="col666666 text24 mr10 ml10">评分</view>
 								<view class="colFF0000 font-bold">{{sjxx.score}}</view>
@@ -47,7 +48,8 @@
 						</view>
 					</view>
 					<view class="">
-						<view class="bg4DB23F col-white text24 radius10  text-center">关注</view>
+						<view @click="_attentionStore()" v-if="sjxx.is_fans=='Y'" class="col4DB23F border4DB23F text24 radius10  text-center">已关注</view>
+						<view @click="_attentionStore()" v-else class="bg4DB23F col-white text24 radius10  text-center">关注</view>
 						<view class="text24 col666666">关注量:{{sjxx.fans}}</view>
 					</view>
 				</view>
@@ -66,12 +68,12 @@
 
 		</view>
 		<!--  -->
-		<view class="bg-white mt10 items-center py20 px40 flex justify-between">
+		<view v-if="sjxx.type=='a'" class="bg-white mt10 items-center py20 px40 flex justify-between">
 			<view class="text20">
 				<view class="col-black font-bold">商家地址</view>
 				<view class="col666666 mt-10">{{sjxx.address}}</view>
 			</view>
-			<view class="text-center">
+			<view class="text-center" >
 				<view class="w28 h32 mx-auto">
 					<image src="@/static/home/shopDetails/dt.png" class="w28 h32 mt5" mode=""></image>
 				</view>
@@ -99,7 +101,7 @@
 						<image class="w15 h10 ml10" src="@/static/home/pointsMall/bottom.png" mode=""></image>
 					</view>
 					<view class="flex items-center" @click="()=>{$refs.popupPP.open('bottom')}">
-						<view class="">品牌</view>
+						<view class="">{{ppObj.name?ppObj.name:'品牌'}}</view>
 						<image class="w15 h10 ml10" src="@/static/home/pointsMall/bottom.png" mode=""></image>
 					</view>
 					<view :class="sfzy?'col4DB23F':''" @click="()=>{sfzy=!sfzy}">自营</view>
@@ -120,14 +122,14 @@
 			<view class="mt15 px30 grid grid-cols-2" style="grid-column-gap:30rpx">
 				<view class="bg-white w340 mb20" v-for="(item,index) in shopList" :key="item.id">
 					<!-- <image @click="handUrl('/pages/home/components/graphic/index')" src="@/static/home/sytjspslt1.png" class="w340 h340" mode=""></image> -->
-					<image @click="handUrl('/pages/home/components/graphic/index')" :src="item.cover_image"
+					<image @click="handUrl('/pages/home/components/shopDetail/index?id='+item.id)" :src="item.cover_image"
 						class="w340 h340" mode=""></image>
 					<view class="px20 pb14">
-						<view class="col333333 font-bold">{{item.name}}</view>
+						<view class="col333333 font-bold" v-if="item.name">{{item.name.length>22?item.name.slice(0,22)+'...':item.name}}</view>
 						<view class="colFF0000 font-bold mt10">￥{{item.price}}</view>
 						<view class="flex text20 mt10" style="line-height: normal">
-							<view v-if="item.platform_goods=='Y'" class="bg4DB23F col-white px10 radius4">自营</view>
-							<view class="ml20 border4DB23F col4DB23F px10 radius4">销量 {{item.salled_number}}</view>
+							<view v-if="item.platform_goods=='Y'" class="bg4DB23F col-white px10 radius4 mr20">自营</view>
+							<view class=" border4DB23F col4DB23F px10 radius4">销量 {{item.salled_number}}</view>
 						</view>
 						<view class="flex justify-between col666666 text20 mt10">
 							<view class="">规格 ‌{{item.size_name}}‌</view>
@@ -164,14 +166,14 @@
 			<view class="mt15 px30 grid grid-cols-2" style="grid-column-gap:30rpx">
 				<view class="bg-white w340 mb20" v-for="(item,index) in shopList" :key="item.id">
 					<!-- <image @click="handUrl('/pages/home/components/graphic/index')" src="@/static/home/sytjspslt1.png" class="w340 h340" mode=""></image> -->
-					<image @click="handUrl('/pages/home/components/graphic/index')" :src="item.cover_image"
+					<image @click="handUrl('/pages/home/components/shopDetail/index?id='+item.id)" :src="item.cover_image"
 						class="w340 h340" mode=""></image>
 					<view class="px20 pb14">
-						<view class="col333333 font-bold">{{item.name}}</view>
+						<view class="col333333 font-bold" v-if="item.name">{{item.name.length>22?item.name.slice(0,22)+'...':item.name}}</view>
 						<view class="colFF0000 font-bold mt10">￥{{item.price}}</view>
 						<view class="flex text20 mt10" style="line-height: normal">
-							<view v-if="item.platform_goods=='Y'" class="bg4DB23F col-white px10 radius4">自营</view>
-							<view class="ml20 border4DB23F col4DB23F px10 radius4">销量 {{item.salled_number}}</view>
+							<view v-if="item.platform_goods=='Y'" class="bg4DB23F col-white px10 radius4 mr20">自营</view>
+							<view class=" border4DB23F col4DB23F px10 radius4">销量 {{item.salled_number}}</view>
 						</view>
 						<view class="flex justify-between col666666 text20 mt10">
 							<view class="">规格 ‌{{item.size_name}}‌</view>
@@ -262,8 +264,9 @@
 					<view class="">
 						<view class="flex">
 							<view class="flex mx-auto h60 items-center">
-								<image src="@/static/home/shopDetails/shopImg.png" class="w60 h60" mode=""></image>
-								<view class="text24 col333333 ml20">{{sjxx.name}}</view>
+								<!-- <image src="@/static/home/shopDetails/shopImg.png" class="w60 h60" mode=""></image> -->
+								<image :src="sjxx.logo" class="w60 h60" mode=""></image>
+								<view class="text24 col333333 ml20">{{sjxx.store_name}}</view>
 							</view>
 						</view>
 						<view class="flex items-center">
@@ -309,6 +312,7 @@
 				sort: 'a', //a综合 b销量优先
 				ppList: [], //品牌、
 				ppIndex: '', //品牌id
+				ppObj:{},//品牌obj
 				price_start: '', //价格起
 				price_end: '', //价格止  
 				sfzy: false, //是否自营
@@ -318,7 +322,7 @@
 				sjfw: [], //商家服务
 				sjfwStr: '', //商家服务标题字符串
 
-				type_index: 3, //当前所属分类
+				type_index: 1, //当前所属分类
 
 				oneType: 1, //商品分类1 当前
 				twoType: 1, //商品分类2 当前
@@ -336,8 +340,28 @@
 			this.store_id = option.store_id
 			this._getGoodsBrandList() //品牌列表
 			this._userGetStoreInfo() //商家信息
+			this._getGoodsTypeList()//分类
 		},
 		methods: {
+			//关注/取消关注商家 
+			_attentionStore(){
+				uni.showLoading({
+					title: "加载中"
+				})
+				api.attentionStore({
+					post_params:{
+						store_id:this.store_id
+					}
+				}).then((res)=>{
+					// uni.showToast({
+					// 	title: '加入成功！',
+					// 	icon: 'success',
+					// 	duration: 2000
+					// })
+					uni.hideLoading()
+					console.log('关注结果',res.data);
+				})
+			},
 			// 获取商家评价
 			_userGetStoreEvaluate() {
 				api.userGetStoreEvaluate({
@@ -357,22 +381,27 @@
 			},
 			// 所有分类
 			_getGoodsTypeList() {
-				api.getGoodsTypeList().then((res) => {
+				api.getGoodsTypeList({
+					post_params:{
+						store_id:this.store_id
+					}
+				}).then((res) => {
 					const {
 						list
 					} = res.data.data
 					this.typeAll = list
+					this.oneType  = list[0].id
 					this.typeAllTwo = list[0].children //默认
 				})
 			},
 			// 一级分类
 			oneClick(item) {
-				this.oneType = item
+				this.oneType = item.id
 				this.typeAllTwo = item.children
 			},
 			// 二级分类
 			twoClick(item) {
-				this.twoType = item
+				this.twoType = item.id
 				this._getGoodsList()
 			},
 			// 所属分类切换
@@ -413,6 +442,8 @@
 			},
 			checkIndex(item) {
 				this.ppIndex = item.id
+				this.ppObj = item
+				this.$refs.popupPP.close()
 			},
 			checkSort(index) {
 				this.sort = index

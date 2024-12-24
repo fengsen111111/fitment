@@ -182,6 +182,7 @@
 				// #endif
 			},
 			touchStart(e) {
+				this.winOffsetY = 298 //
 				this.touchmove = true
 				let pageY = this.isPC ? e.pageY : e.touches[0].pageY
 				let index = Math.floor((pageY - this.winOffsetY) / this.itemHeight)

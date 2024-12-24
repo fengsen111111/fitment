@@ -86,7 +86,9 @@ const api = {
 	GET_GOODS_BRAND_LIST: base_url + '/decoration/Setting/getGoodsBrandList', // 获取商品品牌列表
 	GET_GOODS_ACTIVIY_LIST: base_url + '/decoration/GoodsActivity/getGoodsActivityList', // 获取包邮专区列表
 	GET_GOODS_LIST: base_url + '/decoration/Goods/getGoodsList', // 获取商品列表
+	COOLECION_GOODS: base_url + '/decoration/User/collectionGoods', // 收藏/取消收藏商品
 	USER_GET_STORE_INFO: base_url + '/decoration/Store/userGetStoreInfo', // 用户获取商家信息
+	ATTENTION_STORE: base_url + '/decoration/User/attentionStore', // 关注/取消关注商家
 	USER_GETSTORE_EVALUETE: base_url + '/decoration/Store/userGetStoreEvaluate', // 用户获取商家评价
 	GET_GOODS_DETAILS: base_url + '/decoration/Goods/getGoodsDetail', // 获取商品详情
 	ADD_CAR: base_url + '/decoration/Car/addCar', // 加入购物车
@@ -110,11 +112,12 @@ const api = {
 	AGREE_AFTERSALE_ORDER: base_url + '/decoration/Order/agreeAftersaleOrder', // 同意售后
 	// ================================================================================
 	GET_INEGRAL_GOODS_TYPELIST: base_url + '/decoration/IntegralGoodsType/getIntegralGoodsTypeList', // 获取积分商品分类列表
-	GET_INTEGRAL_GOODS_BRANDLIST: base_url + '/decoration/GoodsBrand/getIntegralGoodsBrandList', // 获取积分商品品牌列表
+	GET_INTEGRAL_GOODS_BRANDLIST: base_url + '/decoration/Setting/getIntegralGoodsBrandList', // 获取积分商品品牌列表
 	GET_INTEGRALGOODS_LIST: base_url + '/decoration/IntegralGoods/getIntegralGoodsList', // 获取积分商品列表
 	GET_INTERGRAL_GOODS_DETAIL: base_url + '/decoration/IntegralGoods/getIntegralGoodsDetail', // 获取积分商品详情
-	COMPUTER_INTEDRAL_GOODS_ORDER: base_url +'/decoration/IntegralGoodsOrder/computerIntegralGoodsOrder', // 计算积分商品价格
+	COMPUTER_INTEDRAL_GOODS_ORDER: base_url +'/decoration/IntegralGoodsOrder/computeIntegralGoodsOrder', // 计算积分商品价格
 	CREATE_INTEGRAL_GOODS_ORDER: base_url + '/decoration/IntegralGoodsOrder/createIntegralGoodsOrder', // 下单积分商品
+	PAY_INTEGRAL_GOODS_ORDER: base_url + '/decoration/IntegralGoodsOrder/payIntegralGoodsOrder', // 支付积分商品订单
 	GET_INTEGRAL_GOODS_ORDER_LIST: base_url +'/decoration/IntegralGoodsOrder/getIntegralGoodsOrderList', // 获取积分商品订单列表
 	OVER_INTEGRAL_GOODS_ORDER: base_url + '/decoration/IntegralGoodsOrder/overIntegralGoodsOrder', // 积分商品订单收货
 }
@@ -414,9 +417,17 @@ export const getGoodsActivityList = (params) => {
 export const getGoodsList = (params) => {
 	return post(api.GET_GOODS_LIST, params)
 }
+// 收藏/取消收藏商品
+export const collectionGoods = (params) => {
+	return post(api.COOLECION_GOODS, params)
+}
 // 用户获取商家信息
 export const userGetStoreInfo = (params) => {
 	return post(api.USER_GET_STORE_INFO, params)
+}
+// 关注/取消关注商家
+export const attentionStore = (params) => {
+	return post(api.ATTENTION_STORE, params)
 }
 // 用户获取商家评价
 export const userGetStoreEvaluate = (params) => {
@@ -516,12 +527,16 @@ export const getIntegralGoodsDetail = (params) => {
 	return post(api.GET_INTERGRAL_GOODS_DETAIL, params)
 }
 // 计算积分商品价格
-export const computerIntegralGoodsOrder = (params) => {
+export const computeIntegralGoodsOrder = (params) => {
 	return post(api.COMPUTER_INTEDRAL_GOODS_ORDER, params)
 }
 // 下单积分商品
 export const createIntegralGoodsOrder = (params) => {
 	return post(api.CREATE_INTEGRAL_GOODS_ORDER, params)
+}
+// 支付积分商品订单
+export const payIntegralGoodsOrder = (params) => {
+	return post(api.PAY_INTEGRAL_GOODS_ORDER, params)
 }
 // 获取积分商品订单列表
 export const getIntegralGoodsOrderList = (params) => {

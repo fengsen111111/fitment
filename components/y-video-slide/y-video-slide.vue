@@ -49,19 +49,19 @@
 					<!-- 标题 商品 -->
 					<view class="text36 font-bold">装修的优点</view>
 					<view class="text20 flex items-center mt20 bg666666 py10 px20 col-white radius10"
-						style="width: 50%;">
+						style="width: 50%; flex-direction: row;">
 						<image src="@/static/home/graphic/shopping.png" class="w40 h40" mode=""></image>
 						<view class="ml20">视频同款</view>
 						<view class="ml30">已售</view>
 						<view class="ml10">88.8w</view>
 					</view>
 					<!-- 头像 关注 -->
-					<view class="mt20 flex items-center">
+					<view class="mt20 flex items-center" style="flex-direction: row;">
 						<image class="w48 h48 radius_bfb50" :src="item.userHead" mode="widthFix"></image>
 						<view class="user-name ml10">@{{item.userNick}}</view>
 						<view @click="followFunc(index,item)" v-if="item.isFollow == 1"
 							class="ml20 bg4DB23F col-white px40 radius10">关注</view>
-						<view @click="followFunc(index,item)" v-else class="ml20 border4DB23F col4DB23F radius10 px40">
+						<view @click="followFunc(index,item)" v-else class="ml20  col4DB23F radius10 px40" style="border: 1px solid #4DB23F !important;">
 							已关注</view>
 					</view>
 					<view class="video-content mt15" style="line-height: 30rpx;">{{item.videoContent}}</view>
@@ -77,7 +77,7 @@
 		</view>
 		<!-- 评论弹窗 -->
 		<view :class="['commont-box',commontShow ? 'active' : '']">
-			<view class="flex justify-between px36 mt30">
+			<view class="flex justify-between px36 mt30" style="flex-direction: row; ">
 				<view class=" text28">全部评论</view>
 				<uni-icons type="closeempty" size="26" @click="()=>{commontShow = false}"></uni-icons>
 			</view>
@@ -88,12 +88,12 @@
 						<view class="first-comment">
 							<view class="comment-name">{{item.userNick}}</view>
 							<view class="comment-content">{{item.content}}</view>
-							<view class="flex justify-between">
+							<view class="flex justify-between" style="flex-direction: row;">
 								<view class="time-box">
 									<text class="inline-block">{{item.time}}</text>
 									<view class="inline-block reply-btn" @click="reply('first',item,index)">回复</view>
 								</view>
-								<view class="fabulous-box items-center">
+								<view class="fabulous-box items-center" style="flex-direction: row;">
 									<image @click="commentFabulous('first',item,index)" v-if="item.isFabulous == '1'"
 										src="@/static/home/graphic/icon1_check.png" class="w30 h30" mode=""></image>
 									<image @click="commentFabulous('first',item,index)" v-else
@@ -118,13 +118,13 @@
 									<span class="inline-block">{{child.replyTo}}</span>
 								</view>
 								<view class="comment-content">{{child.content}}</view>
-								<view class="flex justify-between items-center mt10">
+								<view class="flex justify-between items-center mt10" style="flex-direction: row;">
 									<view class="time-box items-center">
 										<text class="inline-block">{{item.time}}</text>
 										<view class="inline-block reply-btn" @click="reply('first',item,index)">回复
 										</view>
 									</view>
-									<view class="fabulous-box items-center">
+									<view class="fabulous-box items-center" style="flex-direction: row;">
 										<image @click="commentFabulous('second',child,index,childIndex)"
 											v-if="child.isFabulous == '1'" src="@/static/home/graphic/icon1_check.png"
 											class="w30 h30" mode=""></image>
@@ -140,8 +140,8 @@
 				</view>
 			</view>
 			<!-- 评论输入框 -->
-			<view class="flex p30">
-				<view class="border333333 p20 radius10" style="width: 70%;">
+			<view class="flex p30" style="flex-direction: row;">
+				<view class=" p20 radius10" style="width: 80%;border: 1px solid #333333 !important">
 					<input type="text" :focus="showInput" @confirm="commentCommit" @blur="commentBlur"
 						v-model="replyContent" :placeholder="commentPlaceholder" />
 				</view>
@@ -152,21 +152,21 @@
 
 		<!-- 分享弹框 -->
 		<view :class="['fx_box',isShowZf ? 'active' : '']">
-			<view class="flex justify-between px36 mt30">
+			<view class="flex justify-between px36 mt30" style="flex-direction: row; ">
 				<view class=" text28">分享</view>
 				<uni-icons type="closeempty" size="26" @click="()=>{isShowZf = false}"></uni-icons>
 			</view>
 			<view class="p30">
-				<view class=" grid grid-cols-4">
-					<view class="text-center">
+				<view class="flex" style="flex-direction: row;">
+					<view class="text-center mr50">
 						<image src="@/static/home/graphic/fx1.png" class="w60 h60" mode=""></image>
 						<view class="text28">微信</view>
 					</view>
-					<view class="text-center">
+					<view class="text-center mr50">
 						<image src="@/static/home/graphic/fx2.png" class="w60 h60" mode=""></image>
 						<view class="text28">朋友圈</view>
 					</view>
-					<view class="text-center">
+					<view class="text-center mr50">
 						<image src="@/static/home/graphic/fx3.png" class="w60 h60" mode=""></image>
 						<view class="text28">内部分享</view>
 					</view>
@@ -654,6 +654,7 @@
 		transform: translateY(100%);
 		display: flex;
 		flex-direction: column;
+
 		&.active {
 			z-index: 9;
 			transform: translateY(0);
@@ -697,6 +698,7 @@
 			.comment-panel {
 				margin: 30rpx 40rpx;
 				display: flex;
+				flex-direction: row;
 
 				.first-user {
 					width: 50rpx;
@@ -712,6 +714,7 @@
 						font-size: 24rpx;
 						font-weight: bold;
 						color: #999;
+						flex-direction: row;
 					}
 
 					.comment-content {
@@ -723,7 +726,7 @@
 					.time-box {
 						font-size: 24rpx;
 						color: #999;
-
+						 flex-direction: row;
 						.reply-btn {
 							margin-left: 20rpx;
 						}

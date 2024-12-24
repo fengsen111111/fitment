@@ -3,7 +3,8 @@
 		<NavBar :navType="'标题'" :title="'订单确认'" />
 		<view class="p30 text28 ">
 			<view class="">收货地址</view>
-			<image v-if="!mrdz.id" src="@/static/home/pointsMall/nulladdress.png" class="w-full h140 mt20" mode=""></image>
+			<image @click="handUrl('/pages/my/components/address/index')" v-if="!mrdz.id"
+				src="@/static/home/pointsMall/nulladdress.png" class="w-full h140 mt20" mode=""></image>
 			<view v-else class="mt20 bg-white radius10 text24 p20 flex justify-between items-center">
 				<view class="">
 					<view class="font-bold">{{mrdz.name}} {{mrdz.mobile}}</view>
@@ -14,21 +15,23 @@
 			</view>
 			<view class="mt40">订单商品</view>
 			<view class="mt20 bg-white radius10 text24 p20 flex items-center">
-				<view class="w180 h180">
-					<image src="@/static/home/pointsMall/shop.png" class="w180 h180 radius10" mode=""></image>
+				<view class="w180 h180" v-if="item.images">
+					<!-- <image src="@/static/home/pointsMall/shop.png" class="w180 h180 radius10" mode=""></image> -->
+					<image :src="item.images[0]" class="w180 h180 radius10" mode=""></image>
 				</view>
 				<view class=" ml30">
-					<view class="text30 font-bold">左维空间沙发新款胡桃木实木沙发组合客厅大小户型现代简约...</view>
-				
+					<view class="text30 font-bold" v-if="item.name" style="width: 60vw;">
+						{{item.name.length>28?item.name.slice(0,28)+'...':item.name}}</view>
+
 					<view class="flex text20 col333333 mt20 ">
-						<view class="mr50">库存:9999</view>
-						<view class="">销量:9999</view>
+						<view class="mr50">库存:{{item.stock}}</view>
+						<view class="">销量:{{item.salled_number}}</view>
 					</view>
 					<view class="flex justify-between text20 col333333">
 						<view class="flex">
-							<view class="">规格:四人沙发</view>
+							<view class="">规格:{{item.size_name}}</view>
 						</view>
-						<view class="text36 colFF0000 font-bold">￥6666</view>
+						<view class="text36 colFF0000 font-bold">￥{{item.price}}</view>
 					</view>
 				</view>
 			</view>
@@ -63,42 +66,47 @@
 		data() {
 			return {
 				birthday: "", //时间选择
-				mrdz:{},//默认地址
-				
-				option:{
-					shopList:[]//传递的数据
-				},
-				
-				goods_list:[],// 参数
-				
-				price:'',//订单金额  
-				transport:'',//运费   
+				mrdz: {}, //默认地址
+
+				option: {},
+
+				price: '', //订单金额  
+				transport: '', //运费   
+
+				item: {} //详情
 			}
 		},
 		components: {
 			NavBar
 		},
-		onLoad(option){
+		onLoad(option) {
 			this.option = option
-			// 
-			if(option.shopList){
-				this.goods_list = option.shopList.map((item)=>{
-					return {
-						id:'',
-						number:''
-					}
-				})
-			}
-			this._getUserAddressList()//默认地址
-			this._computeOrder()//计算价格
+		},
+		onShow() {
+			this._getUserAddressList() //默认地址
+			this._getGoodsDetail() //商品详情
 		},
 		methods: {
+			// 商品详情
+			_getGoodsDetail() {
+				api.getGoodsDetail({
+					post_params: {
+						id: this.option.id
+					}
+				}).then((res) => {
+					console.log('商品数据', res.data.data);
+					this.item = res.data.data
+				})
+			},
 			// 计算价格
 			_computeOrder() {
 				api.computeOrder({
 					post_params: {
 						user_address_id: this.mrdz.id,
-						goods_list: this.goods_list
+						goods_list: [{
+							id: this.option.id,
+							number: 1
+						}]
 					}
 				}).then((res) => {
 					const {
@@ -127,31 +135,37 @@
 							this.mrdz = item
 						}
 					})
+					this._computeOrder() //计算价格
 				})
 			},
-			handUrl(url){
+			handUrl(url) {
 				uni.navigateTo({
-					url:url
+					url: url
 				})
 			},
 			// 支付订单
-			payOrder(){
+			payOrder() {
 				console.log('支付订单');
 				return false
 				api.createOrder({
-					post_params:{
-						user_address_id:this.mrdz.id,
-						goods_list:this.goods_list
+					post_params: {
+						user_address_id: this.mrdz.id,
+						goods_list: [{
+							id: this.option.id,
+							number: 1
+						}]
 					}
-				}).then((res)=>{
+				}).then((res) => {
 					console.log('支付订单创建');
-					const {order_id} = res.data
+					const {
+						order_id
+					} = res.data
 					// 支付订单
 					api.payOrder({
-						post_params:{
-							order_id:order_id
+						post_params: {
+							order_id: order_id
 						}
-					}).then((res)=>{
+					}).then((res) => {
 						console.log('支付订单');
 					})
 				})

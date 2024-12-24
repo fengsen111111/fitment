@@ -21,6 +21,8 @@
 		methods: {
 			commitCheck(e) {
 				console.log('确认选点位置',e);
+				uni.setStorageSync('xdwz',JSON.stringify(e))
+				uni.navigateBack()
 			}
 		}
 	};
