@@ -212,6 +212,16 @@
 				}).then((res)=>{
 					uni.hideLoading()
 					console.log('提交成功');
+					if(res.data.code==1){
+						uni.showToast({
+							title: '提交成功！',
+							icon: 'success',
+							duration: 2000
+						})
+						setTimeout(()=>{
+							uni.navigateBack()
+						},2000)
+					}
 				})
 			}
 		}

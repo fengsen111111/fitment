@@ -38,6 +38,7 @@
 		},
 		onLoad(option){
 			this.title = option.title
+			this._getIntegralRecords()
 		},
 		components: {
 			NavBar,

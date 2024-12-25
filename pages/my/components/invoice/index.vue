@@ -7,10 +7,11 @@
 					<view class="">{{item.type=='person'?'姓名：':'单位名称：'}}{{item.name}}</view>
 					<view class="">{{item.style=='a'?'专票':'普票'}}</view>
 				</view>
-				<view class=" px20 font-bold pb20 flex justify-between">
+				<view v-if="item.code" class=" px20 font-bold pb20 flex justify-between">
 					<view class="">纳税人识别码</view>
 					<view class="">{{item.code}}</view>
 				</view>
+				<view v-else class="h30"></view>
 				<view class="bg999999 h1"></view>
 				<view class="px20  py30 flex justify-between">
 					<view class="flex items-center">
@@ -28,7 +29,7 @@
 		<!--  -->
 		<view class="fixed bottom0 w-full">
 			<view class=" bg-white py20 px75 ">
-				<view @click="()=>{$refs.popupAdd.open('bottom')}" class="bg4DB23F py20 text-center w-full radius10 col-white text32 font-bold">
+				<view @click="handAdd()" class="bg4DB23F py20 text-center w-full radius10 col-white text32 font-bold">
 					新增
 				</view>
 			</view>
@@ -143,6 +144,18 @@
 			this._getUserInvoiceList()
 		},
 		methods: {
+			// 新增
+			handAdd(){
+				this.item ={
+					id:'',
+					is_default:'',
+					type:'',
+					style:'',
+					name:'',
+					code:'',
+				}
+				this.$refs.popupAdd.open('bottom')
+			},
 			// 切换发票类型
 			checkHand(key){
 				console.log('key',key);
@@ -183,6 +196,9 @@
 							duration: 2000
 						})
 						const _this = this
+						this.$refs.popupDw.close()
+						this.$refs.popupAdd.close()
+						this.$refs.popupUser.close()
 						setTimeout(()=>{
 							_this._getUserInvoiceList()
 						},2000)
@@ -213,6 +229,9 @@
 							duration: 2000
 						})
 						const _this = this
+						this.$refs.popupDw.close()
+						this.$refs.popupAdd.close()
+						this.$refs.popupUser.close()
 						setTimeout(()=>{
 							_this._getUserInvoiceList()
 						},2000)

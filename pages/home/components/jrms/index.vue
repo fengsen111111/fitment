@@ -40,7 +40,7 @@
 						<view v-if="type_index==1" class="mt10 flex justify-between items-center">
 							<view class="text36 colFF0000 font-bold">￥6666</view>
 							<view class="flex items-center" >
-								<view class="bg4DB23F text24 font-bold col-white px30 radius10" style="line-height: 41rpx;">倒计时</view>
+								<view class="bg4DB23F text24 font-bold col-white px30 radius10" style="line-height: 42rpx;">倒计时</view>
 								<view class="border4DB23F text24 font-bold col4DB23F px30 radius10 relative left-16" style="line-height: 37rpx;">
 									<!-- XX:XX:XX -->
 									<uni-countdown color="#4DB23F" splitorColor="#4DB23F" :font-size="12" :show-day=false :day="1" :hour="1" :minute="12" :second="40" />

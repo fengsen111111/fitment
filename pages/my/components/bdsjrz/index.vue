@@ -32,18 +32,20 @@
 				<view class="mt40">
 					<view class="font-bold">店铺LOGO</view>
 					<view class="mt20 grid grid-cols-5">
-						<image @click="selImgLogo()" :src="form.logo" v-if="form.logo" class="w116 h116 radius10 mb20" mode=""></image>
-						<image @click="selImgLogo()" v-else src="@/static/home/btnBooking/upload.png" class="w116 h116 radius10 mb20"
-							mode="">
+						<image @click="selImgLogo()" :src="form.logo" v-if="form.logo" class="w116 h116 radius10 mb20"
+							mode=""></image>
+						<image @click="selImgLogo()" v-else src="@/static/home/btnBooking/upload.png"
+							class="w116 h116 radius10 mb20" mode="">
 						</image>
 					</view>
 				</view>
 				<view class="mt40">
 					<view class="font-bold">营业执照</view>
 					<view class="mt20 grid grid-cols-5">
-						<image @click="selImg()" :src="form.license_image" v-if="form.license_image" class="w116 h116 radius10 mb20" mode=""></image>
-						<image @click="selImg()" v-else src="@/static/home/btnBooking/upload.png" class="w116 h116 radius10 mb20"
-							mode="">
+						<image @click="selImg()" :src="form.license_image" v-if="form.license_image"
+							class="w116 h116 radius10 mb20" mode=""></image>
+						<image @click="selImg()" v-else src="@/static/home/btnBooking/upload.png"
+							class="w116 h116 radius10 mb20" mode="">
 						</image>
 					</view>
 				</view>
@@ -54,15 +56,18 @@
 			<view class="flex mb20">
 				<view class="flex items-center mx-auto mt65 text18 px30">
 					<uni-icons @click="()=>{status=!status}" v-if="status" type="circle" size="16"></uni-icons>
-					<uni-icons @click="()=>{status=!status}" v-else type="checkbox-filled" size="16" color="#4DB23F"></uni-icons>
+					<uni-icons @click="()=>{status=!status}" v-else type="checkbox-filled" size="16"
+						color="#4DB23F"></uni-icons>
 					<view class="ml10">已仔细阅读并自愿同意</view>
-					<view class="col4DB23F" @click="handUrl('/pages/login/components/fwbText?type=store_entry_introduce')">《商家入驻协议》</view>
+					<view class="col4DB23F"
+						@click="handUrl('/pages/login/components/fwbText?type=store_entry_introduce')">《商家入驻协议》</view>
 					<view class="col4DB23F">《商家隐私协议》</view>
 					<view class="col4DB23F">《平台商家规则》</view>
 				</view>
 			</view>
 			<view class="bg-white  py20 px75">
-				<view @click="_submitEntryApply()" class="bg4DB23F text-center py17 font-bold col-white text32 radius10">
+				<view @click="_submitEntryApply()"
+					class="bg4DB23F text-center py17 font-bold col-white text32 radius10">
 					立即提交
 				</view>
 			</view>
@@ -87,17 +92,17 @@
 					store_name: '',
 					license_image: '',
 					address: '',
-					location:'',
+					location: '',
 					logo: '',
 				},
-				status:true,
+				status: true,
 			}
 		},
 		components: {
 			NavBar
 		},
-		onShow(){
-			if(uni.getStorageSync('xdwz')){
+		onShow() {
+			if (uni.getStorageSync('xdwz')) {
 				this.form = {
 					type: 'a',
 					name: '联系人刘某',
@@ -105,12 +110,12 @@
 					store_name: '刘某的本地商家',
 					license_image: '',
 					address: '',
-					location:'',
+					location: '',
 					logo: '',
 				}
 				this.form.address = JSON.parse(uni.getStorageSync('xdwz')).address
 				this.form.location = JSON.parse(uni.getStorageSync('xdwz')).location
-				console.log('地址show',this.form);
+				console.log('地址show', this.form);
 			}
 		},
 		methods: {
@@ -144,7 +149,8 @@
 										console.log('上传失败:', res);
 									} else {
 										console.log('上传地址:', res.data.url);
-										that.form.license_image = 'https://api.qfcss.cn'+res.data.url
+										that.form.license_image =
+											'https://api.qfcss.cn' + res.data.url
 									}
 								});
 							})
@@ -182,7 +188,8 @@
 										console.log('上传失败:', res);
 									} else {
 										console.log('上传地址:', res.data.url);
-										that.form.logo = 'https://api.qfcss.cn'+res.data.url
+										that.form.logo = 'https://api.qfcss.cn' + res
+											.data.url
 									}
 								});
 							})
@@ -238,9 +245,19 @@
 						location: this.form.location,
 						logo: this.form.logo,
 					}
-				}).then((res)=>{
+				}).then((res) => {
 					uni.hideLoading()
 					console.log('提交成功');
+					if (res.data.code == 1) {
+						uni.showToast({
+							title: '提交成功！',
+							icon: 'success',
+							duration: 2000
+						})
+						setTimeout(() => {
+							uni.navigateBack()
+						}, 2000)
+					}
 				})
 			}
 		}

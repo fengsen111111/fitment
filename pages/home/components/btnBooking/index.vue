@@ -17,7 +17,7 @@
 			<view class="mt40">
 				<view class="font-bold">小区名称</view>
 				<view class="mt20 bg-white py20 px30 radius10 flex items-center justify-between">
-					<input type="text" style="width:90%" v-model="post_params.community" placeholder="输入小区名称" />
+					<input type="text" disabled style="width:90%" v-model="post_params.community" placeholder="输入小区名称" />
 					<image src="../../../../static/home/btnBooking/dw.png" class="w22 h28" @click="handDw" mode="">
 					</image>
 				</view>
@@ -34,7 +34,7 @@
 			<view class="mt40">
 				<view class="font-bold">装修模式</view>
 				<view class="mt20 bg-white py20 px30 radius10 flex items-center justify-between">
-					<input type="text" disabled v-model="post_params.decoration_model.name" placeholder="输入装修模式" />
+					<input type="text" disabled v-model="post_params.decoration_model" placeholder="输入装修模式" />
 					<image src="../../../../static/home/btnBooking/dsj.png"
 						@click="()=>{$refs.popupMode.open('bottom')}" class="w30 h20" mode=""></image>
 				</view>
@@ -42,9 +42,9 @@
 			<view class="mt40">
 				<view class="font-bold">装修风格</view>
 				<view class="mt20 relative" @click="()=>{$refs.popupStyle.open('bottom')}">
-					<view v-if="post_params.zxfg.length>0">
-						<!-- {{post_params.zxfg.name}} -->
-						<image :src="require('@/static/home/btnBooking/'+post_params.zxfg.image+'.png')"
+					<view v-if="post_params.zxfg">
+						{{post_params.zxfg.name}}
+						<image :src="post_params.zxfg.image"
 							class="w200 h200" mode=""></image>
 					</view>
 					<view v-else>
@@ -77,14 +77,14 @@
 						</view>
 						<view @click="handleZxms(item)"
 							class="flex bg-white radius10 justify-between items-center mt30 p30"
-							v-for="item in zxmsList" :key="item.id">
-							<view class="text30">{{item.name}}</view>
-							<uni-icons v-if="post_params.decoration_model.id == item.id" type="checkbox-filled"
+							v-for="(item,index) in zxmsList" :key="index">
+							<view class="text30">{{item}}</view>
+							<uni-icons v-if="post_params.decoration_model == item" type="checkbox-filled"
 								color="#4DB23F" size="20"></uni-icons>
 						</view>
 					</view>
 				</uni-popup>
-				<!-- 装修模式框 -->
+				<!-- 装修风格框 -->
 				<uni-popup ref="popupStyle" type="bottom" border-radius="10px 10px 0 0">
 					<view class="bgF9F9F9 p30" style="border-radius: 10px 10px 0 0;">
 						<view class="flex justify-between items-center">
@@ -93,8 +93,9 @@
 						</view>
 						<view class="radius10 grid grid-cols-3">
 							<view class="w200  mt30" @click="handleZxfg(item)" v-for="item in zxfgList" :key="item.id">
-								<image :src="require('@/static/home/btnBooking/'+item.image+'.png')"
-									class="w200 h200 radius10" mode=""></image>
+								<!-- <image :src="require('@/static/home/btnBooking/'+item.image+'.png')"
+									class="w200 h200 radius10" mode=""></image> -->
+								<image :src="item.image" class="w200 h200 radius10" mode=""></image>
 								<view class="text36 font-bold mt10 text-center">{{item.name}}</view>
 							</view>
 						</view>
@@ -158,17 +159,7 @@
 			return {
 				check: true,
 				birthday: "", //时间选择
-				zxfgList: [{
-						id: 1,
-						name: '装修风格1',
-						image: 'zxfg'
-					},
-					{
-						id: 2,
-						name: '装修风格2',
-						image: 'zxfg'
-					},
-				],
+				zxfgList: [],
 				// 参数
 				post_params: {
 					type: "a", //a装修服务介绍 b设计服务介绍  c验房服务介绍  d监理服务介绍  
@@ -178,29 +169,35 @@
 					community_location: "",
 					time: "",
 					decoration_plan_money: "",
-					decoration_model: {},
+					decoration_model: "",
 					check_home_model: "",
-					zxfg: {
-						// id: 1,
-						// name: '装修风格1',
-						// image: 'zxfg'
-					}
+					zxfg: {}
 				},
-				zxmsList: [
-					// {
-					// 	id: 1,
-					// 	name: '模式1'
-					// },
-					// {
-					// 	id: 2,
-					// 	name: '模式2'
-					// },
-				],
+				zxmsList: [],
 				time: 5, //倒计时
 				timer: '', //计时器
 				
 				images:[]//图片
 
+			}
+		},
+		onShow(){
+			if (uni.getStorageSync('xdwz')) {
+				this.post_params = {
+					type: "a", //a装修服务介绍 b设计服务介绍  c验房服务介绍  d监理服务介绍
+					name: "",
+					mobile: "",
+					community: "",
+					community_location: "",
+					time: "",
+					decoration_plan_money: "",
+					decoration_model: "",
+					check_home_model: "",
+					zxfg: {}
+				}
+				this.post_params.community = JSON.parse(uni.getStorageSync('xdwz')).address
+				this.post_params.community_location = JSON.parse(uni.getStorageSync('xdwz')).location
+				console.log('地址show', this.post_params);
 			}
 		},
 		components: {
@@ -223,11 +220,6 @@
 			this._getDecorationStylesList()
 		},
 		methods: {
-			_getDecorationStylesList(){
-				api.getDecorationStylesList().then((res)=>{
-					console.log('装修风格',res.data);
-				})
-			},
 			//*选择图片*//
 			selImg() {
 				let that = this
@@ -270,7 +262,8 @@
 			// 获取配置项
 			_getBaseTypes() {
 				api.getBaseTypes().then((res) => {
-					console.log('配置项', res.data);
+					console.log('配置项', res.data.data);
+					this.zxmsList = res.data.data.decoration_models
 				})
 			},
 			// 定位小区
@@ -302,6 +295,7 @@
 						list
 					} = res.data.data
 					this.zxfgList = list
+					console.log('装修风格',res.data.data);
 				})
 			},
 			// 选择时间

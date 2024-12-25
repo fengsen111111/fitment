@@ -196,7 +196,7 @@
 			Tarbar,
 			Notice
 		},
-		created() {
+		onLoad() {
 			this._getGoodsTypeList() //商品分类列表
 			this._getIndexGoodsTypeList() //商品二级分类
 			this._getGoodsActivityList() //包邮专区列表
