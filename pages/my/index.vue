@@ -16,11 +16,11 @@
 			</view>
 			<view class="px30">
 				<view class="bg-white p30 radius10">
-					<view class="flex items-center">
+					<view class="flex ">
 						<view class="w90 h90">
 							<image src="../../static/my/userImg.png" class="w90 h90 radius_bfb50" mode=""></image>
 						</view>
-						<view class="ml20 w-full">
+						<view class="ml20 w-full mt10">
 							<view class="flex justify-between w-full">
 								<view class="flex items-center">
 									<image v-if="czzInfo.gender=='a'" src="../../static/my/sex1.png"
@@ -32,10 +32,11 @@
 								</view>
 								<view class="col-black">{{czzInfo.mobile}}</view>
 							</view>
-							<!-- 今天天气不错，出来看看装修公司都有哪些漂亮的设... -->
 							<view class="col-black text20" v-if="czzInfo.des">
-								{{czzInfo.des.length>23?czzInfo.des.split(0,23)+'...':czzInfo.des}} <text
-									class="col4DB23F ml10">展开</text></view>
+								<text v-if="!isZk">{{czzInfo.des.length>25?czzInfo.des.slice(0,25)+'...':czzInfo.des}}</text>
+								<text v-else>{{czzInfo.des}}</text>
+								<text class="col4DB23F ml10" @click="()=>{isZk=!isZk}">{{!isZk?'展开':'收起'}}</text>
+							</view>
 						</view>
 					</view>
 					<view class="bgF5F5F5 h2 mt30"></view>
@@ -85,6 +86,7 @@
 		},
 		data() {
 			return {
+				isZk: false,//是否展开
 				orderList: [{
 						id: 1,
 						text: '待支付',
@@ -166,7 +168,10 @@
 					url: '/pages/my/components/shopsMove/index'
 				})
 			}
-			this._getUperMaterial()
+			
+		},
+		onShow(){
+			this._getUperMaterial()	// 创作者资料
 		},
 		methods: {
 			// 创作者资料

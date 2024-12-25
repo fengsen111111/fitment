@@ -38,18 +38,6 @@
 						@click="()=>{$refs.popupMode.open('bottom')}" class="w30 h20" mode=""></image>
 				</view>
 			</view>
-			
-			<view class="h389"></view>
-			<view class="h50"></view>
-			<view class="flex mt65 text24 px30">
-				<uni-icons v-if="check" @click="()=>{check = false}" type="circle" size="16"></uni-icons>
-				<uni-icons v-else @click="()=>{check = true}" type="checkbox-filled" size="16"
-					color="#4DB23F"></uni-icons>
-				<view class="ml10">已查看并同意</view>
-				<view class="col4DB23F">《装修服务协议》</view>
-				<!-- @click="handUrl('/pages/login/components/fwbText?type=user_rich')" -->
-				<view class="col4DB23F">《装修服务隐私协议》</view>
-			</view>
 			<view>
 				<!-- 时间框 -->
 				<buuug7-simple-datetime-picker ref="myPicker" @submit="handleSubmit" :start-year="2000" :end-year="2099"
@@ -98,6 +86,17 @@
 			<view class="h116"></view>
 		</view>
 		<view class="w-full fixed bottom0">
+			<view class="flex mb20">
+				<view class="flex mx-auto text24 px30">
+					<uni-icons v-if="check" @click="()=>{check = false}" type="circle" size="16"></uni-icons>
+					<uni-icons v-else @click="()=>{check = true}" type="checkbox-filled" size="16"
+						color="#4DB23F"></uni-icons>
+					<view class="ml10">已查看并同意</view>
+					<view class="col4DB23F">《装修服务协议》</view>
+					<!-- @click="handUrl('/pages/login/components/fwbText?type=user_rich')" -->
+					<view class="col4DB23F">《装修服务隐私协议》</view>
+				</view>
+			</view>
 			<view class="bg-white  py20 px75">
 				<view @click="_submitService()"
 					class="bg4DB23F text-center py17 font-bold col-white text32 radius10">

@@ -201,7 +201,7 @@
 			this._getIndexGoodsTypeList() //商品二级分类
 			this._getGoodsActivityList() //包邮专区列表
 			this._getActivityList()//每日活动
-			// this._getUserInfo() //用户信息
+			this._getUserInfo() //用户信息
 			this._getNewNotice() //未读公告
 			// this._getBannerList() //轮播图列表
 		},

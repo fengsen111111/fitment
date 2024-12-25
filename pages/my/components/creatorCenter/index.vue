@@ -29,25 +29,25 @@
 						<view class="text20 font-bold bg91C42F radius4 px30">博主</view>
 					</view>
 					<view class="mt20 text20" style="line-height: 30rpx;">
-						<view class="">账号ID: XXXXXXXXXX</view>
+						<view class="">账号ID: {{form.id}}</view>
 						<view class="">四川·成都</view>
 					</view>
 				</view>
 			</view>
-			<view class="mt30 px30 text20 col-white" style="line-height: 30rpx;">
-				脖子粗短的人，往往缺乏一种挺拔的感觉。如果在本身就短的脖子上戴项链就会使脖子显得更短。</view>
-			<view class="mt65 px30 col-white flex justify-between items-center">
+			<view class="mt30 px30 text20 col-white" style="line-height: 30rpx;">{{form.des}}</view>
+			<!-- mt65 -->
+			<view class="mt50 px30 col-white flex justify-between items-center">
 				<view class="flex">
 					<view class="text-center">
-						<view class="text30 font-bold">666</view>
+						<view class="text30 font-bold">{{form.allow_number?form.allow_number:0}}</view>
 						<view class="text20">关注</view>
 					</view>
 					<view class="text-center ml60">
-						<view class="text30 font-bold">666</view>
+						<view class="text30 font-bold">{{form.fans_number?form.fans_number:0}}</view>
 						<view class="text20">粉丝</view>
 					</view>
 					<view class="text-center ml60">
-						<view class="text30 font-bold">666</view>
+						<view class="text30 font-bold">{{form.star_and_collection?form.star_and_collection:0}}</view>
 						<view class="text20">获赞与收藏</view>
 					</view>
 				</view>
@@ -83,7 +83,8 @@
 					</view>
 				</view>
 				<view class="bg6E7D89 flex radius8 col-white py22 w160">
-					<view @click="handUrl('/pages/my/components/creatorTLlist/index')" class="flex items-center mx-auto">
+					<view @click="handUrl('/pages/my/components/creatorTLlist/index')"
+						class="flex items-center mx-auto">
 						<view class="w30 h30">
 							<image src="@/static/my/creatorCenter/tldd.png" class="w30 h30" mode=""></image>
 						</view>
@@ -134,6 +135,9 @@
 
 <script>
 	import api from '@/request/allApi.js'
+	import {
+		onChooseAvatar
+	} from '@/utils/index.js'
 	export default {
 		data() {
 			return {
@@ -148,10 +152,13 @@
 			this._getUperMaterial()
 			this._getArticleList()
 		},
+		onShow(){
+			if(uni.getStorageSync('czzbj')){
+				this.backgroundImage = uni.getStorageSync('czzbj')?uni.getStorageSync('czzbj'):''
+				console.log('创作者背景',this.backgroundImage);
+			}
+		},
 		methods: {
-			bjsz(){
-				this.backgroundImage='https://via.placeholder.com/300x200.png'
-			},
 			// 获取创作者资料
 			_getUperMaterial() {
 				api.getUperMaterial().then((res) => {
@@ -159,7 +166,7 @@
 						data
 					} = res.data
 					this.form = data
-					console.log('获取创作者资料');
+					console.log('获取创作者资料', this.form);
 				})
 			},
 			//获取创作列表 
@@ -183,8 +190,47 @@
 				uni.navigateTo({
 					url: url
 				})
-			}
-
+			},
+			// 背景设置
+			bjsz() {
+				// this.backgroundImage = 'https://via.placeholder.com/300x200.png'
+				let that = this
+				uni.chooseImage({
+					count: 1, // 最多可以选择的图片张数，默认9
+					sizeType: ['compressed'], // original 原图，compressed 压缩图，默认二者都有
+					sourceType: ['album', 'camera'], // album 从相册选图，camera 使用相机，默认二者都有
+					success: function(res) {
+						console.log('res', res.tempFiles[0]);
+						const file = res.tempFiles[0]
+						// 上传图片
+						api.getTicket().then((res) => {
+							const {
+								ticket_time
+							} = res.data.data
+							api.getUploadType().then((res_two) => {
+								const {
+									folder,
+									file_type
+								} = res_two.data.data.config
+								const params = {
+									"ticket_time": ticket_time,
+									"folder": folder ? folder : 'topicImg',
+									"file_type": file_type ? file_type : 'image',
+								}
+								onChooseAvatar(file, params, (error, res) => {
+									if (error) {
+										console.log('上传失败:', res);
+									} else {
+										console.log('上传地址:', res.data.url);
+										that.backgroundImage ='https://api.qfcss.cn' + res.data.url
+										uni.setStorageSync('czzbj',that.backgroundImage)
+									}
+								});
+							})
+						})
+					}
+				})
+			},
 		}
 	}
 </script>
@@ -192,7 +238,7 @@
 <style>
 	.bgSign {
 		/* background-image: url('../../../../static/home/sign/bg.png'); */
-		/* background-size: 100% 100%; */
+		background-size: 100% 100%;
 		background-color: #374858;
 		/* height: 100vh; */
 		height: 702rpx;

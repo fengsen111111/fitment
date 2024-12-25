@@ -34,9 +34,9 @@
 				<view class="col333333 text24">规格:{{details.size_name}}</view>
 			</view>
 			<view class="mt20 flex"  style="line-height: 30rpx;">
-				<view class="borderFF0000 text24 px10 py5 colFF0000 radius4">满100减20??</view>
-				<view class="borderFF0000 text24 px10 py5 colFF0000 radius4 ml20">10元无门槛??</view>
-				<view class="borderFF0000 text24 px10 py5 colFF0000 radius4 ml20">6折全场通用??</view>
+				<view class="borderFF0000 text24 px10 py5 colFF0000 radius4 mr20" v-for="item in details.signs" :key="item">{{item}}</view>
+			<!-- 	<view class="borderFF0000 text24 px10 py5 colFF0000 radius4 mr20">10元无门槛??</view>
+				<view class="borderFF0000 text24 px10 py5 colFF0000 radius4 mr20">6折全场通用??</view> -->
 			</view>
 			<view class="mt20 font-bold text30">{{details.name}}</view>
 			<view class="mt20 flex col4DB23F text24 "  style="line-height: 30rpx;">
@@ -79,14 +79,14 @@
 			</view>
 			
 			<view class="">
-				<view class="flex mt40 items-center justify-between text28 col666666">
-					<view class="">不收不良品、不做不良品、不出不良品</view>
+				<view @click="()=>{$refs.popupSer.open('bottom')}" v-for="item in details.services" :key="item.content" class="flex mt40 items-center justify-between text28 col666666">
+					<view class="">{{item.content.length>21?item.content.slice(0,21)+'...':item.content}}</view>
 					<uni-icons type="right" color="#8D8D8D" size="20"></uni-icons>
 				</view>
-				<view class="flex mt40 items-center justify-between text28 col666666">
+				<!-- <view class="flex mt40 items-center justify-between text28 col666666">
 					<view class="">提供最好的产品,满足客户的需求</view>
 					<uni-icons type="right" color="#8D8D8D" size="20"></uni-icons>
-				</view>
+				</view> -->
 			</view>
 		</view>
 		
@@ -107,22 +107,6 @@
 						<view class="col-black">{{item.value}}</view>
 					</view>
 				</view>
-			<!-- 	<view class="flex my10 justify-between">
-					<view class="">形状</view>
-					<view class="col-black">L型</view>
-				</view>
-				<view class="flex my10 justify-between">
-					<view class="">尺寸</view>
-					<view class="col-black">85-90公分</view>
-				</view>
-				<view class="flex my10 justify-between">
-					<view class="">材质</view>
-					<view class="col-black">绒布</view>
-				</view>
-				<view class="flex my10 justify-between">
-					<view class="">填充物</view>
-					<view class="col-black">海绵</view>
-				</view> -->
 				<view class="flex items-center">
 					<view class="col4DB23F text20" @click="()=>{sfzk=!sfzk}">{{sfzk?'收起':'查看更多'}}</view>
 					<uni-icons type="right" color="#4DB23F" class="ml20" size="14"></uni-icons>
@@ -205,6 +189,24 @@
 				</view>
 			</view>
 		</view>
+		
+		<!-- 店铺信息 -->
+		<uni-popup ref="popupSer" background-color="#fff" borderRadius="20rpx 20rpx 0rpx 0rpx">
+			<view class="p40">
+				<view class="flex justify-between items-center">
+					<view class="w15"></view>
+					<view class="col-black text28 font-bold">服务信息</view>
+					<uni-icons type="closeempty" size="20" @click="()=>{$refs.popupSer.close()}"></uni-icons>
+				</view>
+				<view class="px20 text24 col666666">
+					<view class="" v-for="item in details.services" :key="item.name">
+						<view class="mt20">{{item.name}}</view>
+						<view class="text20" style="line-height: 25rpx;">{{item.content}}</view>
+					</view>
+					
+				</view>
+			</view>
+		</uni-popup>
 	</view>
 </template>
 
@@ -304,11 +306,15 @@
 			},
 			// 商品详情
 			_getGoodsDetail(){
+				uni.showLoading({
+					title: "加载中"
+				})
 				api.getGoodsDetail({
 					post_params:{
 						id: this.shop_id
 					}
 				}).then((res)=>{
+					uni.hideLoading()
 					this.details = {}
 					const { data } = res.data
 					data.attribute_two = data.attributes.slice(0,4)

@@ -50,7 +50,7 @@
 				<view class="flex items-center text24">
 					<view class="flex items-center">
 						<view class="col666666 ">邮费</view>
-						<view class="colFF0000 ml10 ">￥{{transport}}</view>
+						<view class="colFF0000 ml10 ">￥{{discount_price}}</view>
 					</view>
 					<view @click="payOrder" class="font-bold text32 col-white px30 py20 bg4DB23F radius10 ml20">
 						提交支付
@@ -76,7 +76,7 @@
 				goods_list: [], // 参数
 
 				price: '', //订单金额  
-				transport: '', //运费   
+				discount_price: '', //运费   
 
 			}
 		},
@@ -127,11 +127,11 @@
 					const {
 						price,
 						preferential_price,
-						transport
-					} = res.data
+						discount_price
+					} = res.data.data
 					console.log('计算价格');
 					this.price = price
-					this.transport = transport
+					this.discount_price = discount_price
 				})
 			},
 			// 收货地址
@@ -160,7 +160,6 @@
 			// 支付订单
 			payOrder() {
 				console.log('支付订单');
-				return false
 				api.createOrder({
 					post_params: {
 						user_address_id: this.mrdz.id,
@@ -172,10 +171,10 @@
 						})
 					}
 				}).then((res) => {
-					console.log('支付订单创建');
+					console.log('支付订单创建',res.data);
 					const {
 						order_id
-					} = res.data
+					} = res.data.data
 					// 支付订单
 					api.payOrder({
 						post_params: {

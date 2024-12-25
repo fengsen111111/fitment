@@ -2,7 +2,7 @@
 	export default {
 		onLaunch: function() {
 			// console.log('App Launch')
-			this.$store.commit('getState')//取出缓存
+			this.$store.commit('getState') //取出缓存
 		},
 		onShow: function() {
 			// console.log('App Show')
@@ -26,6 +26,9 @@
 		font-family: PingFang SC, PingFang SC;
 		// width: 380px;
 		margin: 0 auto;
+		font-size: 14px;//页面默认字体大小
+		font-weight: 400;//页面默认字体加粗
+		line-height: 20px;//页面默认字体行高
 	}
 
 	/* #endif */

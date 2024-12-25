@@ -76,8 +76,8 @@
 							<view class="col333333 ml30">普票</view>
 						</view>
 					</view>
-					<view class="px20 mt40">
-						<view @click="handOkDw" class="bg4DB23F py20 radius10 col-white font-bold text-center">确定</view>
+					<view class="px20 mt40" @click="handOkDw">
+						<view class="bg4DB23F py20 radius10 col-white font-bold text-center">确定</view>
 					</view>
 					<view class="h20"></view>
 				</view>
@@ -108,7 +108,7 @@
 							<view class="col333333 ml30">普票</view>
 						</view>
 					</view>
-					<view class="px20 mt40">
+					<view class="px20 mt40" @click="handOkGr()">
 						<view class="bg4DB23F py20 radius10 col-white font-bold text-center">确定</view>
 					</view>
 					<view class="h20"></view>
@@ -151,6 +151,7 @@
 			// 修改发票信息
 			editHand(item){
 				this.item = item
+				console.log('item',item);
 				// 个人发票
 				if(item.type=='person'){
 					this.$refs.popupUser.open('bottom')
@@ -175,6 +176,17 @@
 				}).then((res)=>{
 					uni.hideLoading()
 					console.log('单位发票新增');
+					if(res.data.code==1){
+						uni.showToast({
+							title: '操作成功！',
+							icon: 'success',
+							duration: 2000
+						})
+						const _this = this
+						setTimeout(()=>{
+							_this._getUserInvoiceList()
+						},2000)
+					}
 				})
 			},
 			// 个人新增
@@ -194,16 +206,31 @@
 				}).then((res)=>{
 					uni.hideLoading()
 					console.log('单位发票新增');
+					if(res.data.code==1){
+						uni.showToast({
+							title: '操作成功！',
+							icon: 'success',
+							duration: 2000
+						})
+						const _this = this
+						setTimeout(()=>{
+							_this._getUserInvoiceList()
+						},2000)
+					}
 				})
 			},
 			// 用户发票信息列表
 			_getUserInvoiceList(){
+				uni.showLoading({
+					title: "加载中"
+				})
 				api.getUserInvoiceList({
 					post_params:{
 						currentPage:1,
 						perPage:10
 					}
 				}).then((res)=>{
+					uni.hideLoading()
 					const {list} = res.data.data
 					this.dataList = list
 					console.log('发票信息列表',list);
@@ -221,7 +248,17 @@
 				}).then((res) => {
 					uni.hideLoading()
 					console.log('删除成功');
-					this._getUserInvoiceList()
+					if(res.data.code==1){
+						uni.showToast({
+							title: '操作成功！',
+							icon: 'success',
+							duration: 2000
+						})
+						const _this = this
+						setTimeout(()=>{
+							_this._getUserInvoiceList()
+						},2000)
+					}
 				})
 			},
 			// 默认
@@ -236,7 +273,17 @@
 				}).then((res)=>{
 					uni.hideLoading()
 					console.log('设置成功');
-					this._getUserInvoiceList()
+					if(res.data.code==1){
+						uni.showToast({
+							title: '操作成功！',
+							icon: 'success',
+							duration: 2000
+						})
+						const _this = this
+						setTimeout(()=>{
+							_this._getUserInvoiceList()
+						},2000)
+					}
 				})
 			},
 			back() {

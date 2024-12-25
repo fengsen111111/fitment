@@ -155,8 +155,8 @@
 					}
 				}).then((res)=>{
 					uni.hideLoading()
-					const {result,order_id} = res.data.data
-					console.log('result',result);
+					const {result,order_id} = res.data
+					console.log('res.data.data支付',res.data);
 					if(result=='a'){
 						// a交易成功  b积分不足  c需要微信支付  
 						uni.showToast({

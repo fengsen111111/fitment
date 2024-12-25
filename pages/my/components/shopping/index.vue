@@ -61,7 +61,7 @@
 						<view class="text20 ml10">全选</view>
 					</view>
 					<view class="text20 ml30">实付金额</view>
-					<view class="text36 ml10 colFF0000 font-bold">￥6666</view>
+					<view class="text36 ml10 colFF0000 font-bold">￥{{price?price:0}}</view>
 				</view>
 				<view class="bg4DB23F text32 col-white font-bold radius10 py17 px36" @click="handPay">
 					去支付
@@ -80,6 +80,10 @@
 				gwcList: [],
 				isQx: false,
 				mrdz: {}, //默认地址
+
+				price: '',
+				discount_price: '',
+				carriage_price: ''
 			}
 		},
 		components: {
@@ -114,8 +118,8 @@
 				this.gwcList.map((item) => {
 					if (item.check) {
 						goods_list.push({
-							id: item.id,
-							number: item.number
+							id: item.goods_id,
+							number: item.number * 1
 						})
 					}
 				})
@@ -127,9 +131,12 @@
 				}).then((res) => {
 					const {
 						price,
-						preferential_price,
-						transport
-					} = res.data
+						discount_price,
+						carriage_price
+					} = res.data.data
+					this.price = price
+					this.discount_price = discount_price
+					this.carriage_price = carriage_price
 				})
 			},
 			// 去支付
@@ -159,21 +166,22 @@
 			},
 			// 是否全选
 			checkAll() {
-				console.log('是否全选',this.gwcList);
-				let dpid = this.gwcList[0].store_id//店铺id
-				this.gwcList.map((item)=>{
-					if(item.store_id==dpid){
+				console.log('是否全选', this.gwcList);
+				let dpid = this.gwcList[0].store_id //店铺id
+				this.gwcList.map((item) => {
+					if (item.store_id == dpid) {
 						console.log('同一家店铺');
-					}else{
+					} else {
 						console.log('不同店铺');
 						return false
 					}
 				})
 				// 都是同一家店铺
 				this.isQx = !this.isQx
-				this.gwcList.map((item)=>{
-					item.check = !item.check
+				this.gwcList.map((item) => {
+					item.check = true
 				})
+				this._computeOrder()//计算价格
 			},
 			// 勾选
 			handCheck(item) {

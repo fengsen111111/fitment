@@ -291,10 +291,6 @@
 						<view class="mt20">{{item.name}}</view>
 						<view class="text20" style="line-height: 25rpx;">{{item.introduce}}</view>
 					</view>
-					<!-- <view class="mt20">坏了包赔</view>
-					<view class="text20" style="line-height: 25rpx;">若发现支持该服务的商品有变质、腐烂、破损等情况，可在24小时内申请退款，商家将在24小时内处理退款申请</view>
-					<view class="mt20">全场包邮</view>
-					<view class="text20" style="line-height: 25rpx;">所有商品包邮(偏远地区除外)</view> -->
 				</view>
 			</view>
 		</uni-popup>
@@ -353,13 +349,19 @@
 						store_id:this.store_id
 					}
 				}).then((res)=>{
-					// uni.showToast({
-					// 	title: '加入成功！',
-					// 	icon: 'success',
-					// 	duration: 2000
-					// })
 					uni.hideLoading()
 					console.log('关注结果',res.data);
+					if(res.data.code==1){
+						uni.showToast({
+							title: '操作成功！',
+							icon: 'success',
+							duration: 2000
+						})
+						const _this = this
+						setTimeout(()=>{
+							_this._userGetStoreInfo() //商家信息
+						},2000)
+					}
 				})
 			},
 			// 获取商家评价
@@ -410,6 +412,9 @@
 			},
 			// 商品列表
 			_getGoodsList() {
+				uni.showLoading({
+					title: "加载中"
+				})
 				api.getGoodsList({
 					post_params: {
 						key_word: '', //关键词
@@ -424,6 +429,7 @@
 						perPage: 10
 					}
 				}).then((res) => {
+					uni.hideLoading()
 					console.log('商品数据', res.data);
 					const {
 						list
