@@ -94,7 +94,6 @@
 						<view class="">不给谁看</view>
 						<uni-icons v-if="show_type=='e'" type="checkbox-filled" size="20" color="#4DB23F"></uni-icons>
 					</view>
-					<!-- <view class="bgF5F5F5 h1 mt20"></view> -->
 				</view>
 			</view>
 			<view class="h140"></view>
