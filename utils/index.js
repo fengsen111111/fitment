@@ -60,6 +60,9 @@ export const onChooseAvatar = (file, query, callback) => {
 		formData.append("post_params[" + key + "]", query[key]);
 	}
 	try {
+		uni.showLoading({
+			title: "加载中"
+		})
 		// 使用 fetch 进行上传
 		fetch('https://api.qfcss.cn/factory_storage/File/uploadFile', {
 				method: 'POST',
@@ -73,12 +76,14 @@ export const onChooseAvatar = (file, query, callback) => {
 			})
 			.then(response => response.json())
 			.then(data => {
+				uni.hideLoading()
 				console.log('上传成功:', data.data);
 				if (callback) {
 					callback(false, data); // 通过回调函数返回结果
 				}
 			})
 			.catch(error => {
+				uni.hideLoading()
 				if (callback) {
 					callback(true, error);  // 通过回调函数返回错误
 				}

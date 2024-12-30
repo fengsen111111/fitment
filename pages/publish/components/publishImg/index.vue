@@ -4,7 +4,7 @@
 		<view class="px30 text24">
 			<view class="bg-white mt30 radius10 p20 flex justify-between">
 				<view class="font-bold">发布位置</view>
-				<view class="">四川·成都</view>
+				<view class="" @click="handUrl('/pages/home/components/citySel/index')">四川·成都</view>
 			</view>
 			<view class="bg-white mt30 radius10 p20">
 				<view class="font-bold">标题</view>
@@ -25,7 +25,7 @@
 					<!-- <view class="mr30">话题名称</view> -->
 				</view>
 			</view>
-			<view class="bg-white mt30 radius10 p20">
+			<view class="bg-white mt30 radius10 p20" v-if="userInfo.sharer_status=='d'">
 				<view class="flex justify-between">
 					<view class="font-bold">挂载商品</view>
 					<view class="text20 col4DB23F"
@@ -60,7 +60,7 @@
 					<textarea type="text" v-model="content" placeholder="输入内容" />
 				</view>
 				<view class="mt20 grid grid-cols-5">
-					<image :src="item" v-for="item in images" :key="item" class="w116 h116 radius10 mb20" mode=""></image>
+					<image :src="item" v-for="item in images" :key="item" class="w116 h116 radius10 mb20 mr20" mode=""></image>
 					<image @click="selImg()" src="@/static/home/btnBooking/upload.png" class="w116 h116 radius10 mb20"
 						mode="">
 					</image>
@@ -107,7 +107,7 @@
 		</view>
 		<view class="fixed bottom0 w-full">
 			<view class=" bg-white py20 px75 ">
-				<view class="bg4DB23F py20 text-center w-full radius10 col-white text32 font-bold">
+				<view @click="sendImg()" class="bg4DB23F py20 text-center w-full radius10 col-white text32 font-bold">
 					发布
 				</view>
 			</view>
@@ -128,10 +128,12 @@
 				images: [],
 				topicList:[],//话题列表
 				
-				title:'',//标题
-				content:'',//内容
+				title:'装修的有点图文信息',//标题
+				content:'装修的有点图文信息装修的有点图文信息装修的有点图文信息装修的有点图文信息装修的有点图文信息装修的有点图文信息装修的有点图文信息',//内容
 				goods_ids:[],//商品id
-				user_ids:''//用户ID  show_type为d/e时必填  
+				user_ids:'',//用户ID  show_type为d/e时必填  
+				
+				userInfo:{}
 			}
 		},
 		components: {
@@ -144,13 +146,56 @@
 				console.log('话题列表',arr) //
 				this.topicList = arr
 			}
+			this._getUserInfo()
 		},
 		methods: {
+			// 用户信息
+			_getUserInfo(){
+				api.getUserInfo().then((res)=>{
+					console.log('用户信息',res.data.data);
+					this.userInfo = res.data.data
+				})
+			},
+			// 发布图文
+			sendImg(){
+				let topic_ids = []
+				this.topicList.map((item)=>{
+					topic_ids.push(item.id)
+				})
+				uni.showLoading({
+					title: "加载中"
+				})
+				api.editArticle({
+					post_params:{
+						id:'',//作品id
+						type:'a',//a图文 b视频
+						adcode:"510100",//发布位置adcode  
+						title:this.title,//标题
+						topic_ids:topic_ids,//话题id
+						content:this.content,//内容
+						images:this.images,//图片
+						video:[],//视频
+						goods_ids:this.goods_ids.length>1?this.goods_ids:[],//商品ID 需要成为推荐官  
+						show_type:this.show_type,//展示方式：a所有人可见 b互关朋友可见 c仅自己 d部分可见 e不给谁看  
+						user_ids:[],//用户ID  show_type为d/e时必填  
+					}
+				}).then((res)=>{
+					uni.hideLoading()
+					console.log('发布结果',res.data);
+					if(res.data.code==1){
+						uni.showToast({
+							title: '发布成功!',
+							icon: 'success',
+							duration: 2000
+						})
+					}
+				})
+			},
 			//*选择图片*//
 			selImg() {
 				let that = this
 				uni.chooseImage({
-					count: 9, // 最多可以选择的图片张数，默认9
+					count: 1, // 最多可以选择的图片张数，默认9
 					sizeType: ['compressed'], // original 原图，compressed 压缩图，默认二者都有
 					sourceType: ['album', 'camera'], // album 从相册选图，camera 使用相机，默认二者都有
 					success: function(res) {
@@ -176,7 +221,7 @@
 										console.log('上传失败:', res);
 									} else {
 										console.log('上传地址:', res.data.url);
-										that.images.push(res.data.url) //赋值回去
+										that.images.push('https://api.qfcss.cn'+res.data.url) //赋值回去
 									}
 								});
 							})

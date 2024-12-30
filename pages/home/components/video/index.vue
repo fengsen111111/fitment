@@ -102,7 +102,7 @@
 							style="line-height: 78rpx;">发表</view>
 					</view>
 				</view>
-			</view>
+			</view>	
 		</uni-popup>
 		<!-- 分享弹框 -->
 		<uni-popup ref="popupFx" type="bottom">
