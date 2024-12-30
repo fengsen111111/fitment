@@ -22,7 +22,7 @@
 			<view class="mt36">
 				<uni-swiper-dot class="uni-swiper-dot-box"
 					:dots-styles="{selectedBackgroundColor:'#91C42F',backgroundColor:'#999999'}">
-					<swiper class="swiper-box radius10 h300" :current="lbt_index" @change="swChange">
+					<swiper :autoplay="true" class="swiper-box radius10 h300" :current="lbt_index" @change="swChange">
 						<swiper-item @click="handleFwb(item)" v-for="(item, index) in info" :key="index">
 							<image src="../../static/home/sylbt.png" class="h300 w-full radius10" mode=""></image>
 						</swiper-item>
@@ -52,8 +52,10 @@
 				<view class="" @click="byPageCli('-')">
 					<image src="../../static/home/home_left.png" class="w50 h120" mode=""></image>
 				</view>
-				<view class="" v-for="item in byzqList" :key="item.id" @click="handUrl('/pages/home/components/byzq/index?id='+item.id)">
-					<image :src="item.cover_image" class="w180 h120" mode=""></image>
+				<view class="grid grid-cols-3" style="grid-column-gap:10rpx">
+					<view class="" v-for="item in byzqList" :key="item.id" @click="handUrl('/pages/home/components/byzq/index?id='+item.id)">
+						<image :src="item.cover_image" class="w180 h120" mode=""></image>
+					</view>
 				</view>
 				<view class="" @click="byPageCli('+')">
 					<image src="../../static/home/home_right.png" class="w50 h120" mode=""></image>
@@ -273,6 +275,7 @@
 				twoTypeList: [], //二级分类列表
 				itemTypeObj: {}, //当前一级分类
 				byzqList: [], //包邮专区列表
+				byzqAll: [], //所有包邮专区列表
 
 				byPage: 1, //包邮页数
 				
@@ -282,7 +285,17 @@
 		methods: {	
 			byPageCli(type) {
 				if (type == '+') {
-					this.byPage = this.byPage + 1
+					if(this.byPage*3>this.byzqAll.length){
+						uni.showToast({
+							title: '已无更多!',
+							icon: 'none',
+							duration: 2000
+						})
+						return false
+					}else{
+						this.byPage = this.byPage + 1
+					}
+					// console.log(this.byzqAll.length);
 				} else {
 					if (this.byPage > 1) {
 						this.byPage = this.byPage - 1
@@ -295,20 +308,24 @@
 						return false
 					}
 				}
-				this._getGoodsActivityList()
+				let index_a = Number(this.byPage-1)*3
+				let index_b = this.byPage*3
+				const arr = this.byzqAll
+				this.byzqList = arr.slice(index_a,index_b)
 			},
 			// 包邮专区列表
 			_getGoodsActivityList() {
 				api.getGoodsActivityList({
 					post_params: {
-						currentPage: this.byPage,
-						perPage: 3
+						currentPage: 1,
+						perPage: 100
 					}
 				}).then((res) => {
 					const {
 						list
 					} = res.data.data
 					console.log('包邮专区列表', list);
+					this.byzqAll = list
 					this.byzqList = list.slice(0,3)
 				})
 			},
@@ -344,7 +361,7 @@
 			},
 			// 轮播图改变
 			swChange(e) {
-				console.log('轮播图改变', e.detail.current);
+				// console.log('轮播图改变', e.detail.current);
 				const {
 					current
 				} = e.detail

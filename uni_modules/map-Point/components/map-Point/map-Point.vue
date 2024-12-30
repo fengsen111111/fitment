@@ -123,6 +123,7 @@
 				geocode: true,
 				isHighAccuracy: true,
 				success: function(res) {
+					console.log('res',res);
 					try {
 						that.latitude = res.latitude;
 						that.longitude = res.longitude;
@@ -181,8 +182,7 @@
 				}
 
 			} else {
-				console.log('不是微信客户端');
-
+				console.log('不是微信客户端1');
 				uni.getLocation({
 					type: 'gcj02',
 					altitude: true,

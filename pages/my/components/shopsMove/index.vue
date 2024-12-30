@@ -3,6 +3,12 @@
 	    <NavBar :navType="'标题'" :title="'店铺入驻'" />
 		<view class="p30">
 			<view v-html="content"></view>
+			<view class="px44 mt100" v-if="userInfo.store_status">
+				<view class="bg636363 text-center py17 font-bold col-white text32 radius10">
+					<!-- 等待开放 -->
+					{{userInfo.store_status=='a'?'未开通':userInfo.store_status=='b'?'申请开通中':''}}
+				</view>
+			</view>
 		</view>
 		<view class="w-full fixed bottom0 grid grid-cols-2">
 			<view class="bg-white p20">
@@ -26,7 +32,8 @@
 	export default {
 		data() {
 			return {
-				content:''
+				content:'',
+				userInfo:{}
 			}
 		},
 		components:{
@@ -34,8 +41,21 @@
 		},
 		onLoad(){
 			this._getRichTextContent()
+			this._getUserInfo()//用户信息
 		},
 		methods: {
+			// 获取用户信息
+			_getUserInfo(){
+				api.getUserInfo().then((res)=>{
+					console.log('用户信息',res.data.data);
+					this.userInfo = res.data.data
+					this.userInfo.mobile_two = this.userInfo.mobile.replace(/^(\d{3})\d{4}(\d{4})/,'$1****$2')
+					// 存入本地储存
+					uni.setStorageSync('userInfo', JSON.stringify(res.data.data))
+					// 存入vuex
+					this.$store.commit('setUserInfo', res.data.data)
+				})
+			},
 			// 商家入驻介绍
 			_getRichTextContent(){
 				api.getRichTextContent({
@@ -47,9 +67,28 @@
 				})
 			},
 			handUrl(url){
-				uni.navigateTo({
-					url:url
-				})
+				if(this.userInfo.store_status=='a'){
+					uni.navigateTo({
+						url:url
+					})
+				}else if(this.userInfo.store_status=='b'){
+					uni.showToast({
+						title: '店铺申请开通中！',
+						icon: 'none',
+						duration: 2000
+					})
+				}else if(this.userInfo.store_status=='d'){
+					uni.showToast({
+						title: '状态异常！',
+						icon: 'none',
+						duration: 2000
+					})
+				}else if(this.userInfo.store_status=='c'){
+					uni.navigateTo({
+						url:url
+					})
+				}
+				
 			}
 		}
 	}

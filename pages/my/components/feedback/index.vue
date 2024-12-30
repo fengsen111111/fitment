@@ -28,14 +28,14 @@
 				<uni-icons type="right" @click="handUrl('/pages/my/components/feedbackContent/index?type=d')" color="#666666" size="20"></uni-icons>
 			</view>
 			<view class="h170"></view>
-			<view class="px44">
+			<!-- <view class="px44">
 				<view class="mb20 flex bg000000 col-white text-center text32 font-bold bg-white p30 radius10 " style="opacity: 0.6;">
 					<view class="flex mx-auto">
 						<uni-icons type="checkbox-filled" @click="handUrl('')" color="#4DB23F" size="20"></uni-icons>
 						<text class="ml20">反馈已提交</text>
 					</view>
 				</view>
-			</view>
+			</view> -->
 		</view>
 	</view>
 </template>

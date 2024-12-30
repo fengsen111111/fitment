@@ -9,7 +9,7 @@
 				</view>
 			</view>
 			
-			<view class="px36 mt236">
+			<view class="px36 mt236" v-if="userInfo.has_pay_password=='Y'">
 				<view class="flex items-center text30 bg636363 col-white text-center radius10 py30">
 					<view class="flex mx-auto items-center">
 						<uni-icons type="checkbox-filled" size="30" color="#4DB23F"></uni-icons>
@@ -23,7 +23,9 @@
 			<view class="p40">
 				<view class="grid grid-cols-3 items-center mb30">
 					<view class="font-bold text28 text-left">验证</view>
-					<view class="text24 colFF0000 text-center">验证码错误</view>
+					<view class="w15 text24 colFF0000 text-center">
+						<!-- 验证码错误 -->
+						</view>
 					<view class="flex justify-between">
 						<view class="w15"></view>
 						<uni-icons type="closeempty" size="20"  @click="close()"></uni-icons>
@@ -73,7 +75,7 @@
 			<view class="p40">
 				<view class="grid grid-cols-3 items-center mb30">
 					<view class="font-bold text28 text-left">再次输入</view>
-					<view class="text24  text-center" :class="showPas?'col4DB23F':'colFF0000'">{{showPas?'密码通过':'密码不一致'}}</view>
+					<view class="text24  text-center" :class="showPas?'col4DB23F':'colFF0000'">{{showPas?'密码通过':''}}</view>
 					<view class="flex justify-between">
 						<view class="w15"></view>
 						<uni-icons type="closeempty" size="20"  @click="close()"></uni-icons>
@@ -97,7 +99,9 @@
 			<view class="p40">
 				<view class="grid grid-cols-3 items-center mb30">
 					<view class="font-bold text28 text-left">密码关闭</view>
-					<view class="text24 colFF0000 text-center">验证码错误</view>
+					<view class="w15 text24 colFF0000 text-center">
+						<!-- 验证码错误 -->
+						</view>
 					<view class="flex justify-between">
 						<view class="w15"></view>
 						<uni-icons type="closeempty" size="20"  @click="close()"></uni-icons>
@@ -144,7 +148,9 @@
 					passwordTwo:'',//支付密码 
 				},
 				
-				showPas:false//是否一直
+				showPas:false,//是否一直
+				
+				userInfo:{}//用户信息
 			}
 		},
 		components: {
@@ -154,11 +160,29 @@
 			time(newVal, oldVal) {
 				if (newVal == 0) {
 					clearInterval(this.timer); //清除定时器
-					this.code = true //重置发送
+					this.code = true //重置发送、
+					this.time = 60
 				}
 			}
 		},
+		onShow(){
+			this._getUserInfo()//用户信息
+		},
 		methods: {
+			// 用户信息
+			_getUserInfo(){
+				api.getUserInfo().then((res)=>{
+					console.log('用户信息',res.data.data);
+					this.userInfo = res.data.data
+					this.userInfo.mobile_two = this.userInfo.mobile.replace(/^(\d{3})\d{4}(\d{4})/,'$1****$2')
+					// 存入本地储存
+					uni.setStorageSync('userInfo', JSON.stringify(res.data.data))
+					// 存入vuex
+					this.$store.commit('setUserInfo', res.data.data)
+					this.form.mobile = res.data.data.mobile //手机号
+					this.szmm = res.data.data.has_pay_password=='Y'?true:false
+				})
+			},
 			// 关闭支付密码
 			_closeUserPayPassword(){
 				uni.showLoading({
@@ -171,24 +195,46 @@
 				}).then((res)=>{
 					uni.hideLoading()
 					console.log('关闭提现密码');
+					if(res.data.code==1){
+						uni.showToast({
+							title: '关闭支付密码成功',
+							icon: 'none',
+							duration: 2000
+						})
+						this.close()//关闭弹框
+						const _this = this
+						setTimeout(()=>{
+							_this._getUserInfo()//重新获取用户信息
+						})
+					}
 				})
 			},
 			// 设置支付密码
 			setPayPas(){
 				if(this.form.password === this.form.passwordTwo){
-					this.showPas = true //密码通过
 					uni.showLoading({
 						title: "加载中"
 					})
+					this.showPas = true //密码通过
 					api.setUserPayPassword({
 						post_params:{
-							mobile: this.form.mobile,//手机号
-							verify_code: this.form.verify_code,//验证码  
 							password: this.form.password,//支付密码
 						}
 					}).then((res)=>{
 						uni.hideLoading()
 						console.log('设置支付密码成功');
+						if(res.data.code==1){
+							uni.showToast({
+								title: '设置支付密码成功',
+								icon: 'none',
+								duration: 2000
+							})
+							this.close()//关闭弹框
+							const _this = this
+							setTimeout(()=>{
+								_this._getUserInfo()//重新获取用户信息
+							})
+						}
 					})
 				}else{
 					this.showPas = false //密码不通过
@@ -217,13 +263,14 @@
 				this.timer = setInterval(() => {
 					this.time = this.time - 1
 				}, 1000);
-				// 旧手机验证码
+				// 手机验证码
 				api.getMobileCode({
 					post_params: {
 						mobile: this.form.mobile
 					}
 				}).then((res) => {
-					console.log('旧号码验证码发送', res);
+					console.log('号码验证码发送', res.data.data.code);
+					this.form.verify_code = res.data.data.code //验证码
 				})
 			},
 			handUrl(url) {

@@ -4,21 +4,21 @@
 		<view v-if="marginTop>0" class="refresh-box">
 			松开刷新
 		</view>
-		<!-- 视频容器 -->
+		<!-- 视频容器                      @touchstart 触摸开始   @touchmove手指滑动的过程 @touchend触摸结束，手指离开屏幕。   -->
 		<view class="scroll-video-box" @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd"
 			:style="{'marginTop':marginTop+'px','transition':transition}">
 			<view ref="videoItemBox" class="video-item-box" v-for="(item, index) in videoList" :key="index"
 				:style="{height:videoHeight}">
-				<video @click="$event => {pauseVideo($event, item)}" :id="item.id" class="fullscreen-video"
+				<!-- <video @click="$event => {pauseVideo($event, item)}" :id="item.id" class="fullscreen-video"
 					:src="item.videoUrl" @error="videoError(item,index)" :poster="item.posterUrl" :controls="false"
 					:show-progress="false" :show-fullscreen-btn="false" :show-play-btn="false" :loop="true"
 					:autoplay="index == 0" :show-center-play-btn="false">
-				</video>
+				</video> -->
+
 				<template v-for="(fabulous, fabulousIndx) in fabulousArr">
 					<i v-if="fabulous != null" @click="fabulousDbClick" class="iconfont iconxihuan fabulous-item"
 						:style="{'top':fabulous.top,'left':fabulous.left,'opacity':fabulous.opacity,'transform':fabulous.transform}"></i>
 				</template>
-
 				<i :class="['iconfont iconbofang btn-play',currentStatus == 'pause' && currentIndex == index ? 'show' : '']"
 					@click="pauseVideo"></i>
 				<view class="video-info">
@@ -61,7 +61,8 @@
 						<view class="user-name ml10">@{{item.userNick}}</view>
 						<view @click="followFunc(index,item)" v-if="item.isFollow == 1"
 							class="ml20 bg4DB23F col-white px40 radius10">关注</view>
-						<view @click="followFunc(index,item)" v-else class="ml20  col4DB23F radius10 px40" style="border: 1px solid #4DB23F !important;">
+						<view @click="followFunc(index,item)" v-else class="ml20  col4DB23F radius10 px40"
+							style="border: 1px solid #4DB23F !important;">
 							已关注</view>
 					</view>
 					<view class="video-content mt15" style="line-height: 30rpx;">{{item.videoContent}}</view>
@@ -141,11 +142,11 @@
 			</view>
 			<!-- 评论输入框 -->
 			<view class="flex p30" style="flex-direction: row;">
-				<view class=" p20 radius10" style="width: 80%;border: 1px solid #333333 !important">
+				<view class=" p20 radius10" style="width: 75%;border: 1px solid #333333 !important">
 					<input type="text" :focus="showInput" @confirm="commentCommit" @blur="commentBlur"
 						v-model="replyContent" :placeholder="commentPlaceholder" />
 				</view>
-				<view @click="commentCommit" class="bg4DB23F col-white text28 px30 ml30 radius10 items-center"
+				<view @click="commentCommit" class="bg4DB23F col-white text28 px30 ml20 radius10 items-center"
 					style="line-height: 78rpx;">发表</view>
 			</view>
 		</view>
@@ -266,13 +267,13 @@
 				deep: true
 			}
 		},
-		// #ifdef APP-NVUE
-		onReady() {
-			dom.getComponentRect(this.$refs.videoItemBox, option => {
-				this.videoRealHeight = option.size.height;
-			});
-		},
-		// #endif
+		// // #ifdef APP-NVUE
+		// onReady() {
+		// 	dom.getComponentRect(this.$refs.videoItemBox, option => {
+		// 		this.videoRealHeight = option.size.height;
+		// 	});
+		// },
+		// // #endif
 		mounted() {
 			// 初始化视频容器计算高度
 			//#ifdef H5
@@ -284,6 +285,13 @@
 				this.videoRealHeight = data.height;
 			}).exec();
 			//#endif
+			//#ifdef APP-PLUS
+			    uni.getSystemInfo({
+			    	success: (res => {
+			    		this.videoRealHeight = res.windowHeight
+			    	})
+			    })
+			//#endif
 			// 初始化第一个视频播放器
 			this.currentVideo = uni.createVideoContext(this.videoList[0].id, this);
 			// 初始化评论
@@ -292,6 +300,25 @@
 			this.clearFabulousArr();
 		},
 		methods: {
+			getBarHeight() {
+				const res = uni.getSystemInfoSync()
+				if (res.platform === 'ios') {
+					return 44 + res.statusBarHeight
+				} else if (res.platform === 'android') {
+					return 48 + res.statusBarHeight
+				} else {
+					return 0;
+				}
+			},
+			//获取可视区域高度
+			getClineHeight() {
+				const res = uni.getSystemInfo({
+					success: (res => {
+						this.videoRealHeight = res.windowHeight - uni.upx2px(80) - this.getBarHeight();
+						console.log('111',this.videoRealHeight);
+					})
+				});
+			},
 			// 视频出错
 			videoError(item, index) {
 				// uni.showToast({
@@ -593,6 +620,12 @@
 <style lang="scss" scoped>
 	@import '../../static/css/font.css';
 
+	.uni-video-video {
+		width: 100%;
+		height: 100%;
+		object-position: inherit;
+	}
+
 	.color-red {
 		color: #f73b3b;
 	}
@@ -726,7 +759,8 @@
 					.time-box {
 						font-size: 24rpx;
 						color: #999;
-						 flex-direction: row;
+						flex-direction: row;
+
 						.reply-btn {
 							margin-left: 20rpx;
 						}
@@ -770,6 +804,7 @@
 	.widget-video {
 		width: 100%;
 		height: 100%;
+		background-color: black;
 		overflow: hidden;
 		position: relative;
 

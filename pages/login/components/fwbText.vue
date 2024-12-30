@@ -65,11 +65,15 @@
 		},
 		methods: {
 		   _getRichTextContent(){
+			   uni.showLoading({
+			   	title: "加载中"
+			   })
 			   api.getRichTextContent({
 				   post_params:{
 					   type: this.optionType
 				   }
 			   }).then((res)=>{
+				   uni.hideLoading()
 				   this.content = res.data.data
 			   })
 		   }

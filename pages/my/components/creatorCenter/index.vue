@@ -16,7 +16,8 @@
 			</view>
 			<view class="flex items-center mt40 px30">
 				<view class="w150 h150">
-					<image src="@/static/my/userImg.png" class="w150 h150 radius_bfb50" mode=""></image>
+					<image v-if="form.uper_image" :src="form.uper_image" class="w150 h150 radius_bfb50" mode=""></image>
+					<image v-else src="@/static/my/userImg.png" class="w150 h150 radius_bfb50" mode=""></image>
 				</view>
 				<view class="ml20 w-full col-white">
 					<view class="flex w-full items-center justify-between">
@@ -24,7 +25,7 @@
 							<image v-if="form.gender=='a'" src="@/static/my/sex1.png" class=" w32 h32 radius_bfb50"
 								mode=""></image>
 							<image v-else src="@/static/my/sex2.png" class=" w32 h32 radius_bfb50" mode=""></image>
-							<view class="text36 font-bold ml10">{{form.name}}</view>
+							<view class="text36 font-bold ml10">{{form.name?form.name:'用户昵称'}}</view>
 						</view>
 						<view class="text20 font-bold bg91C42F radius4 px30">博主</view>
 					</view>
@@ -34,7 +35,7 @@
 					</view>
 				</view>
 			</view>
-			<view class="mt30 px30 text20 col-white" style="line-height: 30rpx;">{{form.des}}</view>
+			<view class="mt30 px30 text20 col-white" style="line-height: 30rpx;">{{form.des?form.des:'有趣的简介可以吸引粉丝！'}}</view>
 			<!-- mt65 -->
 			<view class="mt50 px30 col-white flex justify-between items-center">
 				<view class="flex">
@@ -166,6 +167,7 @@
 						data
 					} = res.data
 					this.form = data
+					this.form.uper_image = 'https://api.qfcss.cn'+this.form.uper_image
 					console.log('获取创作者资料', this.form);
 				})
 			},

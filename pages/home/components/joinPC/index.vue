@@ -4,7 +4,7 @@
 		<view class="p60">
 			<view class="grid grid-cols-3 text-center "  style="grid-column-gap:100rpx">
 				<view class="mb60" v-for="item in iconList" :key="item.id">
-					<img :src="require('@/static/home/joinPC/'+item.src+'.png')" class="w100 h100 radius4" mode=""></img>
+					<img :src="require(`@/static/home/joinPC/${item.src}.png`)" class="w100 h100 radius4" mode=""></img>
 					<view class="text24 font-bold">{{item.text}}</view>
 				</view>
 			</view>

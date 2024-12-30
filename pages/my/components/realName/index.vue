@@ -12,7 +12,7 @@
 				<view class="mt40">
 					<view class="font-bold">手机号</view>
 					<view class="mt20 bgF5F5F5 py20 px30 radius10">
-						<input type="text" v-model="form.auth_mobile" placeholder="输入手机号" />
+						<input type="number" v-model="form.auth_mobile" placeholder="输入手机号" />
 					</view>
 				</view>
 				<view class="mt40">
@@ -110,6 +110,16 @@
 				}).then((res)=>{
 					console.log('实名认证');
 					uni.hideLoading()
+					if(res.data.code==1){
+						uni.showToast({
+							title: '提交成功！',
+							icon: 'success',
+							duration: 2000
+						})
+						setTimeout(()=>{
+							uni.navigateBack()
+						},2000)
+					}
 				})
 			},
 			handUrl(url) {

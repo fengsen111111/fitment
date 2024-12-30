@@ -232,6 +232,9 @@
 		},
 		{
 			"path": "pages/home/components/shopOrderOkShopping/index"
+		},
+		{
+			"path": "pages/my/components/ptgzzx/index"
 		}
 	],
 	"globalStyle": {

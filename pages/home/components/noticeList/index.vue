@@ -20,7 +20,7 @@
 		components: {
 			NavBar,Notice
 		},
-		onLoad(){
+		onShow(){
 			this._getNoticeList()
 		},
 		methods: {
@@ -32,10 +32,9 @@
 					}
 				}).then((res)=>{
 					const {list} = res.data.data
-					console.log('list',list);
 					this.list = list
 				})
-			}
+			},
 		}
 	}
 </script>

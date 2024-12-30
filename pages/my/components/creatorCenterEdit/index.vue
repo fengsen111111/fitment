@@ -4,7 +4,8 @@
 		<view class="mt30 bg-white p40 text24">
 			<view class="flex">
 				<view class="w160 h160 mx-auto relative" @click="selImg()">
-					<image src="@/static/my/userImg.png" class=" w160 h160 radius_bfb50" mode=""></image>
+					<image v-if="form.uper_image" :src="form.uper_image" class=" w160 h160 radius_bfb50" mode=""></image>
+					<image v-else src="@/static/my/userImg.png" class=" w160 h160 radius_bfb50" mode=""></image>
 					<image src="@/static/my/creatorCenter/htx.png" class="w40 h40 absolute"
 						style="left: 80%;bottom: 10%;" mode=""></image>
 				</view>
@@ -27,7 +28,7 @@
 			<view @click="open('des')" class="flex mb60 justify-between">
 				<view class="">简介</view>
 				<view class="flex">
-					<view class="col666666" style="width: 65vw;">{{form.des?form.des:'有趣的简介可以吸引粉丝'}}</view>
+					<view class="col666666" style="max-width: 65vw;">{{form.des?form.des:'有趣的简介可以吸引粉丝'}}</view>
 					<uni-icons type="right" class="ml30" color="#8D8D8D" size="16"></uni-icons>
 				</view>
 			</view>
@@ -215,33 +216,24 @@
 					recommend_status: false, //个性推荐开关
 					des:'',//个性签名  
 					mobile: '', //手机号
+					uper_image:'',//头像
 				}
 			}
 		},
 		components: {
 			NavBar
 		},
-		onLoad() {
+		onLoad(){
 			this._getUperMaterial()
 		},
 		onShow(){
-			if(uni.getStorageSync('xdwz')){
-				this.form = {
-					name: '张三', //姓名
-					gender: 'a', //性别
-					address: '', //地区address
-					adcode: '', //地区adcode
-					job: '老板', //职业
-					school: '某某民族大学', //学校
-					birthday: '2024/12/25', //生日
-					recommend_status: false, //个性推荐开关
-					des:'',//个性签名  
-					mobile: '', //手机号
+			this.$nextTick(()=>{
+				if(uni.getStorageSync('xdwz')){
+					this.form.address = JSON.parse(uni.getStorageSync('xdwz')).address
+					this.form.adcode = JSON.parse(uni.getStorageSync('xdwz')).adcode
+					console.log('地址show',this.form);
 				}
-				this.form.address = JSON.parse(uni.getStorageSync('xdwz')).address
-				this.form.location = JSON.parse(uni.getStorageSync('xdwz')).location
-				console.log('地址show',this.form);
-			}
+			})
 		},
 		methods: {
 			handUrl(url) {
@@ -263,7 +255,9 @@
 						school: this.form.school, //学校  
 						birthday: this.form.birthday, //生日
 						recommend_status: this.form.recommend_status ? 'Y' : 'N', //个性推荐开关
-						des:this.form.des//个性签名  
+						mobile:this.form.mobile,//手机  
+						uper_image:this.form.uper_image,//头像  
+						des:this.form.des//简介
 					}
 				}).then((res) => {
 					uni.hideLoading()
@@ -285,6 +279,8 @@
 					} = res.data
 					data.recommend_status = data.recommend_status=='Y'?true:false
 					this.form = data
+					this.form.address = data.area
+					this.form.uper_image = 'https://api.qfcss.cn'+this.form.uper_image
 					console.log('获取创作者资料');
 				})
 			},
@@ -335,7 +331,7 @@
 										console.log('上传失败:', res);
 									} else {
 										console.log('上传地址:', res.data.url);
-										// that.form.license_image = 'https://api.qfcss.cn'+res.data.url
+										that.form.uper_image = 'https://api.qfcss.cn'+res.data.url
 									}
 								});
 							})

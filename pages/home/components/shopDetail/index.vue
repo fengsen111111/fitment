@@ -230,6 +230,9 @@
 		onLoad(option){
 			this.shop_id = option.id
 			this._getGoodsDetail()//商品详情
+			if(this.shop_id){
+				this.$store.commit('setLsjlArr',this.shop_id)
+			}
 		},
 		methods: {
 			// 收藏

@@ -44,7 +44,9 @@
 			// 验房服务
 			_getRichTextContent(){
 				api.getRichTextContent({
-					post_params:'introduce_c_rich'
+					post_params:{
+						type:'introduce_c_rich'
+					}
 				}).then((res)=>{
 					console.log('验房服务',res.data.data);
 					this.content = res.data.data

@@ -42,10 +42,8 @@
 			<view class="mt40">
 				<view class="font-bold">装修风格</view>
 				<view class="mt20 relative" @click="()=>{$refs.popupStyle.open('bottom')}">
-					<view v-if="post_params.zxfg">
-						{{post_params.zxfg.name}}
-						<image :src="post_params.zxfg.image"
-							class="w200 h200" mode=""></image>
+					<view v-if="post_params.zxfg.name">
+						<image :src="post_params.zxfg.image" class="w200 h200" mode=""></image>
 					</view>
 					<view v-else>
 						<image src="@/static/home/btnBooking/bk.png" class="w200 h200" mode=""></image>

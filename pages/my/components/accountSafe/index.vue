@@ -6,20 +6,20 @@
 				<view class="flex justify-between">
 					<view class="">手机号绑定</view>
 					<view class="flex items-center">
-						<view class="">134****1234</view>
+						<view class="">{{userInfo.mobile_two}}</view>
 						<view @click="()=>{$refs.popupPhone.open('bottom')}" class="col4DB23F text20 ml20">更换</view>
 					</view>
 				</view>
 				<view class="flex mt20 justify-between">
 					<view class="">圈风号</view>
-					<view class="">XXXXXXXXX</view>
+					<view class="">{{userInfo.id}}</view>
 				</view>
 				<view class="flex mt20 justify-between">
 					<view class="">实名认证</view>
 					<view class="flex items-center">
-						<view class="col4DB23F">已通过</view>
-						<view class="col-black">认证中</view>
-						<view class="col999999">未认证</view>
+						<view v-if="userInfo.has_auth_status=='Y'" class="col4DB23F">已通过</view>
+						<view v-else-if="userInfo.has_auth_status=='N'" class="col999999">未认证</view>
+						<view v-else class="col-black">认证中</view>
 						<uni-icons type="right" @click="handUrl('/pages/my/components/realName/index')" color="#666666"
 							class="ml10" size="20"></uni-icons>
 					</view>
@@ -29,13 +29,14 @@
 			<view class=" bg-white p30 radius10 mt20 items-center">
 				<view class="flex justify-between">
 					<view class="mt10">个性化广告管理</view>
-					<switch @change="handleSwitchChange" :checked="switchStatus"  color="#91C42F" style="transform:scale(0.7)" />
+					<switch @change="handleSwitchChange" :checked="switchStatus" color="#91C42F"
+						style="transform:scale(0.7)" />
 				</view>
 			</view>
 
 			<view class="h256"></view>
 
-			<view class="px44">
+			<view class="px44" v-if="userInfo.has_auth_status=='N'">
 				<view class="bg000000 col-white font-bold text32 py22 radius10 text-center" style="opacity: 0.6;">
 					需通过实名认证
 				</view>
@@ -47,8 +48,7 @@
 				class="mb20 col4DB23F text-center bg-white p30 radius10 ">
 				切换账号
 			</view>
-			<view @click="handleZX()"
-				class="mb20 colFF0000 text-center bg-white p30 radius10 ">
+			<view @click="handleZX()" class="mb20 colFF0000 text-center bg-white p30 radius10 ">
 				注销账号
 			</view>
 		</view>
@@ -57,7 +57,9 @@
 			<view class="bgF9F9F9 text28 p30" style="border-radius: 10px 10px 0 0;">
 				<view class="flex justify-between items-center">
 					<view class=" font-bold">验证</view>
-					<view class="text24 colFF0000">验证码错误</view>
+					<view class="w15 text24 colFF0000">
+						<!-- 验证码错误 -->
+						</view>
 					<uni-icons type="closeempty" size="20" @click="()=>{$refs.popupPhone.close()}"></uni-icons>
 				</view>
 				<view class="font-bold col-black mt100">输入新手机号</view>
@@ -101,7 +103,9 @@
 			<view class="bgF9F9F9 text28 p30" style="border-radius: 10px 10px 0 0;">
 				<view class="flex justify-between items-center">
 					<view class=" font-bold">验证</view>
-					<view class="text24 colFF0000">验证码错误</view>
+					<view class="text24 colFF0000 w15">
+						<!-- 验证码错误 -->
+					</view>
 					<uni-icons type="closeempty" size="20" @click="()=>{$refs.popupZX.close()}"></uni-icons>
 				</view>
 				<view class="flex justify-between items-center mt25">
@@ -144,8 +148,11 @@
 				},
 
 				phone: '', //旧手机号
-				
-				switchStatus:false,// 默认开关状态为关闭
+
+				switchStatus: false, // 默认开关状态为关闭
+
+				userInfo: {},
+				// czzInfo:{},
 			}
 		},
 		watch: {
@@ -153,37 +160,66 @@
 				if (newVal == 0) {
 					clearInterval(this.timer); //清除定时器
 					this.code = true //重置发送
+					this.time = 60
 				}
 			}
 		},
 		components: {
 			NavBar,
 		},
-		onLoad(){
-			console.log('userInfo',this.$store.state.userInfo);
-			this.phone = this.$store.state.userInfo.mobile//原来手机号
+		onShow() {
+			// console.log('userInfo', this.$store.state.userInfo);
+			// console.log('czzInfo', this.$store.state.czzInfo);
+			// if (this.$store.state.userInfo) {
+			// 	this.userInfo = this.$store.state.userInfo
+			// 	this.phone = this.$store.state.userInfo.mobile //原来手机号				
+			// }
+			// if (this.$store.state.czzInfo) {
+			// 	this.czzInfo = this.$store.state.czzInfo//创作者信息
+			// }
+			this._getUserInfo()//获取用户信息
 		},
 		methods: {
+			// 获取用户信息
+			_getUserInfo(){
+				api.getUserInfo().then((res)=>{
+					console.log('用户信息',res.data.data);
+					this.userInfo = res.data.data
+					this.phone = res.data.data.mobile
+					this.userInfo.mobile_two = this.userInfo.mobile.replace(/^(\d{3})\d{4}(\d{4})/,'$1****$2')
+					this.switchStatus =  res.data.data.open_ad == 'Y'?true:false
+					// 存入本地储存
+					uni.setStorageSync('userInfo', JSON.stringify(res.data.data))
+					// 存入vuex
+					this.$store.commit('setUserInfo', res.data.data)
+				})
+			},
 			// 注销账号
-			handleZX(){
-				// 
+			handleZX() {
 				this.$refs.popupZX.open('bottom')
 			},
 			// 切换状态
 			handleSwitchChange(event) {
 				// 获取开关状态（true为开启，false为关闭）
-				this.switchStatus=event.detail.value
+				this.switchStatus = event.detail.value
 				console.log('当前开关状态:', event.detail.value);
 				uni.showLoading({
 					title: "加载中"
 				})
 				api.updateUserInfo({
-					post_params:{
-						open_ad:event.detail.value?'Y':'N'
+					post_params: {
+						open_ad: event.detail.value ? 'Y' : 'N'
 					}
-				}).then((res)=>{
+				}).then((res) => {
 					uni.hideLoading()
 					console.log('提交个性广告管理');
+					if(res.data.code==1){
+						uni.showToast({
+							title: '设置成功！',
+							icon: 'success',
+							duration: 2000
+						})
+					}
 				})
 			},
 			// 提交
@@ -200,6 +236,15 @@
 				}).then((res) => {
 					uni.hideLoading()
 					console.log('提交手机号绑定信息');
+					if(res.data.code==1){
+						uni.showToast({
+							title: '设置成功！',
+							icon: 'success',
+							duration: 2000
+						})
+						this.$refs.popupPhone.close()
+						this._getUserInfo()//获取用户信息
+					}
 				})
 			},
 			// 发送验证码
@@ -235,11 +280,12 @@
 						mobile: this.form.new_mobile
 					}
 				}).then((res) => {
-					console.log('新号码验证码发送', res);
+					console.log('新号码验证码发送', res.data.data.code);
+					this.form.new_mobile_code = res.data.data.code
 				})
 			},
 			// 发送验证码（旧手机）
-			sendPhone(){
+			sendPhone() {
 				this.code = false;
 				this.timer = setInterval(() => {
 					this.time = this.time - 1
@@ -250,7 +296,8 @@
 						mobile: this.phone
 					}
 				}).then((res) => {
-					console.log('旧号码验证码发送', res);
+					console.log('旧号码验证码发送', res.data.data.code);
+					this.form.old_mobile_code = res.data.data.code
 				})
 			},
 			handUrl(url) {

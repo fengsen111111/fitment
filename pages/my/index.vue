@@ -18,7 +18,8 @@
 				<view class="bg-white p30 radius10">
 					<view class="flex ">
 						<view class="w90 h90">
-							<image src="../../static/my/userImg.png" class="w90 h90 radius_bfb50" mode=""></image>
+							<image v-if="czzInfo.uper_image" :src="czzInfo.uper_image" class="w90 h90 radius_bfb50" mode=""></image>
+							<image v-else src="../../static/my/userImg.png" class="w90 h90 radius_bfb50" mode=""></image>
 						</view>
 						<view class="ml20 w-full mt10">
 							<view class="flex justify-between w-full">
@@ -27,16 +28,17 @@
 										class=" w32 h32 radius_bfb50" mode=""></image>
 									<image v-else src="../../static/my/sex2.png" class=" w32 h32 radius_bfb50" mode="">
 									</image>
-									<view class="text28 font-bold ml10 col333333">{{czzInfo.name}}</view>
+									<view class="text28 font-bold ml10 col333333">{{czzInfo.name?czzInfo.name:'用户昵称'}}</view>
 									<view class="text20 col-white px30 bg91C42F ml10 radius4">博主</view>
 								</view>
-								<view class="col-black">{{czzInfo.mobile}}</view>
+								<view class="col-black">{{czzInfo.mobile_two}}</view>
 							</view>
 							<view class="col-black text20" v-if="czzInfo.des">
-								<text v-if="!isZk">{{czzInfo.des.length>25?czzInfo.des.slice(0,25)+'...':czzInfo.des}}</text>
+								<text v-if="!isZk">{{czzInfo.des.length>24?czzInfo.des.slice(0,24)+'...':czzInfo.des}}</text>
 								<text v-else>{{czzInfo.des}}</text>
 								<text class="col4DB23F ml10" @click="()=>{isZk=!isZk}">{{!isZk?'展开':'收起'}}</text>
 							</view>
+							<view class="col-black text20" v-else>有趣的简介可以吸引粉丝！</view>
 						</view>
 					</view>
 					<view class="bgF5F5F5 h2 mt30"></view>
@@ -155,6 +157,7 @@
 		},
 		created() {
 			this.userInfo = this.$store.state.userInfo
+			console.log('userInfo',this.userInfo);
 			if (this.userInfo?.store_status == 'c') {
 				this.iconList.push({
 					id: 7,
@@ -180,12 +183,14 @@
 					const {
 						data
 					} = res.data
-					console.log('创作者资料', data);
+					// console.log('创作者资料', data);
 					this.czzInfo = data
+					this.czzInfo.uper_image = 'https://api.qfcss.cn'+this.czzInfo.uper_image
+					this.czzInfo.mobile_two = this.czzInfo.mobile.replace(/^(\d{3})\d{4}(\d{4})/,'$1****$2')
 					// 存入本地储存
 					uni.setStorageSync('czzInfo', JSON.stringify(data))
 					// 存入vuex
-					this.$store.commit('setUserInfo', data)
+					this.$store.commit('setCzzInfo', data)
 				})
 			},
 			handUrl(url) {

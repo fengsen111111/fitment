@@ -1,214 +1,287 @@
 <template>
-	<view class="">
-		<!-- video-height="calc(100vh - 44px)" -->
-		<yVideoSlide video-height="100vh" :data="videoData" :videoIndex.sync="currentIndex"
-			@refresh="refresh" @loadMore="loadMore" @share="share" @fabulous="fabulous" @follow="follow"
-			@commentFabulous="commentFabulous">
-		</yVideoSlide>
+	<view class="recommend-page">
+		<swiper class="video-swiper" vertical :current="currentVideoIndex"
+			:indicator-dots="false" style="height: 100vh">
+			<block v-for="(video, index) in videoList" :key="index">
+				<swiper-item>
+					<view class="video-container" @click="togglePlay(index)">
+						<DomVideoPlayer ref="domVideoPlayer" :src="video.url" autoplay loop :controls="false" muted />
+					</view>
+					<view style="position: fixed;color: white; top: 50%;left:47%" @click="togglePlay(index)">
+						<view v-if="video.status">
+							<image src="@/static/publish/zt.png" style="width: 50rpx;height: 50rpx;" mode=""></image>
+						</view>
+					</view>
+
+					<view style="z-index: 999;">
+						<view style="position: fixed;color: white; top: 50%;right:2%; text-align: center;">
+							<view style="margin-bottom: 30rpx;">
+								<uni-icons type="hand-up-filled" color="#FFFFFF" size="30"></uni-icons>
+								<view class="count-text">666</view>
+							</view>
+							<view style="margin-bottom: 30rpx;">
+								<uni-icons type="star-filled" color="#4DB23F" size="30"></uni-icons>
+								<view class="count-text">收藏</view>
+							</view>
+							<view style="margin-bottom: 30rpx;" @click="handPl()">
+								<uni-icons type="chat-filled" color="#ffffff" size="30"></uni-icons>
+								<view class="count-text">666</view>
+							</view>
+							<view style="margin-bottom: 30rpx;" @click="handZf()">
+								<uni-icons type="redo-filled" color="#ffffff" size="30"></uni-icons>
+								<view class="count-text">666</view>
+							</view>
+						</view>
+						<view style="position: fixed;color: white; top: 80%;left:2%">
+							<view class="text36 font-bold">装修的优点</view>
+							<view class="text20 flex items-center mt20 bg666666 py10 px20 col-white radius10"
+								style="width: 290rpx; flex-direction: row;">
+								<image src="@/static/home/graphic/shopping.png" class="w40 h40" mode=""></image>
+								<view class="ml20">视频同款</view>
+								<view class="ml30">已售</view>
+								<view class="ml10">88.8w</view>
+							</view>
+							<view class="mt20 flex items-center" style="flex-direction: row;">
+								<image class="w48 h48 radius_bfb50"
+									:src="userImg"
+									mode="widthFix"></image>
+								<view class="user-name ml10 text26">@用户昵称</view>
+								<view class="ml20 text24 bg4DB23F col-white px40 radius10">关注</view>
+								<view class="ml20 text24 col4DB23F radius10 px40"
+									style="border: 1px solid #4DB23F !important;">
+									已关注</view>
+							</view>
+							<view class="video-content mt15 text20" style="line-height: 30rpx;">
+								拉了上来的撒来到拉萨到拉萨的了拉了上来的撒来到拉萨到拉萨的了拉了上来的撒来到拉萨到拉萨的了拉了上来的撒来到拉萨到拉萨的了</view>
+							<view class="h60"></view>
+						</view>
+					</view>
+				</swiper-item>
+			</block>
+		</swiper>
+		<!-- 全部评论 -->
+		<uni-popup ref="popupPl" type="bottom">
+			<view class="bg-white pt20" style="border-radius: 20rpx 20rpx 0 0;" >
+				<view class="flex justify-between px36 mt30" style="flex-direction: row; ">
+					<view class=" text28">全部评论</view>
+					<uni-icons type="closeempty" size="26" @click="()=>{$refs.popupPl.close()}"></uni-icons>
+				</view>
+				<view class="p30" style="overflow-y: auto;height: 50vh;">
+					<view v-for="item in [1,2,3,4,5,6]" :key="item">
+						<view class="flex ">
+							<view class="w48 h48">
+								<image :src="userImg" class="w48 h48 radius_bfb50" mode=""></image>
+							</view>
+							<view class="ml20">
+								<view class="text26 font-bold ">大海龟</view>
+								<view class="text20 col000000" style="line-height: 30rpx;">
+									实名预约方式。观众需要使用实名注册的手机号码进行预约，每个账号每个参观日最多可预约5人，包括14周岁以下的未成年人不超过三人。提前预约。观众通常可提前7天进行预约，但具体时间可能因博物馆而异。
+								</view>
+								<view class="flex text20 justify-between items-center mt20">
+									<view class="flex items-center">
+										<view class="col000000">2024-02-06</view>
+										<view class="ml20 col4DB23F">回复</view>
+									</view>
+									<view class="flex items-center col4DB23F">
+										<image src="@/static/home/graphic/icon1_check.png" class="w30 h30" mode=""></image>
+										<view class="ml20 text24 mt5">999</view>
+									</view>
+								</view>
+							</view>
+						</view>
+						<view class="bg999999 h1 my20"></view>
+					</view>
+					<view class="h20"></view>
+				</view>
+				<view class="p30 w-full bg-white" style="position: fixed;bottom: 0rpx;">
+					<view class="flex w-full " >
+						<view class="p20 radius10" style="width: 70%;border: 1px solid #333333 !important">
+							<input type="text" :placeholder="commentPlaceholder" />
+						</view>
+						<view class="bg4DB23F col-white text28 px30 ml20 radius10 items-center"
+							style="line-height: 78rpx;">发表</view>
+					</view>
+				</view>
+			</view>
+		</uni-popup>
+		<!-- 分享弹框 -->
+		<uni-popup ref="popupFx" type="bottom">
+			<view class="bg-white pt20" style="border-radius: 20rpx 20rpx 0 0;">
+				<view class="flex justify-between px36 mt30" style="flex-direction: row; ">
+					<view class=" text28">分享</view>
+					<uni-icons type="closeempty" size="26" @click="()=>{$refs.popupFx.close()}"></uni-icons>
+				</view>
+				<view class="p30">
+					<view class="flex" style="flex-direction: row;">
+						<view class="text-center mr50">
+							<image src="@/static/home/graphic/fx1.png" class="w60 h60" mode=""></image>
+							<view class="text28">微信</view>
+						</view>
+						<view class="text-center mr50">
+							<image src="@/static/home/graphic/fx2.png" class="w60 h60" mode=""></image>
+							<view class="text28">朋友圈</view>
+						</view>
+						<view class="text-center mr50">
+							<image src="@/static/home/graphic/fx3.png" class="w60 h60" mode=""></image>
+							<view class="text28">内部分享</view>
+						</view>
+					</view>
+				</view>
+			</view>
+		</uni-popup>
+			
 	</view>
 </template>
 
 <script>
-	import yVideoSlide from '@/components/y-video-slide/y-video-slide.vue'
 	export default {
-		components: {
-			yVideoSlide
-		},
 		data() {
 			return {
-				currentIndex: 0,
-				videoData: [{
-					id: '1',
-					isFollow: 1,//是否关注
-					isFabulous: 1,//是否点赞
-					userNick: '姚哥哥', //名字
-					videoContent: '这是一条测试这是一条测试这是一条测试这是一条测试这是一条测试这是一条测试这是一条测试这是一条测试这是一条测试', //描述
-					fabulousCount: 10, //点赞数量
-					commentCount: 1000, //评论数量
-					shareCount: 499, //转发数量
-					videoUrl: 'https://hs01.afbza.cn/mqrcode/798689/1734698352_3173291263_横屏.mp4',//视频资源地址
-					posterUrl: 'https://img-my.csdn.net/uploads/201407/26/1406383299_1976.jpg',
-					commentObj: {
-						count: 520,
-						list: [{
-							userHead: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fup.enterdesk.com%2Fedpic%2F5e%2F4e%2Ff0%2F5e4ef0e451852e0114d75eac14f60924.jpeg&refer=http%3A%2F%2Fup.enterdesk.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1642669624&t=028d851350e18512dbf4bfe3a86cbfa4',
-							userNick: '小二',
-							content: '这是一条测试而已',
-							time: '2021-05-06 15:34:44',
-							fabulousCount: 3737,
-							isFabulous: 1,
-							children: [{
-								replyTo: '小二',
-								userHead: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fup.enterdesk.com%2Fedpic%2F3c%2F12%2F4c%2F3c124c5277386c897dad2977bb964ea1.jpg&refer=http%3A%2F%2Fup.enterdesk.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1642670117&t=cd32b3baf24c5b3bba4c7516bb211bfe',
-								userNick: '小三',
-								content: '这是一条测试而已这是一条测试而已这是一条测试而已这是一条测试而已这是一条测试而已',
-								time: '2021-05-06 15:34:44',
-								fabulousCount: 3737,
-								isFabulous: 0,
-							}, {
-								userHead: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fup.enterdesk.com%2Fedpic%2F1f%2F4f%2F53%2F1f4f53402015d7c738e68e7fdfa4877c.jpg&refer=http%3A%2F%2Fup.enterdesk.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1642670600&t=b0fbb15006c730305ec59bbfa55d18b9',
-								replyTo: '小三',
-								userNick: '小四',
-								content: '这是一条测试而已',
-								time: '2021-05-06 15:34:44',
-								fabulousCount: 3737,
-								isFabulous: 0,
-							}]
-						}]
+				userImg:'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fup.enterdesk.com%2Fedpic%2F39%2Fb7%2F53%2F39b75357f98675e2d6d5dcde1fb805a3.jpg&refer=http%3A%2F%2Fup.enterdesk.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1642661023&t=dc2e75969d5509c28c65571534c2cf53',
+				videoList: [{
+						url: "https://hs01.afbza.cn/mqrcode/798689/1734698352_3173291263_横屏.mp4",
+						title: "视频1",
+						comments: [],
+						status: false,
 					},
-					userHead: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fup.enterdesk.com%2Fedpic%2F39%2Fb7%2F53%2F39b75357f98675e2d6d5dcde1fb805a3.jpg&refer=http%3A%2F%2Fup.enterdesk.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1642661023&t=dc2e75969d5509c28c65571534c2cf53'
-				}, {
-					id: '2',
-					isFollow: 1,
-					isFabulous: 0,
-					userNick: '姚哥哥',
-					videoContent: '这是一条测试',
-					fabulousCount: 1,
-					commentCount: 1000,
-					shareCount: 499,
-					videoUrl: 'https://hs01.afbza.cn/mqrcode/798689/1734698551_6207398521_竖屏.mp4',
-					commentObj: {
-						count: 100,
-						list: [{
-							userHead: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fup.enterdesk.com%2Fedpic%2F5e%2F4e%2Ff0%2F5e4ef0e451852e0114d75eac14f60924.jpeg&refer=http%3A%2F%2Fup.enterdesk.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1642669624&t=028d851350e18512dbf4bfe3a86cbfa4',
-							userNick: '小二',
-							content: '这是一条测试而已',
-							time: '2021-05-06 15:34:44',
-							fabulousCount: 3737,
-							children: [{
-								replyTo: '小二',
-								userHead: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fup.enterdesk.com%2Fedpic%2F3c%2F12%2F4c%2F3c124c5277386c897dad2977bb964ea1.jpg&refer=http%3A%2F%2Fup.enterdesk.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1642670117&t=cd32b3baf24c5b3bba4c7516bb211bfe',
-								userNick: '小三',
-								content: '这是一条测试而已',
-								time: '2021-05-06 15:34:44',
-								fabulousCount: 3737,
-							}, {
-								userHead: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fup.enterdesk.com%2Fedpic%2F1f%2F4f%2F53%2F1f4f53402015d7c738e68e7fdfa4877c.jpg&refer=http%3A%2F%2Fup.enterdesk.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1642670600&t=b0fbb15006c730305ec59bbfa55d18b9',
-								replyTo: '小三',
-								userNick: '小四',
-								content: '这是一条测试而已',
-								time: '2021-05-06 15:34:44',
-								fabulousCount: 3737,
-							}]
-						}]
+					{
+						url: "https://hs01.afbza.cn/mqrcode/798689/1734698551_6207398521_竖屏.mp4",
+						title: "视频2",
+						comments: [],
+						status: false,
 					},
-					posterUrl: 'https://img-my.csdn.net/uploads/201407/26/1406383291_6518.jpg',
-					userHead: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fup.enterdesk.com%2Fedpic%2F39%2Fb7%2F53%2F39b75357f98675e2d6d5dcde1fb805a3.jpg&refer=http%3A%2F%2Fup.enterdesk.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1642661023&t=dc2e75969d5509c28c65571534c2cf53'
-				}, {
-					id: '3',
-					isFollow: 1,
-					isFabulous: 1,
-					userNick: '姚哥哥',
-					videoContent: '这是一条测试',
-					fabulousCount: 1,
-					commentCount: 1000,
-					shareCount: 499,
-					videoUrl: 'https://hs01.afbza.cn/mqrcode/798689/1734698352_3173291263_横屏.mp4',
-					commentObj: {
-						count: 234,
-						list: [{
-							userHead: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fup.enterdesk.com%2Fedpic%2F5e%2F4e%2Ff0%2F5e4ef0e451852e0114d75eac14f60924.jpeg&refer=http%3A%2F%2Fup.enterdesk.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1642669624&t=028d851350e18512dbf4bfe3a86cbfa4',
-							userNick: '小二',
-							content: '这是一条测试而已',
-							time: '2021-05-06 15:34:44',
-							fabulousCount: 3737,
-							children: [{
-								replyTo: '小二',
-								userHead: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fup.enterdesk.com%2Fedpic%2F3c%2F12%2F4c%2F3c124c5277386c897dad2977bb964ea1.jpg&refer=http%3A%2F%2Fup.enterdesk.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1642670117&t=cd32b3baf24c5b3bba4c7516bb211bfe',
-								userNick: '小三',
-								content: '这是一条测试而已',
-								time: '2021-05-06 15:34:44',
-								fabulousCount: 3737,
-							}, {
-								userHead: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fup.enterdesk.com%2Fedpic%2F1f%2F4f%2F53%2F1f4f53402015d7c738e68e7fdfa4877c.jpg&refer=http%3A%2F%2Fup.enterdesk.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1642670600&t=b0fbb15006c730305ec59bbfa55d18b9',
-								replyTo: '小三',
-								userNick: '小四',
-								content: '这是一条测试而已',
-								time: '2021-05-06 15:34:44',
-								fabulousCount: 3737,
-							}]
-						}]
-					},
-					posterUrl: 'https://img-my.csdn.net/uploads/201407/26/1406383291_8239.jpg',
-					userHead: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fup.enterdesk.com%2Fedpic%2F39%2Fb7%2F53%2F39b75357f98675e2d6d5dcde1fb805a3.jpg&refer=http%3A%2F%2Fup.enterdesk.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1642661023&t=dc2e75969d5509c28c65571534c2cf53'
-				}, {
-					id: '4',
-					isFollow: 1,
-					isFabulous: 0,
-					userNick: '姚哥哥',
-					videoContent: '这是一条测试',
-					fabulousCount: 1,
-					commentCount: 1000,
-					shareCount: 499,
-					videoUrl: 'https://hs01.afbza.cn/mqrcode/798689/1734698352_3173291263_横屏.mp4',
-					commentObj: {
-						count: 523,
-						list: [{
-							userHead: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fup.enterdesk.com%2Fedpic%2F5e%2F4e%2Ff0%2F5e4ef0e451852e0114d75eac14f60924.jpeg&refer=http%3A%2F%2Fup.enterdesk.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1642669624&t=028d851350e18512dbf4bfe3a86cbfa4',
-							userNick: '小二',
-							content: '这是一条测试而已',
-							time: '2021-05-06 15:34:44',
-							fabulousCount: 3737,
-							children: [{
-								replyTo: '小二',
-								userHead: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fup.enterdesk.com%2Fedpic%2F3c%2F12%2F4c%2F3c124c5277386c897dad2977bb964ea1.jpg&refer=http%3A%2F%2Fup.enterdesk.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1642670117&t=cd32b3baf24c5b3bba4c7516bb211bfe',
-								userNick: '小三',
-								content: '这是一条测试而已',
-								time: '2021-05-06 15:34:44',
-								fabulousCount: 3737,
-							}, {
-								userHead: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fup.enterdesk.com%2Fedpic%2F1f%2F4f%2F53%2F1f4f53402015d7c738e68e7fdfa4877c.jpg&refer=http%3A%2F%2Fup.enterdesk.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1642670600&t=b0fbb15006c730305ec59bbfa55d18b9',
-								replyTo: '小三',
-								userNick: '小四',
-								content: '这是一条测试而已',
-								time: '2021-05-06 15:34:44',
-								fabulousCount: 3737,
-							}]
-						}]
-					},
-					posterUrl: 'https://img-my.csdn.net/uploads/201407/26/1406383290_9329.jpg',
-					userHead: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fup.enterdesk.com%2Fedpic%2F39%2Fb7%2F53%2F39b75357f98675e2d6d5dcde1fb805a3.jpg&refer=http%3A%2F%2Fup.enterdesk.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1642661023&t=dc2e75969d5509c28c65571534c2cf53'
-				}]
-			}
+					{
+						url: "https://hs01.afbza.cn/mqrcode/798689/1734698352_3173291263_横屏.mp4",
+						title: "视频3",
+						comments: [],
+						status: false,
+					}
+				],
+				currentVideoIndex: 0,
+				showComments: false,
+				currentComments: [],
+				newComment: "",
+				commentPlaceholder:'请输入评论内容'
+
+			};
+		},
+		mounted() {
 		},
 		methods: {
-			refresh() {
-				console.log('松开刷新');
-				this.videoData = this.videoData.splice(2, 2);
+			// 评论
+			handPl(){
+				this.$refs.popupPl.open('bottom')
 			},
-			loadMore() {
-				console.log('加载更多');
+			// 转发
+			handZf(){
+				this.$refs.popupFx.open('bottom')
 			},
-			share(video) {
-				uni.showToast({
-					title: '分享',
-					icon: 'none'
-				});
-				console.log(video)
+			togglePlay(index) {
+				const videoPlayer = this.$refs.domVideoPlayer
+				const dqVideo = videoPlayer[index]
+				// console.log('dqVideo',dqVideo,videoPlayer);
+				// 获取 video 当前是否处于播放中
+				if (dqVideo.playing) {
+					dqVideo.pause()
+					this.videoList[index].status = true
+				} else {
+					dqVideo.play()
+					this.videoList[index].status = false
+				}
 			},
-			fabulous(video, flag) {
-				uni.showToast({
-					title: '点赞',
-					icon: 'none'
-				});
-				console.log(video, flag)
-			},
-			follow(video, flag) {
-				console.log(video, flag)
-			},
-			commentFabulous(comment) {
-				console.log(comment)
-			}
 		}
-	}
+	};
 </script>
 
 <style>
-	.content {
-		height: 100vh;
+	.recommend-page {
+		background-color: black;
 		display: flex;
 		flex-direction: column;
-		align-items: center;
-		justify-content: center;
+		height: 100vh;
+		overflow: hidden;
+	}
+
+	.video-swiper {
+		width: 100%;
+		height: 100%;
+	}
+
+	.video-container {
+		width: 100%;
+		height: 100%;
+		position: fixed;
+	}
+
+	.video-player {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.video-overlay {
+		position: absolute;
+		bottom: 20px;
+		left: 10px;
+		color: #fff;
+		z-index: 10;
+		/* 确保文字在视频上方 */
+		pointer-events: none;
+		/* 防止覆盖的文字区域阻止视频的点击事件 */
+	}
+
+	.comment-btn {
+		margin-top: 10px;
+		padding: 10px 15px;
+		background-color: #007aff;
+		color: white;
+		border: none;
+		border-radius: 5px;
+		pointer-events: auto;
+		/* 保证按钮可点击 */
+	}
+
+	.comment-popup {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		background-color: #fff;
+		height: 50%;
+		border-top-left-radius: 10px;
+		border-top-right-radius: 10px;
+	}
+
+	.comment-header {
+		display: flex;
+		justify-content: space-between;
+		padding: 10px;
+		border-bottom: 1px solid #eee;
+	}
+
+	.comment-list {
+		padding: 10px;
+		flex: 1;
+	}
+
+	.comment-item {
+		margin-bottom: 10px;
+	}
+
+	.comment-input {
+		display: flex;
+		padding: 10px;
+		border-top: 1px solid #eee;
+	}
+
+	.input-box {
+		flex: 1;
+		border: 1px solid #ccc;
+		border-radius: 5px;
+		padding: 5px;
+	}
+
+	input {
+		outline: none;
 	}
 </style>

@@ -18,6 +18,7 @@
         },
         {
             "openVueDevtools" : true,
+            "playground" : "custom",
             "type" : "uni-app:app-android"
         }
     ]
