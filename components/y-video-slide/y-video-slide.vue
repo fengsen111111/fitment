@@ -14,7 +14,7 @@
 					:show-progress="false" :show-fullscreen-btn="false" :show-play-btn="false" :loop="true"
 					:autoplay="index == 0" :show-center-play-btn="false">
 				</video> -->
-
+				<DomVideoPlayer ref="domVideoPlayer" :src="item.videoUrl" autoplay loop :controls="false" :muted="false" />
 				<template v-for="(fabulous, fabulousIndx) in fabulousArr">
 					<i v-if="fabulous != null" @click="fabulousDbClick" class="iconfont iconxihuan fabulous-item"
 						:style="{'top':fabulous.top,'left':fabulous.left,'opacity':fabulous.opacity,'transform':fabulous.transform}"></i>
@@ -286,11 +286,11 @@
 			}).exec();
 			//#endif
 			//#ifdef APP-PLUS
-			    uni.getSystemInfo({
-			    	success: (res => {
-			    		this.videoRealHeight = res.windowHeight
-			    	})
-			    })
+			uni.getSystemInfo({
+				success: (res => {
+					this.videoRealHeight = res.windowHeight
+				})
+			})
 			//#endif
 			// 初始化第一个视频播放器
 			this.currentVideo = uni.createVideoContext(this.videoList[0].id, this);
@@ -315,7 +315,7 @@
 				const res = uni.getSystemInfo({
 					success: (res => {
 						this.videoRealHeight = res.windowHeight - uni.upx2px(80) - this.getBarHeight();
-						console.log('111',this.videoRealHeight);
+						console.log('111', this.videoRealHeight);
 					})
 				});
 			},

@@ -53,7 +53,8 @@
 					<image src="../../static/home/home_left.png" class="w50 h120" mode=""></image>
 				</view>
 				<view class="grid grid-cols-3" style="grid-column-gap:10rpx">
-					<view class="" v-for="item in byzqList" :key="item.id" @click="handUrl('/pages/home/components/byzq/index?id='+item.id)">
+					<view class="" v-for="item in byzqList" :key="item.id"
+						@click="handUrl('/pages/home/components/byzq/index?id='+item.id)">
 						<image :src="item.cover_image" class="w180 h120" mode=""></image>
 					</view>
 				</view>
@@ -63,7 +64,8 @@
 			</view>
 			<!-- 专区内容  *5-->
 			<view class="grid grid-cols-5 mt40">
-				<view class="text-center mx-auto w100 text20 col-black mb10" v-for="item in twoTypeList" :key="item.id" @click="handUrl('/pages/home/components/shopTypeTwo/index?integral_goods_type_id='+item.id)">
+				<view class="text-center mx-auto w100 text20 col-black mb10" v-for="item in twoTypeList" :key="item.id"
+					@click="handUrl('/pages/home/components/shopTypeTwo/index?integral_goods_type_id='+item.id)">
 					<view class="">
 						<image :src="item.icon" class="w100 h100 radius10" mode=""></image>
 					</view>
@@ -112,7 +114,8 @@
 				<view v-else>
 					<view class="grid grid-cols-5 mt40">
 						<view class="text-center mx-auto w100 text20 col-black mb10"
-							v-for="item in itemTypeObj.children" :key="item.id"  @click="handUrl('/pages/home/components/shopTypeTwo/index?integral_goods_type_id='+item.id)">
+							v-for="item in itemTypeObj.children" :key="item.id"
+							@click="handUrl('/pages/home/components/shopTypeTwo/index?integral_goods_type_id='+item.id)">
 							<view class="">
 								<image :src="item.icon" class="w100 h100 radius10" mode=""></image>
 							</view>
@@ -127,30 +130,45 @@
 			<view class="mt20 flex justify-between" style="flex-wrap: wrap;">
 				<!-- 商品 -->
 				<view>
-					<view class="bg-white w340 mb20" v-for="(item,index) in [1,2,3,4]" :key="item">
-						<image @click="handUrl('/pages/home/components/graphic/index')"
-							src="../../static/home/sytjspslt1.png" class="w340 h340" mode=""></image>
+					<view class="bg-white w340 mb20" v-for="(item,index) in tjspList" :key="item.id">
+						<!-- <image @click="handUrl('/pages/home/components/graphic/index')"
+							src="../../static/home/sytjspslt1.png" class="w340 h340" mode=""></image> -->
+						<image @click="handUrl('/pages/home/components/shopDetail/index?id='+item.id)"
+							:src="item.cover_image" class="w340 h340" mode=""></image>
 						<view class="px20 pb14">
-							<view class="col333333 font-bold text28">新中式沙发冬夏两用</view>
-							<view class="colFF0000 font-bold mt10 text28">￥6666</view>
+							<view class="col333333 font-bold text28">
+								{{item.name.length>20?item.name.slice(0,20)+'...':item.name}}
+							</view>
+							<view class="colFF0000 font-bold mt10 text28">￥{{item.price}}</view>
 							<view class="flex text20 mt10" style="line-height: normal">
-								<view class="bg4DB23F col-white px10 radius4">自营</view>
-								<view class="ml20 border4DB23F col4DB23F px10 radius4">销量 6.6w</view>
+								<view class="bg4DB23F col-white px10 radius4" v-if="item.self_support=='Y'">自营</view>
+								<view class="ml20 border4DB23F col4DB23F px10 radius4">销量 {{item.salled_number}}</view>
 							</view>
 							<view class="flex justify-between col666666 text20 mt10">
-								<view class="">规格 ‌四人沙发‌</view>
-								<view class="">库存 8888</view>
+								<view class="">规格 ‌{{item.size_name}}‌</view>
+								<view class="">库存 {{item.stock}}</view>
 							</view>
 						</view>
 					</view>
 				</view>
 				<!-- 视频 -->
 				<view class="">
-					<view class="bg-white w340 mb20" v-for="(item,index) in [1,2,3]" :key="item">
-						<image @click="handUrl('/pages/home/components/video/index')"
-							src="../../static/home/sytjspfm1.png" class="w340 h575" mode=""></image>
+					<view class="bg-white w340 mb20" v-for="(item,index) in czzList" :key="item.id">
+						<view v-if="item.type=='b'">
+							<!-- 视频 -->
+							<view class="w340 h575 bg-black" v-if="item.video">
+								<image @click="handUrl('/pages/home/components/video/index?id='+item.id)"
+									:src="'https://api.qfcss.cn'+item.images[0]" class="w340 h575" mode=""></image>
+							</view>
+						</view>
+						<view v-else>
+							<!-- 图片 -->
+							<image @click="handUrl('/pages/home/components/graphic/index?id='+item.id)"
+								:src="'https://api.qfcss.cn'+item.images[0]" class="w340 h340" mode=""></image>
+						</view>
 						<view class="px20 col333333 pb14">
-							<view class="font-bold text28">现代北欧风格多功能伸 缩茶几</view>
+							<view class="font-bold text28">{{item.title.length>20?item.title.slice(0,20):item.title}}
+							</view>
 							<view class="flex justify-between text20 mt10">
 								<view class="flex items-center">
 									<image src="../../static/home/qjflal2.png" class="w28 h28 radius20" mode="">
@@ -202,10 +220,12 @@
 			this._getGoodsTypeList() //商品分类列表
 			this._getIndexGoodsTypeList() //商品二级分类
 			this._getGoodsActivityList() //包邮专区列表
-			this._getActivityList()//每日活动
+			this._getActivityList() //每日活动
 			this._getUserInfo() //用户信息
 			this._getNewNotice() //未读公告
 			// this._getBannerList() //轮播图列表
+			this._getArticleList() //创作者列表
+			this._getGoodsList() //首页推荐商品
 		},
 		data() {
 			return {
@@ -278,28 +298,55 @@
 				byzqAll: [], //所有包邮专区列表
 
 				byPage: 1, //包邮页数
-				
-				mrhdList:[]//每日活动列表
+
+				mrhdList: [], //每日活动列表
+
+				tjspList: [], //推荐商品列表
+				czzList: [] //创作者列表
 			}
 		},
-		methods: {	
+		methods: {
+			// 首页推荐商品
+			_getGoodsList() {
+				api.getGoodsList({
+					post_params: {
+						index_recommend: 'Y',
+						currentPage: 1,
+						perPage: 10
+					}
+				}).then((res) => {
+					console.log('首页推荐商品', res.data.data.list);
+					this.tjspList = res.data.data.list
+				})
+			},
+			// 创作者列表
+			_getArticleList() {
+				api.getArticleList({
+					post_params: {
+						"my_status": "b"
+					}
+				}).then((res) => {
+					console.log('创作者', res.data.data.list);
+					this.czzList = res.data.data.list
+				})
+			},
 			byPageCli(type) {
 				if (type == '+') {
-					if(this.byPage*3>this.byzqAll.length){
+					if (this.byPage * 3 > this.byzqAll.length) {
 						uni.showToast({
 							title: '已无更多!',
 							icon: 'none',
 							duration: 2000
 						})
 						return false
-					}else{
+					} else {
 						this.byPage = this.byPage + 1
 					}
 					// console.log(this.byzqAll.length);
 				} else {
 					if (this.byPage > 1) {
 						this.byPage = this.byPage - 1
-					}else if(this.byPage==1){
+					} else if (this.byPage == 1) {
 						uni.showToast({
 							title: '已到最小页!',
 							icon: 'none',
@@ -308,10 +355,10 @@
 						return false
 					}
 				}
-				let index_a = Number(this.byPage-1)*3
-				let index_b = this.byPage*3
+				let index_a = Number(this.byPage - 1) * 3
+				let index_b = this.byPage * 3
 				const arr = this.byzqAll
-				this.byzqList = arr.slice(index_a,index_b)
+				this.byzqList = arr.slice(index_a, index_b)
 			},
 			// 包邮专区列表
 			_getGoodsActivityList() {
@@ -324,14 +371,13 @@
 					const {
 						list
 					} = res.data.data
-					console.log('包邮专区列表', list);
+					// console.log('包邮专区列表', list);
 					this.byzqAll = list
-					this.byzqList = list.slice(0,3)
+					this.byzqList = list.slice(0, 3)
 				})
 			},
 			// 二级分类列表
 			_getIndexGoodsTypeList() {
-				console.log('???');
 				api.getIndexGoodsTypeList({
 					post_params: {
 						type: 'b'
@@ -340,7 +386,7 @@
 					const {
 						list
 					} = res.data.data
-					console.log('二级分类', list);
+					// console.log('二级分类', list);
 					this.twoTypeList = list.slice(0, 5)
 				})
 			},
@@ -355,7 +401,7 @@
 					const {
 						list
 					} = res.data.data
-					console.log('每日活动', list);
+					// console.log('每日活动', list);
 					this.mrhdList = list
 				})
 			},
@@ -370,7 +416,7 @@
 			// 商品分类列表
 			_getGoodsTypeList() {
 				api.getGoodsTypeList().then((res) => {
-					console.log('分类列表', res.data.data);
+					// console.log('分类列表', res.data.data);
 					const {
 						list
 					} = res.data.data
@@ -427,7 +473,7 @@
 			// 获取用户信息
 			_getUserInfo() {
 				api.getUserInfo().then((res) => {
-					console.log('用户信息', res.data);
+					console.log('用户信息', res.data.data);
 					const {
 						data
 					} = res.data

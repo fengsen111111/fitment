@@ -54,8 +54,18 @@
 			<view class="bg-white mt30 radius10 p20">
 				<view class="font-bold">视频</view>
 				<view class="mt20">
-					<video :controls="false" :autoplay="true" :show-play-btn="false" :src="item" v-for="item in videos" :key="item"  controls class="w116 h116 radius10 mb20 mr20"></video>
+					<video :controls="false" :autoplay="true" :show-play-btn="false" :src="item" v-for="item in videos"
+						:key="item" controls class="w116 h116 radius10 mb20 mr20"></video>
 					<image @click="selVideo()" src="@/static/home/btnBooking/upload.png" class="w116 h116 radius10 mb20"
+						mode="">
+					</image>
+				</view>
+			</view>
+			<view class="bg-white mt30 radius10 p20">
+				<view class="font-bold">封面图</view>
+				<view class="mt20">
+					<image v-if="imgUrl" :src="imgUrl" class="w116 h116 radius10 mb20 mr20" mode=""></image>
+					<image @click="selImg()" src="@/static/home/btnBooking/upload.png" class="w116 h116 radius10 mb20"
 						mode="">
 					</image>
 				</view>
@@ -127,7 +137,9 @@
 				goods_ids: [], //商品id
 				user_ids: '', //用户ID  show_type为d/e时必填  
 
-				userInfo: {}
+				userInfo: {},
+				
+				imgUrl:''//封面图
 			}
 		},
 		onShow() {
@@ -164,7 +176,7 @@
 						title: this.title, //标题
 						topic_ids: topic_ids, //话题id
 						content: this.content, //内容
-						images: [], //图片
+						images: [this.imgUrl], //图片
 						video: this.videos, //视频
 						goods_ids: this.goods_ids.length > 1 ? this.goods_ids : [], //商品ID 需要成为推荐官  
 						show_type: this.show_type, //展示方式：a所有人可见 b互关朋友可见 c仅自己 d部分可见 e不给谁看  
@@ -206,6 +218,42 @@
 			//*选择图片*//
 			selVideo() {
 				let that = this
+				uni.chooseVideo({
+					sourceType: ['camera', 'album'],
+					success: function(res) {
+						console.log('res', res);
+						const file = res.tempFile;
+						api.getTicket().then((res) => {
+							const {
+								ticket_time
+							} = res.data.data
+							api.getUploadType().then((res_two) => {
+								const {
+									folder,
+									file_type
+								} = res_two.data.data.config
+								const params = {
+									"ticket_time": ticket_time,
+									"folder": folder ? folder : 'topicImg',
+									"file_type": file_type ? file_type : 'image',
+								}
+								onChooseAvatar(file, params, (error, res) => {
+									if (error) {
+										console.log('上传失败:', res);
+									} else {
+										console.log('上传地址:', res.data.url);
+										that.videos.push('https://api.qfcss.cn' + res
+											.data.url) //赋值回去
+									}
+								});
+							})
+						})
+					}
+				});
+			},
+			//*选择图片*//
+			selImg() {
+				let that = this
 				uni.chooseImage({
 					count: 1, // 最多可以选择的图片张数，默认9
 					sizeType: ['compressed'], // original 原图，compressed 压缩图，默认二者都有
@@ -225,7 +273,7 @@
 								} = res_two.data.data.config
 								const params = {
 									"ticket_time": ticket_time,
-									"folder": folder ? folder : 'video',
+									"folder": folder ? folder : 'topicImg',
 									"file_type": file_type ? file_type : 'image',
 								}
 								onChooseAvatar(file, params, (error, res) => {
@@ -233,7 +281,7 @@
 										console.log('上传失败:', res);
 									} else {
 										console.log('上传地址:', res.data.url);
-										that.videos.push('https://api.qfcss.cn'+res.data.url) //赋值回去
+										that.imgUrl='https://api.qfcss.cn'+res.data.url //赋值回去
 									}
 								});
 							})

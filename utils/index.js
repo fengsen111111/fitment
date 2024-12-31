@@ -79,12 +79,22 @@ export const onChooseAvatar = (file, query, callback) => {
 				uni.hideLoading()
 				console.log('上传成功:', data.data);
 				if (callback) {
+					uni.showToast({
+						title: '文件上传成功！',
+						icon: 'none',
+						duration: 2000
+					})
 					callback(false, data); // 通过回调函数返回结果
 				}
 			})
 			.catch(error => {
 				uni.hideLoading()
 				if (callback) {
+					uni.showToast({
+						title: '文件上传失败！',
+						icon: 'none',
+						duration: 2000
+					})
 					callback(true, error);  // 通过回调函数返回错误
 				}
 			});

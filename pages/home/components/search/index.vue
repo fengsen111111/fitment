@@ -3,12 +3,11 @@
 		<NavBar :navType="'搜索'" />
 		<view class="p30 text20 col666666">
 			<view class="col-black">热门</view>
-			<view class="grid grid-cols-2 px20 mt16" v-for="item in [1,2,3]" :key="item">
-				<view class="flex">
-					<view :class="item==1?'colFF0000':item==2?'colFBB333':'col91C42F'">NO.{{item}}</view>
-					<view class="ml10">2024“铁饭碗”排名出炉！</view>
+			<view class="grid grid-cols-2 px20 mt16">
+				<view class="flex"  v-for="(item,index) in hot_words" :key="index">
+					<view :class="index==0||index==1?'colFF0000':index==2||index==3?'colFBB333':'col91C42F'">NO.{{index+1}}</view>
+					<view class="ml10">{{item}}</view>
 				</view>
-				<view class="">微信缺席？华为鸿蒙系统...</view>
 			</view>
 		</view>
 		<view class="p30 text20 col666666">
@@ -27,14 +26,25 @@
 
 <script>
 	import NavBar from '@/components/navbar/index.vue'
+	import api from '@/request/allApi.js'
 	export default {
 		data() {
 			return {
-				
+				hot_words:[]//热门推荐词
 			}
 		},
 		components:{NavBar},
+		onShow(){
+			this._getBaseTypes()
+		},
 		methods: {
+			// 配置项
+			_getBaseTypes(){
+				api.getBaseTypes().then((res)=>{
+					console.log('基本数据',res.data.data.hot_words);
+					this.hot_words = res.data.data.hot_words
+				})
+			}
 		}
 	}
 </script>

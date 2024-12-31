@@ -5,7 +5,7 @@
 			<block v-for="(video, index) in videoList" :key="index">
 				<swiper-item>
 					<view class="video-container" @click="togglePlay(index)">
-						<DomVideoPlayer ref="domVideoPlayer" :src="video.url" autoplay loop :controls="false" muted />
+						<DomVideoPlayer ref="domVideoPlayer" :src="video.url" autoplay loop :controls="false" :muted="false" />
 					</view>
 					<view style="position: fixed;color: white; top: 50%;left:47%" @click="togglePlay(index)">
 						<view v-if="video.status">
