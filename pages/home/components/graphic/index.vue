@@ -120,13 +120,28 @@
 </template>
 
 <script>
+	import api from '@/request/allApi.js'
 	export default {
 		data() {
 			return {
-
+				option:{}
 			}
 		},
+		onLoad(option){
+			this.option = option
+			this._getArticleDetail()//创作者详情
+		},
 		methods: {
+			// 创作者详情
+			_getArticleDetail(){
+				api.getArticleDetail({
+					post_params:{
+						id:this.option.id
+					}
+				}).then((res)=>{
+					console.log('创作者详情',res.data);
+				})
+			},
 			handUrl(url) {
 				uni.navigateTo({
 					url: url

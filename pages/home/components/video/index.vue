@@ -1,35 +1,38 @@
 <template>
 	<view class="recommend-page">
-		<swiper class="video-swiper" vertical :current="currentVideoIndex"
-			:indicator-dots="false" style="height: 100vh">
-			<block v-for="(video, index) in videoList" :key="index">
+		<swiper class="video-swiper" vertical :current="currentVideoIndex" :indicator-dots="false"
+			style="height: 100vh">
+			<block v-for="(item, index) in videoList" :key="index">
 				<swiper-item>
 					<view class="video-container" @click="togglePlay(index)">
-						<DomVideoPlayer ref="domVideoPlayer" :src="video.url" autoplay loop :controls="false" :muted="false" />
+						<DomVideoPlayer ref="domVideoPlayer" :src="'https://api.qfcss.cn'+item.video" autoplay loop
+							:controls="false" :muted="false" />
 					</view>
 					<view style="position: fixed;color: white; top: 50%;left:47%" @click="togglePlay(index)">
-						<view v-if="video.status">
+						<view v-if="item.status">
 							<image src="@/static/publish/zt.png" style="width: 50rpx;height: 50rpx;" mode=""></image>
 						</view>
 					</view>
 
 					<view style="z-index: 999;">
 						<view style="position: fixed;color: white; top: 50%;right:2%; text-align: center;">
-							<view style="margin-bottom: 30rpx;">
-								<uni-icons type="hand-up-filled" color="#FFFFFF" size="30"></uni-icons>
-								<view class="count-text">666</view>
+							<view style="margin-bottom: 30rpx;" @click="_starArticle(item.id)">
+								<uni-icons type="hand-up-filled" :color="item.star=='Y'?'#4DB23F':'#FFFFFF'"
+									size="30"></uni-icons>
+								<view class="count-text">{{item.star_number?item.star_number:0}}</view>
 							</view>
-							<view style="margin-bottom: 30rpx;">
-								<uni-icons type="star-filled" color="#4DB23F" size="30"></uni-icons>
-								<view class="count-text">收藏</view>
+							<view style="margin-bottom: 30rpx;" @click="_collectArticle(item.id)">
+								<uni-icons type="star-filled" :color="item.collect=='Y'?'#4DB23F':'#FFFFFF'"
+									size="30"></uni-icons>
+								<view class="count-text">{{item.collect_number?item.collect_number:0}}</view>
 							</view>
-							<view style="margin-bottom: 30rpx;" @click="handPl()">
+							<view style="margin-bottom: 30rpx;" @click="handPl(item.id)">
 								<uni-icons type="chat-filled" color="#ffffff" size="30"></uni-icons>
-								<view class="count-text">666</view>
+								<view class="count-text">??</view>
 							</view>
 							<view style="margin-bottom: 30rpx;" @click="handZf()">
 								<uni-icons type="redo-filled" color="#ffffff" size="30"></uni-icons>
-								<view class="count-text">666</view>
+								<view class="count-text">{{item.share_number?item.share_number:0}}</view>
 							</view>
 						</view>
 						<view style="position: fixed;color: white; top: 80%;left:2%">
@@ -42,17 +45,17 @@
 								<view class="ml10">88.8w</view>
 							</view>
 							<view class="mt20 flex items-center" style="flex-direction: row;">
-								<image class="w48 h48 radius_bfb50"
-									:src="userImg"
-									mode="widthFix"></image>
-								<view class="user-name ml10 text26">@用户昵称</view>
-								<view class="ml20 text24 bg4DB23F col-white px40 radius10">关注</view>
-								<view class="ml20 text24 col4DB23F radius10 px40"
+								<image class="w48 h48 radius_bfb50" :src="userImg" mode="widthFix"></image>
+								<view class="user-name ml10 text26">@{{item.nickname?item.nickname:'????'}}</view>
+								<view @click="_allowUper(item.uper_id)" v-if="item.allow=='Y'"
+									class="ml20 text24 bg4DB23F col-white px40 radius10">关注</view>
+								<view @click="_allowUper(item.uper_id)" v-else
+									class="ml20 text24 col4DB23F radius10 px40"
 									style="border: 1px solid #4DB23F !important;">
 									已关注</view>
 							</view>
 							<view class="video-content mt15 text20" style="line-height: 30rpx;">
-								拉了上来的撒来到拉萨到拉萨的了拉了上来的撒来到拉萨到拉萨的了拉了上来的撒来到拉萨到拉萨的了拉了上来的撒来到拉萨到拉萨的了</view>
+								{{item.content?item.content:'暂无内容！'}}</view>
 							<view class="h60"></view>
 						</view>
 					</view>
@@ -61,48 +64,56 @@
 		</swiper>
 		<!-- 全部评论 -->
 		<uni-popup ref="popupPl" type="bottom">
-			<view class="bg-white pt20" style="border-radius: 20rpx 20rpx 0 0;" >
+			<view class="bg-white pt20" style="border-radius: 20rpx 20rpx 0 0;">
 				<view class="flex justify-between px36 mt30" style="flex-direction: row; ">
 					<view class=" text28">全部评论</view>
 					<uni-icons type="closeempty" size="26" @click="()=>{$refs.popupPl.close()}"></uni-icons>
 				</view>
 				<view class="p30" style="overflow-y: auto;height: 50vh;">
-					<view v-for="item in [1,2,3,4,5,6]" :key="item">
+					<view v-for="item in plAll" :key="item.id">
 						<view class="flex ">
 							<view class="w48 h48">
-								<image :src="userImg" class="w48 h48 radius_bfb50" mode=""></image>
+								<image :src="item.head_image" class="w48 h48 radius_bfb50" mode=""></image>
 							</view>
 							<view class="ml20">
-								<view class="text26 font-bold ">大海龟</view>
+								<view class="text26 font-bold ">{{item.nickname}}</view>
 								<view class="text20 col000000" style="line-height: 30rpx;">
-									实名预约方式。观众需要使用实名注册的手机号码进行预约，每个账号每个参观日最多可预约5人，包括14周岁以下的未成年人不超过三人。提前预约。观众通常可提前7天进行预约，但具体时间可能因博物馆而异。
+									{{item.content}}
 								</view>
 								<view class="flex text20 justify-between items-center mt20">
 									<view class="flex items-center">
-										<view class="col000000">2024-02-06</view>
+										<view class="col000000">{{item.create_time}}</view>
 										<view class="ml20 col4DB23F">回复</view>
 									</view>
 									<view class="flex items-center col4DB23F">
-										<image src="@/static/home/graphic/icon1_check.png" class="w30 h30" mode=""></image>
-										<view class="ml20 text24 mt5">999</view>
+										<image v-if="item.star=='Y'" src="@/static/home/graphic/icon1_check.png"
+											class="w30 h30" mode="">
+										</image>
+										<image v-else src="@/static/home/graphic/icon1.png" class="w30 h30" mode="">
+										</image>
+										<view class="ml20 text24 mt5">{{item.star_number?item.star_number:0}}</view>
 									</view>
 								</view>
 							</view>
 						</view>
 						<view class="bg999999 h1 my20"></view>
 					</view>
+					<view v-if="plAll.length==0">
+						暂无评论！
+					</view>
 					<view class="h20"></view>
 				</view>
 				<view class="p30 w-full bg-white" style="position: fixed;bottom: 0rpx;">
-					<view class="flex w-full " >
+					<view class="flex w-full ">
 						<view class="p20 radius10" style="width: 70%;border: 1px solid #333333 !important">
-							<input type="text" :placeholder="commentPlaceholder" />
+							<input type="text" v-model="content" :placeholder="commentPlaceholder" />
 						</view>
-						<view class="bg4DB23F col-white text28 px30 ml20 radius10 items-center"
+						<view @click="_discussArticle()"
+							class="bg4DB23F col-white text28 px30 ml20 radius10 items-center"
 							style="line-height: 78rpx;">发表</view>
 					</view>
 				</view>
-			</view>	
+			</view>
 		</uni-popup>
 		<!-- 分享弹框 -->
 		<uni-popup ref="popupFx" type="bottom">
@@ -129,51 +140,137 @@
 				</view>
 			</view>
 		</uni-popup>
-			
+
 	</view>
 </template>
 
 <script>
+	import api from '@/request/allApi.js'
 	export default {
 		data() {
 			return {
-				userImg:'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fup.enterdesk.com%2Fedpic%2F39%2Fb7%2F53%2F39b75357f98675e2d6d5dcde1fb805a3.jpg&refer=http%3A%2F%2Fup.enterdesk.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1642661023&t=dc2e75969d5509c28c65571534c2cf53',
-				videoList: [{
-						url: "https://hs01.afbza.cn/mqrcode/798689/1734698352_3173291263_横屏.mp4",
-						title: "视频1",
-						comments: [],
-						status: false,
-					},
-					{
-						url: "https://hs01.afbza.cn/mqrcode/798689/1734698551_6207398521_竖屏.mp4",
-						title: "视频2",
-						comments: [],
-						status: false,
-					},
-					{
-						url: "https://hs01.afbza.cn/mqrcode/798689/1734698352_3173291263_横屏.mp4",
-						title: "视频3",
-						comments: [],
-						status: false,
-					}
-				],
+				userImg: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fup.enterdesk.com%2Fedpic%2F39%2Fb7%2F53%2F39b75357f98675e2d6d5dcde1fb805a3.jpg&refer=http%3A%2F%2Fup.enterdesk.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1642661023&t=dc2e75969d5509c28c65571534c2cf53',
+				videoList: [],
 				currentVideoIndex: 0,
 				showComments: false,
 				currentComments: [],
 				newComment: "",
-				commentPlaceholder:'请输入评论内容'
+				commentPlaceholder: '请输入评论内容',
+
+				option: {},
+
+				plAll: [], //当前作品全部评论
+
+				pl_id: '', //评论id
+				hf_id: '', //回复id
+				content: '', //评论内容
 
 			};
 		},
-		mounted() {
+		onLoad(option) {
+			console.log('option', option);
+			this.option = option
+			this._getArticleList()
 		},
 		methods: {
-			// 评论
-			handPl(){
-				this.$refs.popupPl.open('bottom')
+			// 发表评论
+			_discussArticle() {
+				api.discussArticle({
+					post_params: {
+						article_id: this.pl_id,
+						disscuss_id: this.hf_id,
+						content: this.content
+					}
+				}).then((res) => {
+					if (res.data.code == 1) {
+						console.log('评论结束');
+						this.handPl(this.pl_id)
+					}
+				})
+			},
+			// 收藏
+			_collectArticle(id) {
+				api.collectArticle({
+					post_params: {
+						id: id
+					}
+				}).then((res) => {
+					console.log('收藏', res.data);
+					if (res.data.code == 1) {
+						this._getArticleList()
+					}
+				})
+			},
+			// 关注
+			_allowUper(uper_id) {
+				api.allowUper({
+					post_params: {
+						uper_id: uper_id
+					}
+				}).then((res) => {
+					console.log('关注', res.data);
+					if (res.data.code == 1) {
+						this._getArticleList()
+					}
+				})
+			},
+			// 点赞
+			_starArticle(id) {
+				api.starArticle({
+					post_params: {
+						id: id
+					}
+				}).then((res) => {
+					console.log('点赞', res.data);
+					if (res.data.code == 1) {
+						this._getArticleList()
+					}
+				})
+			},
+			// 获取创作列表
+			_getArticleList() {
+				api.getArticleList().then((res) => {
+					const arr = res.data.data.list.filter((item) => item.type == 'b')
+					// 点击的视频排序第一
+					let obj = {};
+					arr.forEach((item, index) => {
+						if (item.id == this.option.id) {
+							obj = item;
+							arr.splice(index, 1)
+							return;
+						}
+					})
+					arr.unshift(obj); //从头添加
+					this.videoList = []
+					arr.map((item) => {
+						this.videoList.push({
+							...item,
+							status: false, //播放暂停
+						})
+					})
+					console.log('数据', arr);
+				})
+			},
+			// 作品评论
+			handPl(id) {
+				this.pl_id = id
+				api.getDiscussList({
+					post_params: {
+						id: id,
+					}
+				}).then((res) => {
+					if (res.data.code == 1) {
+						const {
+							list
+						} = res.data.data
+						console.log('作品评论', list);
+						this.plAll = list
+						this.$refs.popupPl.open('bottom')
+					}
+				})
 			},
 			// 转发
-			handZf(){
+			handZf() {
 				this.$refs.popupFx.open('bottom')
 			},
 			togglePlay(index) {

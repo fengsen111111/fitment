@@ -57,7 +57,7 @@
 			<view class="bg-white mt30 radius10 p20">
 				<view class="font-bold">输入内容</view>
 				<view class="mt20 px20 py14 bgF5F5F5 radius10">
-					<textarea type="text" v-model="content" placeholder="输入内容" />
+					<textarea type="text" v-model="content" style="height: 200rpx;" placeholder="输入内容" />
 				</view>
 				<view class="mt20 grid grid-cols-5">
 					<image :src="item" v-for="item in images" :key="item" class="w116 h116 radius10 mb20 mr20" mode=""></image>
@@ -162,6 +162,14 @@
 				this.topicList.map((item)=>{
 					topic_ids.push(item.id)
 				})
+				if(!this.imgUrl){
+					uni.showToast({
+						title: '请上传图片!',
+						icon: 'none',
+						duration: 2000
+					})
+					return false
+				}
 				uni.showLoading({
 					title: "加载中"
 				})

@@ -125,7 +125,7 @@
 					<image @click="handUrl('/pages/home/components/shopDetail/index?id='+item.id)" :src="item.cover_image"
 						class="w340 h340" mode=""></image>
 					<view class="px20 pb14">
-						<view class="col333333 font-bold" v-if="item.name">{{item.name.length>22?item.name.slice(0,22)+'...':item.name}}</view>
+						<view class="col333333 font-bold" v-if="item.name">{{item.name.length>20?item.name.slice(0,20)+'...':item.name}}</view>
 						<view class="colFF0000 font-bold mt10">￥{{item.price}}</view>
 						<view class="flex text20 mt10" style="line-height: normal">
 							<view v-if="item.platform_goods=='Y'" class="bg4DB23F col-white px10 radius4 mr20">自营</view>
@@ -169,7 +169,7 @@
 					<image @click="handUrl('/pages/home/components/shopDetail/index?id='+item.id)" :src="item.cover_image"
 						class="w340 h340" mode=""></image>
 					<view class="px20 pb14">
-						<view class="col333333 font-bold" v-if="item.name">{{item.name.length>22?item.name.slice(0,22)+'...':item.name}}</view>
+						<view class="col333333 font-bold" v-if="item.name">{{item.name.length>20?item.name.slice(0,20)+'...':item.name}}</view>
 						<view class="colFF0000 font-bold mt10">￥{{item.price}}</view>
 						<view class="flex text20 mt10" style="line-height: normal">
 							<view v-if="item.platform_goods=='Y'" class="bg4DB23F col-white px10 radius4 mr20">自营</view>
@@ -468,6 +468,7 @@
 					} = res.data
 					this.sjxx = data
 					this.sjfw = data.services
+					this.sjfwStr = ''
 					data.services.map((item) => {
 						this.sjfwStr = this.sjfwStr + item.name + '·'
 					})

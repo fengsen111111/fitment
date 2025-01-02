@@ -37,11 +37,11 @@ const api = {
 	GET_ARTICLE_LIST: base_url + '/decoration/Article/getArticleList', //获取创作列表
 	GET_ARTICLE_DETAIL: base_url + '/decoration/Article/getArticleDetail', //获取创作详情
 	STAR_ARTICLE: base_url + '/decoration/Article/starArticle', //点赞/取消点赞
-	ALLOW_ARTICLE: base_url + '/decoration/Article/allowArticle', //关注/取消关注
+	ALLOW_ARTICLE: base_url + '/decoration/Article/allowUper', //关注/取消关注
 	COLLECT_ARTICLE: base_url + '/decoration/Article/collectArticle', //收藏/取消收藏
-	EVALUAE_ARTICLE: base_url + '/decoration/Article/evaluateArticle', //评论
-	GET_EVALUATE_LIST: base_url + '/decoration/Article/getEvaluateList', //获取评论列表
-	STAR_EVALUATE: base_url + '/decoration/Article/starEvaluate', //点赞/取消点赞评论
+	EVALUAE_ARTICLE: base_url + '/decoration/ArticleDiscuss/discussArticle', //评论
+	GET_EVALUATE_LIST: base_url + '/decoration/ArticleDiscuss/getDiscussList', //获取评论列表
+	STAR_EVALUATE: base_url + '/decoration/ArticleDiscuss/starDiscuss', //点赞/取消点赞评论
 	SHARE_FRIEND: base_url + '/decoration/Article/shareFriend', //分享给好友
 	SHARE_COMPLETE: base_url + '/decoration/Article/shareComplete', //分享完成
 	RECOMMEND_ARTICLE: base_url + '/decoration/Article/recommendArticle', //投流
@@ -236,7 +236,7 @@ export const starArticle = (params) => {
 	return post(api.STAR_ARTICLE, params)
 }
 // 关注/取消关注
-export const allowArticle = (params) => {
+export const allowUper = (params) => {
 	return post(api.ALLOW_ARTICLE, params)
 }
 // 收藏/取消收藏
@@ -244,15 +244,15 @@ export const collectArticle = (params) => {
 	return post(api.COLLECT_ARTICLE, params)
 }
 // 评论
-export const evaluateArticle = (params) => {
+export const discussArticle = (params) => {
 	return post(api.EVALUAE_ARTICLE, params)
 }
 // 获取评论列表
-export const getEvaluateList = (params) => {
+export const getDiscussList = (params) => {
 	return post(api.GET_EVALUATE_LIST, params)
 }
 // 点赞/取消点赞评论
-export const starEvaluate = (params) => {
+export const starDiscuss = (params) => {
 	return post(api.STAR_EVALUATE, params)
 }
 // 分享给好友

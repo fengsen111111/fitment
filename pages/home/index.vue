@@ -321,11 +321,7 @@
 			},
 			// 创作者列表
 			_getArticleList() {
-				api.getArticleList({
-					post_params: {
-						"my_status": "b"
-					}
-				}).then((res) => {
+				api.getArticleList().then((res) => {
 					console.log('创作者', res.data.data.list);
 					this.czzList = res.data.data.list
 				})

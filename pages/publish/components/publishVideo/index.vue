@@ -13,6 +13,12 @@
 				</view>
 			</view>
 			<view class="bg-white mt30 radius10 p20">
+				<view class="font-bold">文本内容</view>
+				<view class="mt20 px20 py14 bgF5F5F5 radius10">
+					<textarea type="text" style="height: 200rpx;" v-model="content" placeholder="输入内容" />
+				</view>
+			</view>
+			<view class="bg-white mt30 radius10 p20">
 				<view class=" flex justify-between">
 					<view class="font-bold">话题</view>
 					<view class="text20 col4DB23F" @click="handUrl('/pages/publish/components/topicSearch/index')">添加
@@ -22,6 +28,7 @@
 					<view class="mr30" v-for="item in topicList" :key="item.id">{{item.name}}</view>
 				</view>
 			</view>
+		
 			<view class="bg-white mt30 radius10 p20" v-if="userInfo.sharer_status=='d'">
 				<view class="flex justify-between">
 					<view class="font-bold">挂载商品</view>
@@ -168,6 +175,25 @@
 				this.topicList.map((item) => {
 					topic_ids.push(item.id)
 				})
+				if(!this.videos){
+					uni.showToast({
+						title: '请上传视频!',
+						icon: 'none',
+						duration: 2000
+					})
+					return false
+				}
+				if(!this.imgUrl){
+					uni.showToast({
+						title: '请上传封面图!',
+						icon: 'none',
+						duration: 2000
+					})
+					return false
+				}
+				uni.showLoading({
+					title: "加载中"
+				})
 				api.editArticle({
 					post_params: {
 						id: '', //作品id
@@ -183,6 +209,7 @@
 						user_ids: [], //用户ID  show_type为d/e时必填  
 					}
 				}).then((res) => {
+					uni.hideLoading()
 					console.log('发布结果', res.data);
 					if (res.data.code == 1) {
 						uni.showToast({
