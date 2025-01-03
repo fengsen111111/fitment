@@ -194,7 +194,7 @@
 					<view class="text28 text-center">最新公告</view>
 					<view class="flex items-center justify-between">
 						<view class=""></view>
-						<uni-icons type="closeempty" @click="()=>{$refs.popup.close()}" size="20"></uni-icons>
+						<uni-icons type="closeempty" @click="handHomeFalse()" size="20"></uni-icons>
 					</view>
 				</view>
 				<view class="mt20">
@@ -461,10 +461,17 @@
 						create_time: create_time,
 						content: content
 					}
-					this.$nextTick(() => {
-						this.$refs.popup.open('center')
-					})
+					if(this.$store.state.homeVisable){
+						this.$nextTick(() => {
+							this.$refs.popup.open('center')
+						})
+					}
 				})
+			},
+			// 关闭弹窗
+			handHomeFalse(){
+				this.$refs.popup.close()
+				this.$store.commit('visableShow')
 			},
 			// 获取用户信息
 			_getUserInfo() {

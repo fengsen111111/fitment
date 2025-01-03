@@ -7842,6 +7842,29 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components
+try {
+  components = {
+    uniIcons:
+      __webpack_require__(/*! @/uni_modules/uni-icons/components/uni-icons/uni-icons.vue */ 5)
+        .default,
+  }
+} catch (e) {
+  if (
+    e.message.indexOf("Cannot find module") !== -1 &&
+    e.message.indexOf(".vue") !== -1
+  ) {
+    console.error(e.message)
+    console.error("1. 排查组件名称拼写是否正确")
+    console.error(
+      "2. 排查组件是否符合 easycom 规范，文档：https://uniapp.dcloud.net.cn/collocation/pages?id=easycom"
+    )
+    console.error(
+      "3. 若组件不符合 easycom 规范，需手动引入，并在 components 中注册该组件"
+    )
+  } else {
+    throw e
+  }
+}
 var render = function () {
   var _vm = this
   var _h = _vm.$createElement
@@ -7850,97 +7873,283 @@ var render = function () {
     "uni-view",
     { staticClass: _vm._$g(0, "sc"), attrs: { _i: 0 } },
     [
-      _c("NavBar", { attrs: { _i: 1 } }),
-      _c(
-        "uni-view",
-        { staticClass: _vm._$g(2, "sc"), attrs: { _i: 2 } },
-        [
-          _c("uni-view", { staticClass: _vm._$g(3, "sc"), attrs: { _i: 3 } }, [
-            _vm._v("热门"),
-          ]),
-          _c(
+      _c("NavBar", {
+        ref: "navbar",
+        attrs: { _i: 1 },
+        on: {
+          searchVal: function ($event) {
+            return _vm.$handleViewEvent($event)
+          },
+        },
+      }),
+      _vm._$g(2, "i")
+        ? _c(
             "uni-view",
-            { staticClass: _vm._$g(4, "sc"), attrs: { _i: 4 } },
-            _vm._l(_vm._$g(5, "f"), function (item, index, $20, $30) {
-              return _c(
+            { attrs: { _i: 2 } },
+            [
+              _c(
                 "uni-view",
-                {
-                  key: item,
-                  staticClass: _vm._$g("5-" + $30, "sc"),
-                  attrs: { _i: "5-" + $30 },
-                },
+                { staticClass: _vm._$g(3, "sc"), attrs: { _i: 3 } },
                 [
                   _c(
                     "uni-view",
-                    {
-                      class: _vm._$g("6-" + $30, "c"),
-                      attrs: { _i: "6-" + $30 },
-                    },
-                    [_vm._v("NO." + _vm._$g("6-" + $30, "t0-0"))]
+                    { staticClass: _vm._$g(4, "sc"), attrs: { _i: 4 } },
+                    [_vm._v("热门")]
+                  ),
+                  _c(
+                    "uni-view",
+                    { staticClass: _vm._$g(5, "sc"), attrs: { _i: 5 } },
+                    _vm._l(_vm._$g(6, "f"), function (item, index, $20, $30) {
+                      return _c(
+                        "uni-view",
+                        {
+                          key: item,
+                          staticClass: _vm._$g("6-" + $30, "sc"),
+                          attrs: { _i: "6-" + $30 },
+                          on: {
+                            click: function ($event) {
+                              return _vm.$handleViewEvent($event)
+                            },
+                          },
+                        },
+                        [
+                          _c(
+                            "uni-view",
+                            {
+                              class: _vm._$g("7-" + $30, "c"),
+                              attrs: { _i: "7-" + $30 },
+                            },
+                            [_vm._v("NO." + _vm._$g("7-" + $30, "t0-0"))]
+                          ),
+                          _c(
+                            "uni-view",
+                            {
+                              staticClass: _vm._$g("8-" + $30, "sc"),
+                              attrs: { _i: "8-" + $30 },
+                            },
+                            [_vm._v(_vm._$g("8-" + $30, "t0-0"))]
+                          ),
+                        ],
+                        1
+                      )
+                    }),
+                    1
+                  ),
+                ],
+                1
+              ),
+              _c(
+                "uni-view",
+                { staticClass: _vm._$g(9, "sc"), attrs: { _i: 9 } },
+                [
+                  _c(
+                    "uni-view",
+                    { staticClass: _vm._$g(10, "sc"), attrs: { _i: 10 } },
+                    [_vm._v("历史")]
                   ),
                   _c(
                     "uni-view",
                     {
-                      staticClass: _vm._$g("7-" + $30, "sc"),
-                      attrs: { _i: "7-" + $30 },
+                      staticClass: _vm._$g(11, "sc"),
+                      staticStyle: { "grid-column-gap": "30rpx" },
+                      attrs: { _i: 11 },
                     },
-                    [_vm._v(_vm._$g("7-" + $30, "t0-0"))]
+                    _vm._l(_vm._$g(12, "f"), function (item, $11, $21, $31) {
+                      return _c(
+                        "uni-view",
+                        {
+                          key: item,
+                          staticClass: _vm._$g("12-" + $31, "sc"),
+                          attrs: { _i: "12-" + $31 },
+                        },
+                        [_vm._v("历史名称")]
+                      )
+                    }),
+                    1
                   ),
                 ],
                 1
-              )
-            }),
+              ),
+              _c(
+                "uni-view",
+                { staticClass: _vm._$g(13, "sc"), attrs: { _i: 13 } },
+                [
+                  _c("v-uni-image", {
+                    staticClass: _vm._$g(14, "sc"),
+                    attrs: {
+                      src: "/static/home/search/null.png",
+                      mode: "",
+                      _i: 14,
+                    },
+                  }),
+                  _c(
+                    "uni-view",
+                    { staticClass: _vm._$g(15, "sc"), attrs: { _i: 15 } },
+                    [_vm._v("暂无任何内容")]
+                  ),
+                ],
+                1
+              ),
+            ],
             1
-          ),
-        ],
-        1
-      ),
-      _c(
-        "uni-view",
-        { staticClass: _vm._$g(8, "sc"), attrs: { _i: 8 } },
-        [
-          _c("uni-view", { staticClass: _vm._$g(9, "sc"), attrs: { _i: 9 } }, [
-            _vm._v("历史"),
-          ]),
-          _c(
+          )
+        : _c(
             "uni-view",
-            {
-              staticClass: _vm._$g(10, "sc"),
-              staticStyle: { "grid-column-gap": "30rpx" },
-              attrs: { _i: 10 },
-            },
-            _vm._l(_vm._$g(11, "f"), function (item, $11, $21, $31) {
-              return _c(
+            { staticClass: _vm._$g(16, "sc"), attrs: { _i: 16 } },
+            [
+              _c(
                 "uni-view",
                 {
-                  key: item,
-                  staticClass: _vm._$g("11-" + $31, "sc"),
-                  attrs: { _i: "11-" + $31 },
+                  staticClass: _vm._$g(17, "sc"),
+                  staticStyle: { "flex-wrap": "wrap" },
+                  attrs: { _i: 17 },
                 },
-                [_vm._v("历史名称")]
-              )
-            }),
+                _vm._l(_vm._$g(18, "f"), function (item, index, $22, $32) {
+                  return _c(
+                    "uni-view",
+                    {
+                      key: item,
+                      staticClass: _vm._$g("18-" + $32, "sc"),
+                      attrs: { _i: "18-" + $32 },
+                    },
+                    [
+                      _vm._$g("19-" + $32, "i")
+                        ? _c(
+                            "uni-view",
+                            { attrs: { _i: "19-" + $32 } },
+                            [
+                              _vm._$g("20-" + $32, "i")
+                                ? _c(
+                                    "uni-view",
+                                    {
+                                      staticClass: _vm._$g("20-" + $32, "sc"),
+                                      attrs: { _i: "20-" + $32 },
+                                    },
+                                    [
+                                      _c("v-uni-image", {
+                                        staticClass: _vm._$g("21-" + $32, "sc"),
+                                        attrs: {
+                                          src: _vm._$g("21-" + $32, "a-src"),
+                                          mode: "",
+                                          _i: "21-" + $32,
+                                        },
+                                        on: {
+                                          click: function ($event) {
+                                            return _vm.$handleViewEvent($event)
+                                          },
+                                        },
+                                      }),
+                                    ],
+                                    1
+                                  )
+                                : _vm._e(),
+                            ],
+                            1
+                          )
+                        : _c(
+                            "uni-view",
+                            { attrs: { _i: "22-" + $32 } },
+                            [
+                              _c("v-uni-image", {
+                                staticClass: _vm._$g("23-" + $32, "sc"),
+                                attrs: {
+                                  src: _vm._$g("23-" + $32, "a-src"),
+                                  mode: "",
+                                  _i: "23-" + $32,
+                                },
+                                on: {
+                                  click: function ($event) {
+                                    return _vm.$handleViewEvent($event)
+                                  },
+                                },
+                              }),
+                            ],
+                            1
+                          ),
+                      _c(
+                        "uni-view",
+                        {
+                          staticClass: _vm._$g("24-" + $32, "sc"),
+                          attrs: { _i: "24-" + $32 },
+                        },
+                        [
+                          _c(
+                            "uni-view",
+                            {
+                              staticClass: _vm._$g("25-" + $32, "sc"),
+                              attrs: { _i: "25-" + $32 },
+                            },
+                            [_vm._v(_vm._$g("25-" + $32, "t0-0"))]
+                          ),
+                          _c(
+                            "uni-view",
+                            {
+                              staticClass: _vm._$g("26-" + $32, "sc"),
+                              attrs: { _i: "26-" + $32 },
+                            },
+                            [
+                              _c(
+                                "uni-view",
+                                {
+                                  staticClass: _vm._$g("27-" + $32, "sc"),
+                                  attrs: { _i: "27-" + $32 },
+                                },
+                                [
+                                  _c("v-uni-image", {
+                                    staticClass: _vm._$g("28-" + $32, "sc"),
+                                    attrs: {
+                                      src: "/static/home/qjflal2.png",
+                                      mode: "",
+                                      _i: "28-" + $32,
+                                    },
+                                  }),
+                                  _c(
+                                    "uni-view",
+                                    {
+                                      staticClass: _vm._$g("29-" + $32, "sc"),
+                                      attrs: { _i: "29-" + $32 },
+                                    },
+                                    [_vm._v("一只小海螺")]
+                                  ),
+                                ],
+                                1
+                              ),
+                              _c(
+                                "uni-view",
+                                {
+                                  staticClass: _vm._$g("30-" + $32, "sc"),
+                                  attrs: { _i: "30-" + $32 },
+                                },
+                                [
+                                  _c("uni-icons", {
+                                    attrs: { _i: "31-" + $32 },
+                                  }),
+                                  _c(
+                                    "uni-view",
+                                    {
+                                      staticClass: _vm._$g("32-" + $32, "sc"),
+                                      attrs: { _i: "32-" + $32 },
+                                    },
+                                    [_vm._v("6666")]
+                                  ),
+                                ],
+                                1
+                              ),
+                            ],
+                            1
+                          ),
+                        ],
+                        1
+                      ),
+                    ],
+                    1
+                  )
+                }),
+                1
+              ),
+            ],
             1
           ),
-        ],
-        1
-      ),
-      _c(
-        "uni-view",
-        { staticClass: _vm._$g(12, "sc"), attrs: { _i: 12 } },
-        [
-          _c("v-uni-image", {
-            staticClass: _vm._$g(13, "sc"),
-            attrs: { src: "/static/home/search/null.png", mode: "", _i: 13 },
-          }),
-          _c(
-            "uni-view",
-            { staticClass: _vm._$g(14, "sc"), attrs: { _i: 14 } },
-            [_vm._v("暂无任何内容")]
-          ),
-        ],
-        1
-      ),
     ],
     1
   )
@@ -8046,7 +8255,7 @@ var ___CSS_LOADER_URL_IMPORT_0___ = __webpack_require__(/*! ../../../../static/h
 exports = ___CSS_LOADER_API_IMPORT___(false);
 var ___CSS_LOADER_URL_REPLACEMENT_0___ = ___CSS_LOADER_GET_URL_IMPORT___(___CSS_LOADER_URL_IMPORT_0___);
 // Module
-exports.push([module.i, "\n.btn1{\n\tbackground: linear-gradient( 270deg, #4DB23F 0%, #91C42F 100%);\n\tborder-radius: 50rpx;\n\twidth: 260rpx;\n\ttext-align: center;\n\tfont-size: 32rpx;\n\tfont-weight: bold;\n\tpadding: 25rpx 0rpx;\n\tcolor: white;\n\tfont-family: PingFang SC, PingFang SC;\n}\n.btn2{\n\tbackground: linear-gradient( 134deg, #FA311D 0%, #FF8E34 100%);\n\tborder-radius: 50rpx;\n\twidth: 260rpx;\n\ttext-align: center;\n\tfont-size: 32rpx;\n\tfont-weight: bold;\n\tpadding: 25rpx 0rpx;\n\tcolor: white;\n\tfont-family: PingFang SC, PingFang SC;\n}\n.bgSign {\n\tbackground-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ");\n\tbackground-size: 100% 100%;\n\theight: 100vh;\n\twidth: 100%;\n}\n", ""]);
+exports.push([module.i, "\n.btn1 {\n\tbackground: linear-gradient(270deg, #4DB23F 0%, #91C42F 100%);\n\tborder-radius: 50rpx;\n\twidth: 260rpx;\n\ttext-align: center;\n\tfont-size: 32rpx;\n\tfont-weight: bold;\n\tpadding: 25rpx 0rpx;\n\tcolor: white;\n\tfont-family: PingFang SC, PingFang SC;\n}\n.btn2 {\n\tbackground: linear-gradient(134deg, #FA311D 0%, #FF8E34 100%);\n\tborder-radius: 50rpx;\n\twidth: 260rpx;\n\ttext-align: center;\n\tfont-size: 32rpx;\n\tfont-weight: bold;\n\tpadding: 25rpx 0rpx;\n\tcolor: white;\n\tfont-family: PingFang SC, PingFang SC;\n}\n.bgSign {\n\tbackground-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ");\n\tbackground-size: 100% 100%;\n\theight: 100vh;\n\twidth: 100%;\n}\n", ""]);
 // Exports
 module.exports = exports;
 

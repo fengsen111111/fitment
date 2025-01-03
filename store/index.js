@@ -8,8 +8,14 @@ const store = new Vuex.Store({
 		userInfo: {}, //用户信息
 		czzInfo: {}, //创作者资料
 		lsjlList:[],//历史记录id
+		
+		homeVisable: true//首页弹窗  //不进入本地缓存
 	},
 	mutations: {
+		// 关闭弹窗
+		visableShow(state){
+			state.homeVisable = false
+		},
 		// 退出登录,清空本地缓存和state 数据
 		delState(state) {
 			uni.clearStorageSync()
