@@ -54,7 +54,6 @@
 		onLoad() {
 			this._getHotCityList()
 			this.getLocation()
-
 		},
 		methods: {
 			// 经纬度

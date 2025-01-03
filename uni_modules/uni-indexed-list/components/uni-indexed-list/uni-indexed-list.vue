@@ -150,6 +150,8 @@
 						obj['key'] = value.letter
 						obj['name'] = item.label
 						obj['itemIndex'] = index
+						obj['adcode'] = item.adcode
+						obj['value'] = item.value
 						index++
 						obj.checked = item.checked ? item.checked : false
 						return obj

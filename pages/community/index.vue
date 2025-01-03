@@ -6,7 +6,7 @@
 			<view class="flex justify-between col4DB23F">
 				<view class="text-center flex items-center">
 					<uni-icons type="location" size="24" color="#4DB23F"></uni-icons>
-					<view class="text24">成都</view>
+					<view @click="handUrl('/pages/home/components/citySel/index')" class="text24">成都</view>
 				</view>
 				<view class="flex text-center text30 font-bold col999999">
 					<view class="" @click="handleType(1)">
@@ -31,10 +31,22 @@
 			</view>
 			<view class="flex justify-between mt30" style="flex-wrap: wrap;">
 				<!-- 视频 -->
-				<view class="bg-white w340 mb20" v-for="(item,index) in [1,2,1,2,1,2]" :key="index">
-					<image @click="handUrl('/pages/home/components/video/index')" :src="require('@/static/community/sq'+item+'.png')" class="w340 h540" mode=""></image>
+				<view class="bg-white w340 mb20" v-for="(item,index) in czzList" :key="item.id">
+					<view v-if="item.type=='b'">
+						<!-- 视频 -->
+						<view class="w340 h575 bg-black" v-if="item.video">
+							<image @click="handUrl('/pages/home/components/video/index?id='+item.id)"
+								:src="'https://api.qfcss.cn'+item.images[0]" class="w340 h575" mode=""></image>
+						</view>
+					</view>
+					<view v-else>
+						<!-- 图片 -->
+						<image @click="handUrl('/pages/home/components/graphic/index?id='+item.id)"
+							:src="'https://api.qfcss.cn'+item.images[0]" class="w340 h575" mode=""></image>
+					</view>
 					<view class="px20 col333333 pb14">
-						<view class="font-bold text24">节省时间和精力‌：通过选择全屋整装或整装装修</view>
+						<view class="font-bold text28">{{item.title.length>20?item.title.slice(0,20):item.title}}
+						</view>
 						<view class="flex justify-between text20 mt10">
 							<view class="flex items-center">
 								<image src="../../static/home/qjflal2.png" class="w28 h28 radius20" mode="">
@@ -57,6 +69,7 @@
 </template>
 
 <script>
+	import api from '@/request/allApi.js'
 	import Tarbar from '@/components/tarbar/index.vue'
 	export default {
 		components: {
@@ -66,15 +79,39 @@
 			return {
 				// 当前分类id
 				type_index: 1,
-				title_index:1//当前标题
+				title_index:1,//当前话题
+				
+				czzList:[]
 			}
 		},
+		onShow(){
+			this._getArticleList()//创作列表
+		},
 		methods: {
+			_getArticleList(){
+				uni.showLoading({
+					title: "加载中"
+				})
+				api.getArticleList({
+					post_params:{
+						recommend:this.title_index==1?'Y':'',//推荐
+						hot:this.title_index==2?'Y':'',//热门 
+						new:this.title_index==3?'Y':'',//最新
+						follow:this.type_index==1?'Y':''//关注
+					}
+				}).then((res)=>{
+					uni.hideLoading()
+					console.log('res.data',res.data.data.list);
+					this.czzList = res.data.data.list
+				})
+			},
 			handleType(index) {
 				this.type_index = index
+				this._getArticleList()//创作列表
 			},
 			handleTitle(index) {
 				this.title_index = index
+				this._getArticleList()//创作列表
 			},
 			handUrl(url){
 				uni.navigateTo({

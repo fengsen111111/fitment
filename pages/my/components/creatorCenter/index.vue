@@ -57,8 +57,7 @@
 			</view>
 			<view class="mt30 flex text24 px30 justify-between">
 				<view class="bg6E7D89 flex radius8 col-white py22 w160">
-					<!-- @click="handUrl('/pages/my/components/creatorHistory/index?title=圈过')" -->
-					<view class="flex items-center mx-auto">
+					<view @click="handUrl('/pages/my/components/creatorHistory/index?title=圈过')" class="flex items-center mx-auto">
 						<view class="w30 h30">
 							<image src="@/static/my/creatorCenter/dz.png" class="w30 h30" mode=""></image>
 						</view>
@@ -75,8 +74,7 @@
 					</view>
 				</view>
 				<view class="bg6E7D89 flex radius8 col-white py22 w160">
-					<!-- @click="handUrl('/pages/my/components/creatorHistory/index?title=浏览记录')" -->
-					<view class="flex items-center mx-auto">
+					<view @click="handUrl('/pages/my/components/creatorHistory/index?title=浏览记录')" class="flex items-center mx-auto">
 						<view class="w30 h30">
 							<image src="@/static/my/creatorCenter/time.png" class="w30 h30" mode=""></image>
 						</view>
@@ -98,32 +96,37 @@
 			<view class="px36">
 				<view class="py14 text28">我的作品</view>
 				<view class="flex col666666 text24 justify-between items-center">
-					<view class="col-black border_bot_4DB23F">已发布</view>
-					<view class="">审核中</view>
-					<view class="">未通过</view>
-					<view class="">隐藏</view>
+					<view @click="handleStatus('b')" :class="my_status=='b'?'col-black border_bot_4DB23F':''">已发布</view>
+					<view @click="handleStatus('a')" :class="my_status=='a'?'col-black border_bot_4DB23F':''">审核中</view>
+					<view @click="handleStatus('c')" :class="my_status=='c'?'col-black border_bot_4DB23F':''">未通过</view>
+					<view @click="handleStatus('d')" :class="my_status=='d'?'col-black border_bot_4DB23F':''">隐藏</view>
 				</view>
 				<view class="mt30 grid grid-cols-2" style="grid-column-gap:10rpx">
 					<view class="bg-white w340 mb20" v-for="(item,index) in czlb" :key="item.id">
-						<!-- <image @click="handUrl('/pages/home/components/video/index')" src="@/static/home/sytjspfm1.png" class="w340 h540" mode=""></image> -->
-						<image @click="handUrl('/pages/home/components/video/index')" :src="item.image"
-							class="w340 h540" mode=""></image>
+						<view v-if="item.type=='b'">
+							<!-- 视频 -->
+							<view class="w340 h575 bg-black" v-if="item.video">
+								<image @click="handUrl('/pages/home/components/video/index?id='+item.id)"
+									:src="'https://api.qfcss.cn'+item.images[0]" class="w340 h575" mode=""></image>
+							</view>
+						</view>
+						<view v-else>
+							<!-- 图片 -->
+							<image @click="handUrl('/pages/home/components/graphic/index?id='+item.id)"
+								:src="'https://api.qfcss.cn'+item.images[0]" class="w340 h575" mode=""></image>
+						</view>
 						<view class="px20 col333333 pb14">
-							<view class="font-bold">‌{{item.title}}</view>
-							<view class="flex col4DB23F px16 justify-between text20 mt10">
+							<view class="font-bold text28">{{item.title.length>20?item.title.slice(0,20):item.title}}
+							</view>
+							<view class="flex justify-between text20 mt10">
 								<view class="flex items-center">
-									<view class="w28 h28">
-										<image src="@/static/my/creatorCenter/video.png" class="w28 h28" mode="">
-										</image>
-									</view>
-									<view class="ml10 text24">????</view>
+									<image src="@/static/home/qjflal2.png" class="w28 h28 radius20" mode="">
+									</image>
+									<view class="ml10">一只小海螺</view>
 								</view>
 								<view class="flex items-center">
-									<view class="w28 h28">
-										<image src="@/static/my/creatorCenter/dz_check.png" class="w28 h28" mode="">
-										</image>
-									</view>
-									<view class="ml10 text24">{{item.star_number}}</view>
+									<uni-icons type="eye" size="20" color="#4DB23F"></uni-icons>
+									<view class="ml10">6666</view>
 								</view>
 							</view>
 						</view>
@@ -146,7 +149,8 @@
 				backgroundImage: "",
 
 				form: {},
-				czlb: [] //创作列表
+				czlb: [] ,//创作列表
+				my_status:'b',//a审核中 b已发布  c未通过  d隐藏 
 			}
 		},
 		onLoad() {
@@ -160,6 +164,10 @@
 			}
 		},
 		methods: {
+			handleStatus(key){
+				this.my_status = key
+				this._getArticleList()
+			},
 			// 获取创作者资料
 			_getUperMaterial() {
 				api.getUperMaterial().then((res) => {
@@ -173,11 +181,16 @@
 			},
 			//获取创作列表 
 			_getArticleList() {
+				uni.showLoading({
+					title: "加载中"
+				})
 				api.getArticleList({
 					post_params: {
-						store_id: ''
+						store_id: '',
+						my_status: this.my_status
 					}
 				}).then((res) => {
+					uni.hideLoading()
 					const {
 						list
 					} = res.data.data

@@ -264,7 +264,7 @@ const result = provice.reduce((acc, item) => {
   return acc;
 }, []);
 
-// console.log('provice', provice,result);
+console.log('result',result);
 
 export {
 	provice,
